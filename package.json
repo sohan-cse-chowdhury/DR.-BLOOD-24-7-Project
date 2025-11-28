@@ -1,7 +1,6 @@
 
 {
   "name": "lifestream-connect",
-  "homepage": "https://sohan-cse-chowdhury.github.io/DR.-BLOOD-24-7-Project/",
   "version": "1.0.0",
   "type": "module",
   "scripts": {
@@ -19,4 +18,3 @@
     "vite": "^4.0.0"
   }
 }
-

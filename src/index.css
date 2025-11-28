@@ -2566,7 +2566,6 @@ html {
 
 
 
-
 /* ===== ULTRA ENHANCED BUTTON SYSTEM ===== */
 .btn {
   position: relative;
@@ -3302,3 +3301,4 @@ html {
 .registration-modal .modal-content::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(135deg, #ff6b8b 0%, #ff2e4d 100%);
 }
+
