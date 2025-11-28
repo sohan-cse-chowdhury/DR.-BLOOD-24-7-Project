@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { HashRouter as Router } from 'react-router-dom';
 import './index.css';
 
 // Constants
@@ -816,6 +817,20 @@ function App() {
     </div>
   );
 }
+
+
+
+
+function App() {
+  return (
+    <Router basename={process.env.PUBLIC_URL}>
+      {/* Your app content */}
+    </Router>
+  );
+}
+
+
+
 
 // Enhanced Donors Page Component
 const DonorsPage = ({
