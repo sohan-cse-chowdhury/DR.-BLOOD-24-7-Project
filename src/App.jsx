@@ -64,8 +64,8 @@ const EmergencyHotline = () => (
     <div className="hotline-content">
       <div className="hotline-icon">🚨</div>
       <div className="hotline-info">
-        <div className="hotline-title">Emergency</div>
-        <div className="hotline-number">999</div>
+        <div className="hotline-title">Ambulance</div>
+        <div className="hotline-number">199</div>
       </div>
     </div>
   </div>
@@ -405,7 +405,7 @@ function App() {
       setPhoneNumber('');
       setVerificationCode('');
       setLoginStep('phone');
-      alert('✅ Login successful! Welcome to LifeStream Connect.');
+      alert('✅ Login successful! Welcome to DR. BLOOD 24/7.');
     } else {
       alert('❌ Invalid verification code. Please try again.');
     }
@@ -566,7 +566,7 @@ function App() {
           <div className="logo" onClick={() => setActivePage('home')}>
             <span className="logo-icon">🩸</span>
             <div>
-              <div className="logo-text">LifeStream Connect</div>
+              <div className="logo-text">DR. BLOOD 24/7</div>
               <div className="logo-subtitle">Bangladesh Blood Donation Network</div>
             </div>
           </div>
@@ -686,7 +686,7 @@ function App() {
             </section>
 
             <section className="features-section">
-              <h2 className="section-title">Why Trust LifeStream Connect?</h2>
+              <h2 className="section-title">Why Trust DR. BLOOD 24/7?</h2>
               <div className="features-grid">
                 <div className="feature-card">
                   <div className="feature-icon">🔒</div>
@@ -1928,7 +1928,7 @@ const Footer = ({ onNavigate, onRegisterDonor }) => (
   <footer className="footer">
     <div className="footer-content">
       <div className="footer-section">
-        <h3>🩸 LifeStream Connect</h3>
+        <h3>🩸 DR. BLOOD 24/7</h3>
         <p>Bangladesh's most trusted blood donation network. Saving lives through community partnership and verified donor connections.</p>
         <div className="footer-stats">
           <div className="footer-stat">
@@ -1967,7 +1967,7 @@ const Footer = ({ onNavigate, onRegisterDonor }) => (
       </div>
     </div>
     <div className="footer-bottom">
-      <p>© 2024 LifeStream Connect Bangladesh. Registered with DGHS. Saving lives one donation at a time.</p>
+      <p>© 2024 DR. BLOOD 24/7 Bangladesh. Registered with DGHS. Saving lives one donation at a time.</p>
     </div>
   </footer>
 );
