@@ -617,11 +617,11 @@ function App() {
           <div className="home-page">
             <section className="hero-section">
               <div className="hero-content">
-                <div className="hero-badge">🏥 Partnered with Hospitals Across Bangladesh</div>
+                {/* <div className="hero-badge">Bangladesh Blood Donation Network</div> */}
                 <h1 className="hero-title">Saving Lives Through <span className="highlight">Blood Donation</span></h1>
                 <p className="hero-subtitle">
-                  Bangladesh's most trusted blood donation platform. Connecting voluntary donors with 
-                  patients in need through our verified network across 8 major cities.
+                  Bangladesh's most trusted <b> Blood donation platform.</b> Connecting voluntary donors with 
+                  patients in need through a verified nationwide network.
                 </p>
                 
                 <div className="hero-buttons">
@@ -1967,7 +1967,7 @@ const Footer = ({ onNavigate, onRegisterDonor }) => (
       </div>
     </div>
     <div className="footer-bottom">
-      <p>© 2024 DR. BLOOD 24/7 Bangladesh. Registered with DGHS. Saving lives one donation at a time.</p>
+      <p>© 2024 DR. BLOOD 24/7 Bangladesh. Developed by SAKIB CHOWDHURY SOHAN</p>
     </div>
   </footer>
 );
