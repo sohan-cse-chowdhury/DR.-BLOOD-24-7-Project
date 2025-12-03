@@ -1,5 +1,526 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, createContext, useContext } from 'react';
 import './index.css';
+
+// ===== LANGUAGE SUPPORT SYSTEM =====
+const LanguageContext = createContext();
+
+// English texts (your existing content)
+const englishTexts = {
+  // Navigation
+  appName: "DR. BLOOD 24/7",
+  appSubtitle: "Bangladesh Blood Donation Network",
+  
+  // Pages
+  home: "🏠 Home",
+  findDonors: "🔍 Find Donors",
+  myProfile: "👤 My Profile",
+  becomeDonor: "❤️ Become Donor",
+  login: "🔑 Login",
+  logout: "👋 Logout",
+  
+  // Hero Section
+  heroTitle: "Saving Lives Through <span class='highlight'>Blood Donation</span>",
+  heroSubtitle: "Bangladesh's most trusted <b>Blood donation platform.</b> Connecting voluntary donors with patients in need through a verified nationwide network.",
+  findBloodDonors: "🔍 Find Blood Donors",
+  registerAsDonor: "❤️ Register as Donor",
+  detectMyLocation: "📍 Detect My Location",
+  
+  // Stats
+  availableDonors: "Available Donors",
+  partnerLocations: "Partner Locations",
+  citiesCovered: "Cities Covered",
+  livesSaved: "Lives Saved",
+  
+  // Features
+  whyTrust: "Why Trust DR. BLOOD 24/7?",
+  verifiedScreened: "Verified & Screened",
+  verifiedDesc: "Every donor undergoes medical screening and background verification. Health records are regularly updated.",
+  smartAvailability: "Smart Availability",
+  smartDesc: "Automatic status updates ensure donors are only available when medically eligible to donate.",
+  liveStatus: "Live Status Updates",
+  liveDesc: "Get real-time donor updates and estimated arrival times instantly.",
+  rapidResponse: "Rapid Response",
+  rapidDesc: "Average response time of 15 minutes for emergency requests. 24/7 coordination center.",
+  nationwideNetwork: "Nationwide Network",
+  networkDesc: "Verified donors across all major cities in Bangladesh. Direct coordination for emergency cases.",
+  realtimeTracking: "Real-time Tracking",
+  trackingDesc: "Live donor location tracking and estimated arrival time. SMS/Email notifications.",
+  
+  // Blood Types
+  bloodTypeCompatibility: "Blood Type Compatibility",
+  compatibilityInfo: "💡 <strong>O-</strong> can donate to all blood types |<br /> <strong>| AB+</strong> can receive from all blood types 💡",
+  
+  // Emergency CTA
+  needImmediateAssistance: "Need Immediate Assistance?",
+  emergencyDesc: "Our 24/7 coordination team is ready to help you find compatible donors quickly",
+  findDonorsNow: "Find Donors Now",
+  
+  // Donors Page
+  findBloodDonorsTitle: "🔍 Find Blood Donors",
+  findDonorsSubtitle: "Connect with verified donors across Bangladesh's major cities",
+  detectLocation: "📍 Detect My Location",
+  donorAvailability: "Donor Availability",
+  allDonors: "👥 All Donors",
+  availableNow: "✅ Available Now",
+  recentlyDonated: "⏳ Recently Donated",
+  searchResults: "Search Results:",
+  clear: "🗑️ Clear",
+  
+  // Search System
+  findCompatibleDonors: "Find Compatible Donors",
+  searchDescription: "Connect with verified donors using precise search criteria",
+  showAdvancedFilters: "⚙️ Show Advanced Filters",
+  hideAdvancedFilters: "⚙️ Hide Advanced Filters",
+  searchLocation: "Search Location",
+  enterCityOrArea: "Enter city or area (e.g., Dhaka, Gulshan, Cumilla)",
+  popularAreas: "Popular Areas:",
+  availabilityFilter: "Availability Filter",
+  additionalFilters: "Additional Filters",
+  allDonorsFilter: "All Donors",
+  emergencyReady: "Emergency Ready",
+  verifiedOnly: "Verified Only",
+  recentDonors: "Recent Donors (Last 3 months)",
+  nearMyLocation: "Near My Location",
+  availableToday: "Available Today",
+  donorsFound: "donors found",
+  clearAllFilters: "🗑️ Clear All Filters",
+  becomeADonor: "❤️ Become a Donor",
+  
+  // Donor Cards
+  availableDonorsTitle: "Available Donors",
+  sortBy: "Sort by: Availability",
+  sortByRecent: "Sort by: Recently Active",
+  sortByCount: "Sort by: Donation Count",
+  sortByRating: "Sort by: Rating",
+  you: "(You)",
+  yourProfile: "Your Profile",
+  lastDonationLabel: "Last Donation:",
+  emergencyAvailable: "Emergency Available",
+  contactNow: "📞 Contact Now",
+  currentlyUnavailable: "Currently Unavailable",
+  viewProfile: "👁️ View Profile",
+  recordDonation: "➕ Record Donation",
+  
+  // Search Tips
+  searchTips: "💡 Search Tips & Information",
+  searchByCity: "Search by City or Area",
+  searchTip1: "Type \"Dhaka\", \"Cumilla\", or specific areas like \"Gulshan\", \"Dhanmondi\" for precise location-based results",
+  bloodTypeCompatibilityTip: "Blood Type Compatibility",
+  bloodTypeTip: "O- is universal donor (can donate to all), AB+ is universal receiver (can receive from all)",
+  emergencyReadyTip: "Emergency Ready Donors",
+  emergencyTip: "Filter for donors available 24/7 for emergency situations with immediate response capability",
+  verifiedProfilesTip: "Verified Profiles",
+  verifiedTip: "All donors undergo medical screening and background verification for your safety",
+  
+  // Profile Page
+  yourDonorProfile: "👤 Your Donor Profile",
+  profileSubtitle: "Manage your donor information and donation history",
+  profileTab: "👤 Profile",
+  donationHistoryTab: "🩸 Donation History",
+  availabilityTab: "⏰ Availability",
+  totalDonations: "Total Donations",
+  donorRating: "Donor Rating",
+  emergencyReadyProfile: "Emergency Ready",
+  personalInformation: "Personal Information",
+  locationAvailability: "Location & Availability",
+  contactInformation: "Contact Information",
+  fullName: "Full Name:",
+  bloodType: "Blood Type:",
+  gender: "Gender:",
+  age: "Age:",
+  weight: "Weight:",
+  height: "Height:",
+  city: "City:",
+  area: "Area:",
+  availability: "Availability:",
+  phone: "Phone:",
+  email: "Email:",
+  yourAchievements: "Your Achievements",
+  editProfile: "Edit Profile",
+  updateAvailability: "Update Availability",
+  
+  // Donation Status
+  availableForDonation: "Available for Donation",
+  unavailableForDonation: "Unavailable for Donation",
+  pendingAvailability: "Pending Availability",
+  youCanDonateNow: "You can donate blood now!",
+  availableInDays: "Available in {days} day{days !== 1 ? 's' : ''}",
+  
+  // Footer
+  footerTitle: "🩸 DR. BLOOD 24/7",
+  footerDesc: "Bangladesh's most trusted blood donation network. Saving lives through community partnership and verified donor connections.",
+  quickLinks: "Quick Links",
+  contactInfo: "Contact Info",
+  emergencyContacts: "Emergency Contacts",
+  ambulanceService: "🚨 Ambulance Service",
+  bloodBankInfo: "🩸 Blood Bank Info",
+  dghsHelpline: "🏭 DGHS Helpline",
+  copyright: "© 2024 DR. BLOOD 24/7 Bangladesh. Developed by SAKIB CHOWDHURY SOHAN",
+  
+  // Modals
+  registerAsBloodDonor: "❤️ Register as Blood Donor",
+  loginToApp: "🔑 Login to DR. BLOOD 24/7",
+  enterYourPhone: "Enter Your Phone Number",
+  sendVerificationCode: "Send Verification Code",
+  verificationSent: "We sent a code to +880 {phone}",
+  enterVerificationCode: "Enter Verification Code",
+  resendCode: "Resend Code",
+  verifyLogin: "Verify & Login",
+  changePhoneNumber: "← Change Phone Number",
+  
+  // Registration Form
+  personalInfo: "Personal Information",
+  medicalInfo: "Medical Information & Eligibility",
+  locationPref: "Location & Donation Preferences",
+  fullNameRequired: "Full Name *",
+  emailAddressRequired: "Email Address *",
+  phoneNumberRequired: "Phone Number *",
+  emergencyContactLabel: "Emergency Contact",
+  bloodGroupRequired: "Blood Group *",
+  genderRequired: "Gender *",
+  dateOfBirth: "Date of Birth *",
+  weightRequired: "Weight (kg) *",
+  heightLabel: "Height",
+  medicalConditions: "Any Medical Conditions?",
+  recentSurgery: "Recent Surgery (within 6 months)",
+  currentMedications: "Current Medications",
+  travelHistory: "Travel History (last 3 months)",
+  eligibilityChecklist: "Eligibility Checklist",
+  atLeast18: "I am at least 18 years old",
+  weighAtLeast45: "I weigh at least 45 kg",
+  goodHealth: "I am in good health condition",
+  notDonatedRecently: "I have not donated blood in the last 3 months",
+  privacyConsent: "Privacy & Consent",
+  privacyText: "Your information will be kept confidential and only shared with verified healthcare facilities when there is a genuine need for blood donation. You can update your availability or remove your registration at any time.",
+  previousStep: "← Previous",
+  nextStep: "Next Step →",
+  completeRegistration: "🎉 Complete Registration",
+  
+  // Messages
+  registrationSuccessful: "🎉 Registration Successful!",
+  welcomeMessage: "Welcome {name}!",
+  registeredSuccess: "You are now registered as a blood donor. Your profile is now visible to those in need.",
+  verificationCodeSent: "📱 Verification code sent to {phone}",
+  loginSuccessful: "✅ Login successful! Welcome to DR. BLOOD 24/7.",
+  invalidCode: "❌ Invalid verification code. Please try again.",
+  contactDonor: "📞 Contacting {name}",
+  donorUnavailable: "❌ {name} is currently unavailable for donation.",
+  willBeAvailable: "They will be available again in {days} days.",
+  donationRecorded: "🎉 Donation recorded successfully!",
+  availableAgain: "You'll be available again in 3 months.",
+  thankYouForSaving: "Thank you for saving lives!",
+  
+  // Health Tips
+  healthTips: "🩺 HEALTH TIPS",
+  aiHealthAssistant: "AI Health Assistant",
+  nextTip: "Next Tip →",
+  generalWellness: "💡 General wellness advice. Consult doctors for medical concerns.",
+  
+  // Common
+  yes: "Yes",
+  no: "No",
+  all: "All",
+  search: "Search",
+  filter: "Filter",
+  loading: "Processing...",
+  close: "×"
+};
+
+// Small missing English keys used in components
+englishTexts.noDonations = "No donation records yet";
+englishTexts.encouragement = "Start your donation journey today!";
+englishTexts.latestDonation = "Most Recent";
+englishTexts.healthTip1 = "💧 Drink 8-10 glasses of water daily to stay hydrated";
+englishTexts.healthTip2 = "🥗 Eat balanced meals with fruits and vegetables";
+englishTexts.healthTip3 = "🏃 Exercise for 30 minutes daily for better circulation";
+englishTexts.healthTip4 = "😴 Get 7-8 hours of sleep for proper rest";
+englishTexts.healthTip5 = "🚭 Avoid smoking and limit alcohol consumption";
+englishTexts.healthTip6 = "🧘 Practice stress management techniques";
+englishTexts.healthTip7 = "📱 Take regular breaks from screens";
+englishTexts.healthTip8 = "🌞 Get 15 minutes of sunlight for Vitamin D";
+
+// Bangla translations
+const banglaTexts = {
+  // Navigation
+  appName: "ডি.আর. ব্লাড ২৪/৭",
+  appSubtitle: "বাংলাদেশ রক্তদান নেটওয়ার্ক",
+  
+  // Pages
+  home: "🏠 হোম",
+  findDonors: "🔍 রক্তদাতা খুঁজুন",
+  myProfile: "👤 আমার প্রোফাইল",
+  becomeDonor: "❤️ রক্তদাতা হোন",
+  login: "🔑 লগইন",
+  logout: "👋 লগআউট",
+  
+  // Hero Section
+  heroTitle: "রক্তদানের মাধ্যমে জীবন বাঁচান <span class='highlight'>রক্তদান</span>",
+  heroSubtitle: "বাংলাদেশের সবচেয়ে বিশ্বস্ত <b>রক্তদান প্ল্যাটফর্ম।</b> স্বেচ্ছাসেবী রক্তদাতাদের যাচাইকৃত জাতীয় নেটওয়ার্কের মাধ্যমে প্রয়োজনী রোগীদের সাথে সংযুক্ত করুন।",
+  findBloodDonors: "🔍 রক্তদাতা খুঁজুন",
+  registerAsDonor: "❤️ রক্তদাতা হিসাবে নিবন্ধন করুন",
+  detectMyLocation: "📍 আমার অবস্থান সনাক্ত করুন",
+  
+  // Stats
+  availableDonors: "উপলব্ধ রক্তদাতা",
+  partnerLocations: "পার্টনার প্রতিষ্ঠান",
+  citiesCovered: "শহর কভার করা হয়েছে",
+  livesSaved: "জীবন বাঁচানো হয়েছে",
+  
+  // Features
+  whyTrust: "কেন ডি.আর. ব্লাড ২৪/৭ বিশ্বাস করবেন?",
+  verifiedScreened: "যাচাইকৃত ও স্ক্রিনড",
+  verifiedDesc: "প্রতিটি রক্তদাতা চিকিৎসা স্ক্রীনিং এবং ব্যাকগ্রাউন্ড যাচাইকরণের মধ্য দিয়ে যায়। স্বাস্থ্য রেকর্ড নিয়মিত আপডেট করা হয়।",
+  smartAvailability: "স্মার্ট উপলব্ধতা",
+  smartDesc: "স্বয়ংক্রিয় স্ট্যাটাস আপডেট নিশ্চিত করে যে রক্তদাতারা শুধুমাত্র চিকিৎসাগতভাবে যোগ্য হলে উপলব্ধ থাকে।",
+  liveStatus: "লাইভ স্ট্যাটাস আপডেট",
+  liveDesc: "রিয়েল-টাইম রক্তদাতা আপডেট এবং আনুমানিক আগমন সময় তাৎক্ষণিকভাবে পান।",
+  rapidResponse: "দ্রুত প্রতিক্রিয়া",
+  rapidDesc: "জরুরী অনুরোধের জন্য গড় প্রতিক্রিয়া সময় 15 মিনিট। 24/7 সমন্বয় কেন্দ্র।",
+  nationwideNetwork: "জাতীয় নেটওয়ার্ক",
+  networkDesc: "বাংলাদেশের সমস্ত প্রধান শহরে যাচাইকৃত রক্তদাতা। জরুরী ক্ষেত্রে সরাসরি সমন্বয়।",
+  realtimeTracking: "রিয়েল-টাইম ট্র্যাকিং",
+  trackingDesc: "লাইভ রক্তদাতার অবস্থান ট্র্যাকিং এবং আনুমানিক আগমন সময়। এসএমএস/ইমেল নোটিফিকেশন।",
+  
+  // Blood Types
+  bloodTypeCompatibility: "রক্তের গ্রুপ সামঞ্জস্যতা",
+  compatibilityInfo: "💡 <strong>O-</strong> সব রক্তের গ্রুপে দান করতে পারে |<br /> <strong>| AB+</strong> সব গ্রুপ থেকে গ্রহণ করতে পারে 💡",
+  
+  // Emergency CTA
+  needImmediateAssistance: "তাৎক্ষণিক সহায়তা প্রয়োজন?",
+  emergencyDesc: "আমাদের 24/7 সমন্বয় টিম সামঞ্জস্যপূর্ণ রক্তদাতা খুঁজতে আপনাকে দ্রুত সাহায্য করতে প্রস্তুত",
+  findDonorsNow: "এখনই রক্তদাতা খুঁজুন",
+  
+  // Donors Page
+  findBloodDonorsTitle: "🔍 রক্তদাতা খুঁজুন",
+  findDonorsSubtitle: "বাংলাদেশের প্রধান শহরগুলিতে যাচাইকৃত রক্তদাতাদের সাথে সংযুক্ত হন",
+  detectLocation: "📍 আমার অবস্থান সনাক্ত করুন",
+  donorAvailability: "রক্তদাতার উপলব্ধতা",
+  allDonors: "👥 সব রক্তদাতা",
+  availableNow: "✅ এখনই উপলব্ধ",
+  recentlyDonated: "⏳ সম্প্রতি রক্ত দিয়েছে",
+  searchResults: "খোঁজার ফলাফল:",
+  clear: "🗑️ পরিষ্কার করুন",
+  
+  // Search System
+  findCompatibleDonors: "সামঞ্জস্যপূর্ণ রক্তদাতা খুঁজুন",
+  searchDescription: "সুনির্দিষ্ট অনুসন্ধান মানদণ্ড ব্যবহার করে যাচাইকৃত রক্তদাতাদের সাথে সংযুক্ত হন",
+  showAdvancedFilters: "⚙️ উন্নত ফিল্টার দেখান",
+  hideAdvancedFilters: "⚙️ উন্নত ফিল্টার লুকান",
+  searchLocation: "অবস্থান অনুসন্ধান করুন",
+  enterCityOrArea: "শহর বা এলাকা লিখুন (যেমন: ঢাকা, গুলশান, কুমিল্লা)",
+  popularAreas: "জনপ্রিয় এলাকা:",
+  availabilityFilter: "উপলব্ধতা ফিল্টার",
+  additionalFilters: "অতিরিক্ত ফিল্টার",
+  allDonorsFilter: "সব রক্তদাতা",
+  emergencyReady: "জরুরী প্রস্তুত",
+  verifiedOnly: "শুধুমাত্র যাচাইকৃত",
+  recentDonors: "সম্প্রতি রক্তদাতা (গত 3 মাস)",
+  nearMyLocation: "আমার অবস্থানের কাছাকাছি",
+  availableToday: "আজ উপলব্ধ",
+  donorsFound: "রক্তদাতা পাওয়া গেছে",
+  clearAllFilters: "🗑️ সব ফিল্টার পরিষ্কার করুন",
+  becomeADonor: "❤️ রক্তদাতা হোন",
+  
+  // Donor Cards
+  availableDonorsTitle: "উপলব্ধ রক্তদাতা",
+  sortBy: "ক্রমানুসার: উপলব্ধতা",
+  sortByRecent: "ক্রমানুসার: সম্প্রতি সক্রিয়",
+  sortByCount: "ক্রমানুসার: রক্তদান সংখ্যা",
+  sortByRating: "ক্রমানুসার: রেটিং",
+  you: "(আপনি)",
+  yourProfile: "আপনার প্রোফাইল",
+  lastDonationLabel: "শেষ রক্তদান:",
+  emergencyAvailable: "জরুরীতে উপলব্ধ",
+  contactNow: "📞 এখনই যোগাযোগ করুন",
+  currentlyUnavailable: "বর্তমানে উপলব্ধ নয়",
+  viewProfile: "👁️ প্রোফাইল দেখুন",
+  recordDonation: "➕ রক্তদান রেকর্ড করুন",
+  
+  // Search Tips
+  searchTips: "💡 অনুসন্ধান টিপস ও তথ্য",
+  searchByCity: "শহর বা এলাকা অনুসন্ধান করুন",
+  searchTip1: "সুনির্দিষ্ট অবস্থান-ভিত্তিক ফলাফলের জন্য \"ঢাকা\", \"কুমিল্লা\" বা নির্দিষ্ট এলাকা যেমন \"গুলশান\", \"ধানমন্ডি\" টাইপ করুন",
+  bloodTypeCompatibilityTip: "রক্তের গ্রুপ সামঞ্জস্যতা",
+  bloodTypeTip: "O- সর্বজনীন দাতা (সব রক্তের গ্রুপে দান করতে পারে), AB+ সর্বজনীন গ্রহীতা (সব গ্রুপ থেকে গ্রহণ করতে পারে)",
+  emergencyReadyTip: "জরুরী প্রস্তুত রক্তদাতা",
+  emergencyTip: "জরুরী পরিস্থিতিতে 24/7 উপলব্ধ এবং তাৎক্ষণিক প্রতিক্রিয়া ক্ষমতা সম্পন্ন রক্তদাতাদের জন্য ফিল্টার করুন",
+  verifiedProfilesTip: "যাচাইকৃত প্রোফাইল",
+  verifiedTip: "আপনার নিরাপত্তার জন্য সমস্ত রক্তদাতা চিকিৎসা স্ক্রীনিং এবং ব্যাকগ্রাউন্ড যাচাইকরণের মধ্য দিয়ে যায়",
+  
+  // Profile Page
+  yourDonorProfile: "👤 আপনার রক্তদাতা প্রোফাইল",
+  profileSubtitle: "আপনার রক্তদাতা তথ্য এবং রক্তদান ইতিহাস পরিচালনা করুন",
+  profileTab: "👤 প্রোফাইল",
+  donationHistoryTab: "🩸 রক্তদান ইতিহাস",
+  availabilityTab: "⏰ উপলব্ধতা",
+  totalDonations: "মোট রক্তদান",
+  donorRating: "রক্তদাতা রেটিং",
+  emergencyReadyProfile: "জরুরী প্রস্তুত",
+  personalInformation: "ব্যক্তিগত তথ্য",
+  locationAvailability: "অবস্থান ও উপলব্ধতা",
+  contactInformation: "যোগাযোগের তথ্য",
+  fullName: "পূর্ণ নাম:",
+  bloodType: "রক্তের গ্রুপ:",
+  gender: "লিঙ্গ:",
+  age: "বয়স:",
+  weight: "ওজন:",
+  height: "উচ্চতা:",
+  city: "শহর:",
+  area: "এলাকা:",
+  availability: "উপলব্ধতা:",
+  phone: "ফোন:",
+  email: "ইমেইল:",
+  yourAchievements: "আপনার অর্জনসমূহ",
+  editProfile: "প্রোফাইল সম্পাদনা করুন",
+  updateAvailability: "উপলব্ধতা আপডেট করুন",
+  
+  // Donation Status
+  availableForDonation: "রক্তদানের জন্য উপলব্ধ",
+  unavailableForDonation: "রক্তদানের জন্য অনুপলব্ধ",
+  pendingAvailability: "উপলব্ধতা মুলতুবি",
+  youCanDonateNow: "আপনি এখনই রক্ত দান করতে পারেন!",
+  availableInDays: "{days} দিনের মধ্যে উপলব্ধ",
+  
+  // Footer
+  footerTitle: "🩸 ডি.আর. ব্লাড ২৪/৭",
+  footerDesc: "বাংলাদেশের সবচেয়ে বিশ্বস্ত রক্তদান নেটওয়ার্ক। সম্প্রদায়ের অংশীদারিত্ব এবং যাচাইকৃত রক্তদাতা সংযোগের মাধ্যমে জীবন বাঁচান।",
+  quickLinks: "দ্রুত লিঙ্ক",
+  contactInfo: "যোগাযোগের তথ্য",
+  emergencyContacts: "জরুরী যোগাযোগ",
+  ambulanceService: "🚨 অ্যাম্বুলেন্স সার্ভিস",
+  bloodBankInfo: "🩸 ব্লাড ব্যাঙ্ক তথ্য",
+  dghsHelpline: "🏭 স্বাস্থ্য অধিদপ্তর হেল্পলাইন",
+  copyright: "© ২০২৪ ডি.আর. ব্লাড ২৪/৭ বাংলাদেশ। ডেভেলপার: সাকিব চৌধুরী সোহান",
+  
+  // Modals
+  registerAsBloodDonor: "❤️ রক্তদাতা হিসাবে নিবন্ধন করুন",
+  loginToApp: "🔑 ডি.আর. ব্লাড ২৪/৭-এ লগইন করুন",
+  enterYourPhone: "আপনার ফোন নম্বর লিখুন",
+  sendVerificationCode: "যাচাইকরণ কোড পাঠান",
+  verificationSent: "আমরা +880 {phone}-এ একটি কোড পাঠিয়েছি",
+  enterVerificationCode: "যাচাইকরণ কোড লিখুন",
+  resendCode: "কোড পুনরায় পাঠান",
+  verifyLogin: "যাচাই করুন ও লগইন করুন",
+  changePhoneNumber: "← ফোন নম্বর পরিবর্তন করুন",
+  
+  // Registration Form
+  personalInfo: "ব্যক্তিগত তথ্য",
+  medicalInfo: "চিকিৎসা তথ্য ও যোগ্যতা",
+  locationPref: "অবস্থান ও রক্তদান পছন্দসমূহ",
+  fullNameRequired: "পূর্ণ নাম *",
+  emailAddressRequired: "ইমেইল ঠিকানা *",
+  phoneNumberRequired: "ফোন নম্বর *",
+  emergencyContactLabel: "জরুরী যোগাযোগ",
+  bloodGroupRequired: "রক্তের গ্রুপ *",
+  genderRequired: "লিঙ্গ *",
+  dateOfBirth: "জন্ম তারিখ *",
+  weightRequired: "ওজন (কেজি) *",
+  heightLabel: "উচ্চতা",
+  medicalConditions: "কোনো চিকিৎসা সমস্যা আছে?",
+  recentSurgery: "সম্প্রতি সার্জারি (6 মাসের মধ্যে)",
+  currentMedications: "বর্তমান ওষুধ",
+  travelHistory: "ভ্রমণের ইতিহাস (গত 3 মাস)",
+  eligibilityChecklist: "যোগ্যতা চেকলিস্ট",
+  atLeast18: "আমার বয়স কমপক্ষে 18 বছর",
+  weighAtLeast45: "আমার ওজন কমপক্ষে 45 কেজি",
+  goodHealth: "আমি সুস্বাস্থ্যের অধিকারী",
+  notDonatedRecently: "আমি গত 3 মাসে রক্ত দেইনি",
+  privacyConsent: "গোপনীয়তা ও সম্মতি",
+  privacyText: "আপনার তথ্য গোপনীয় রাখা হবে এবং শুধুমাত্র রক্তদানের প্রকৃত প্রয়োজন দেখা দিলে যাচাইকৃত স্বাস্থ্যসেবা প্রতিষ্ঠানের সাথে ভাগ করা হবে। আপনি যে কোনো সময় আপনার উপলব্ধতা আপডেট বা নিবন্ধন বাতিল করতে পারেন।",
+  previousStep: "← পূর্ববর্তী",
+  nextStep: "পরবর্তী ধাপ →",
+  completeRegistration: "🎉 নিবন্ধন সম্পূর্ণ করুন",
+  
+  // Messages
+  registrationSuccessful: "🎉 নিবন্ধন সফল!",
+  welcomeMessage: "স্বাগতম {name}!",
+  registeredSuccess: "আপনি এখন একজন রক্তদাতা হিসেবে নিবন্ধিত হয়েছেন। আপনার প্রোফাইল এখন প্রয়োজনী রোগীদের কাছে দৃশ্যমান।",
+  verificationCodeSent: "📱 যাচাইকরণ কোড {phone}-এ পাঠানো হয়েছে",
+  loginSuccessful: "✅ লগইন সফল! ডি.আর. ব্লাড ২৪/৭-এ স্বাগতম।",
+  invalidCode: "❌ ভুল যাচাইকরণ কোড। আবার চেষ্টা করুন।",
+  contactDonor: "📞 {name}-এর সাথে যোগাযোগ করছেন",
+  donorUnavailable: "❌ {name} বর্তমানে রক্তদানের জন্য অনুপলব্ধ।",
+  willBeAvailable: "তারা আবার {days} দিনের মধ্যে উপলব্ধ হবে।",
+  donationRecorded: "🎉 রক্তদান সফলভাবে রেকর্ড করা হয়েছে!",
+  availableAgain: "আপনি 3 মাস পর আবার উপলব্ধ হবেন।",
+  thankYouForSaving: "জীবন বাঁচানোর জন্য ধন্যবাদ!",
+  
+  // Health Tips
+  healthTips: "🩺 স্বাস্থ্য টিপস",
+  aiHealthAssistant: "এআই স্বাস্থ্য সহকারী",
+  nextTip: "পরবর্তী টিপ →",
+  generalWellness: "💡 সাধারণ সুস্থতা পরামর্শ। চিকিৎসাগত সমস্যার জন্য ডাক্তারের সাথে পরামর্শ করুন।",
+  
+  // Common
+  yes: "হ্যাঁ",
+  no: "না",
+  all: "সব",
+  search: "অনুসন্ধান",
+  filter: "ফিল্টার",
+  loading: "প্রক্রিয়াকরণ...",
+  close: "×"
+};
+
+// Small missing Bangla keys used in components
+banglaTexts.noDonations = "এখানে কোনো রক্তদান রেকর্ড নেই";
+banglaTexts.encouragement = "আজই আপনার রক্তদানের যাত্রা শুরু করুন!";
+banglaTexts.latestDonation = "সর্বশেষ";
+banglaTexts.healthTip1 = "💧 প্রতিদিন ৮-১০ গ্লাস পানি পান করুন";
+banglaTexts.healthTip2 = "🥗 ফলমূল ও সবজি সমৃদ্ধ খাবার খান";
+banglaTexts.healthTip3 = "🏃 প্রতিদিন ৩০ মিনিট ব্যায়াম করুন";
+banglaTexts.healthTip4 = "😴 প্রতিদিন ৭-৮ ঘন্টা ঘুমান";
+banglaTexts.healthTip5 = "🚭 ধূমপান এড়িয়ে চলুন, মদ সীমিত করুন";
+banglaTexts.healthTip6 = "🧘 চাপ কমানোর উপায় অনুশীলন করুন";
+banglaTexts.healthTip7 = "📱 নিয়মিত বিরতি নিন স্ক্রিন থেকে";
+banglaTexts.healthTip8 = "🌞 ভিটামিন-ডি পেতে ১৫ মিনিট সানলাইট নিন";
+
+// Language Provider Component
+const LanguageProvider = ({ children }) => {
+  const [language, setLanguage] = useLocalStorage('language', 'en');
+  
+  const toggleLanguage = useCallback(() => {
+    setLanguage(prev => prev === 'en' ? 'bn' : 'en');
+  }, [setLanguage]);
+  
+  const t = useCallback((key, params = {}) => {
+    const text = language === 'en' ? englishTexts[key] : banglaTexts[key];
+    if (!text) return key;
+    
+    // Replace parameters in the text
+    return Object.keys(params).reduce((result, param) => {
+      const value = params[param];
+      const placeholder = `{${param}}`;
+      const pluralPlaceholder = `{${param}s}`;
+      
+      // Handle singular/plural
+      let finalText = result;
+      if (typeof value === 'number' && value !== 1 && result.includes(placeholder)) {
+        finalText = finalText.replace(placeholder, value);
+      } else {
+        finalText = finalText.replace(placeholder, value);
+      }
+      
+      return finalText;
+    }, text);
+  }, [language]);
+  
+  const value = { language, toggleLanguage, t };
+  
+  return (
+    <LanguageContext.Provider value={value}>
+      {children}
+    </LanguageContext.Provider>
+  );
+};
+
+// Custom hook for using translations
+const useTranslation = () => {
+  const context = useContext(LanguageContext);
+  if (!context) {
+    throw new Error('useTranslation must be used within LanguageProvider');
+  }
+  return context;
+};
 
 // Constants
 const BLOOD_TYPES = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
@@ -7,9 +528,9 @@ const CITIES = ['Dhaka', 'Cumilla', 'Chittagong', 'Sylhet', 'Rajshahi', 'Khulna'
 const GENDERS = ['Male', 'Female'];
 const AVAILABILITY_OPTIONS = ['24/7 Emergency', 'Weekdays', 'Weekends', 'Flexible Schedule', 'On Call'];
 const DONATION_STATUS = {
-  AVAILABLE: 'Available for Donation',
-  UNAVAILABLE: 'Unavailable for Donation',
-  PENDING: 'Pending Availability'
+  AVAILABLE: 'available',
+  UNAVAILABLE: 'unavailable',
+  PENDING: 'pending'
 };
 
 // Custom Hooks
@@ -25,10 +546,24 @@ const useLocalStorage = (key, initialValue) => {
 
   const setValue = useCallback((value) => {
     try {
-      // Support functional updates like React's setState
-      const valueToStore = typeof value === 'function' ? value(storedValue) : value;
-      setStoredValue(valueToStore);
-      window.localStorage.setItem(key, JSON.stringify(valueToStore));
+      if (typeof value === 'function') {
+        setStoredValue(prev => {
+          const v = value(prev);
+          try {
+            window.localStorage.setItem(key, JSON.stringify(v));
+          } catch (err) {
+            console.error(`Error writing localStorage key "${key}":`, err);
+          }
+          return v;
+        });
+      } else {
+        setStoredValue(value);
+        try {
+          window.localStorage.setItem(key, JSON.stringify(value));
+        } catch (err) {
+          console.error(`Error writing localStorage key "${key}":`, err);
+        }
+      }
     } catch (error) {
       console.error(`Error setting localStorage key "${key}":`, error);
     }
@@ -68,7 +603,6 @@ const getDonationStatus = (lastDonationDate) => {
   const today = new Date();
 
   if (!nextAvailable) {
-    // If next available date can't be determined treat as available to avoid blocking
     return DONATION_STATUS.AVAILABLE;
   }
 
@@ -110,30 +644,72 @@ const Modal = ({ children, isOpen, onClose, className = '' }) => {
 };
 
 const Button = ({ children, variant = 'primary', onClick, className = '', ...props }) => {
+  const { language } = useTranslation();
   return (
-    <button className={`btn btn-${variant} ${className}`} onClick={onClick} {...props}>
+    <button 
+      className={`btn btn-${variant} ${className}`} 
+      onClick={onClick} 
+      {...props}
+      dir={language === 'bn' ? 'rtl' : 'ltr'}
+    >
       {children}
     </button>
   );
 };
 
-const EmergencyHotline = () => (
-  <div className="emergency-hotline-fixed">
-    <div className="hotline-content">
-      <div className="hotline-icon">🚨</div>
-      <div className="hotline-info">
-        <div className="hotline-title">Ambulance</div>
-        <div className="hotline-number">199</div>
+// Language Toggle Button Component
+const LanguageToggle = () => {
+  const { language, toggleLanguage } = useTranslation();
+  
+  return (
+    <div className="language-switcher">
+      <div className="language-toggle">
+        <button className="language-toggle-btn" onClick={toggleLanguage}>
+          <span className="language-icon">
+            {language === 'en' ? '🇧🇩' : '🇺🇸'}
+          </span>
+          <span className="language-text">
+            {language === 'en' ? 'বাংলা' : 'English'}
+          </span>
+        </button>
       </div>
     </div>
-  </div>
-);
+  );
+};
+
+const EmergencyHotline = () => {
+  const { t } = useTranslation();
+  return (
+    <div className="emergency-hotline-fixed">
+      <div className="hotline-content">
+        <div className="hotline-icon">🚨</div>
+        <div className="hotline-info">
+          <div className="hotline-title">{t('ambulanceService')}</div>
+          <div className="hotline-number">199</div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const HealthTipsAI = () => {
   const [showTips, setShowTips] = useState(false);
   const [currentTip, setCurrentTip] = useState(0);
+  const { t } = useTranslation();
 
   const healthTips = [
+    t('healthTip1'),
+    t('healthTip2'),
+    t('healthTip3'),
+    t('healthTip4'),
+    t('healthTip5'),
+    t('healthTip6'),
+    t('healthTip7'),
+    t('healthTip8')
+  ];
+
+  // If health tips aren't in translation, use defaults
+  const tips = healthTips[0]?.includes('healthTip') ? [
     "💧 Drink 8-10 glasses of water daily to stay hydrated",
     "🥗 Eat balanced meals with fruits and vegetables",
     "🏃 Exercise for 30 minutes daily for better circulation",
@@ -142,32 +718,32 @@ const HealthTipsAI = () => {
     "🧘 Practice stress management techniques",
     "📱 Take regular breaks from screens",
     "🌞 Get 15 minutes of sunlight for Vitamin D"
-  ];
+  ] : healthTips;
 
   const nextTip = () => {
-    setCurrentTip((prev) => (prev + 1) % healthTips.length);
+    setCurrentTip((prev) => (prev + 1) % tips.length);
   };
 
   return (
     <div className="health-tips-ai">
       <button className="health-tips-toggle" onClick={() => setShowTips(!showTips)}>
-        🩺 HEALTH TIPS
+        {t('healthTips')}
       </button>
       
       {showTips && (
         <div className="health-tips-panel">
           <div className="tips-header">
-            <h4>AI Health Assistant</h4>
-            <button className="close-tips" onClick={() => setShowTips(false)}>×</button>
+            <h4>{t('aiHealthAssistant')}</h4>
+            <button className="close-tips" onClick={() => setShowTips(false)}>{t('close')}</button>
           </div>
           <div className="current-tip">
-            {healthTips[currentTip]}
+            {tips[currentTip]}
           </div>
           <button className="next-tip-btn" onClick={nextTip}>
-            Next Tip →
+            {t('nextTip')}
           </button>
           <div className="tips-note">
-            💡 General wellness advice. Consult doctors for medical concerns.
+            {t('generalWellness')}
           </div>
         </div>
       )}
@@ -177,6 +753,7 @@ const HealthTipsAI = () => {
 
 // Enhanced Donation Status Component
 const DonationStatusBadge = ({ lastDonation, isCurrentUser = false }) => {
+  const { t, language } = useTranslation();
   const status = getDonationStatus(lastDonation);
   const daysUntilAvailable = getDaysUntilAvailable(lastDonation);
   const nextAvailableDate = lastDonation && lastDonation !== 'Never' 
@@ -205,27 +782,38 @@ const DonationStatusBadge = ({ lastDonation, isCurrentUser = false }) => {
     }
   };
 
+  const getStatusText = () => {
+    switch (status) {
+      case DONATION_STATUS.AVAILABLE:
+        return t('availableForDonation');
+      case DONATION_STATUS.UNAVAILABLE:
+        return t('unavailableForDonation');
+      default:
+        return t('pendingAvailability');
+    }
+  };
+
   return (
     <div className={`donation-status-badge ${getStatusColor()} ${isCurrentUser ? 'current-user-status' : ''}`}>
       <div className="status-header">
         <span className="status-icon">{getStatusIcon()}</span>
-        <span className="status-text">{status}</span>
+        <span className="status-text">{getStatusText()}</span>
       </div>
       {status === DONATION_STATUS.UNAVAILABLE && daysUntilAvailable > 0 && (
         <div className="availability-countdown">
           <span className="countdown-text">
-            Available in {daysUntilAvailable} day{daysUntilAvailable !== 1 ? 's' : ''}
+            {t('availableInDays', { days: daysUntilAvailable })}
           </span>
           {nextAvailableDate && (
             <span className="available-date">
-              ({nextAvailableDate.toLocaleDateString()})
+              ({nextAvailableDate.toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US')})
             </span>
           )}
         </div>
       )}
       {isCurrentUser && status === DONATION_STATUS.AVAILABLE && (
         <div className="current-user-note">
-          You can donate blood now!
+          {t('youCanDonateNow')}
         </div>
       )}
     </div>
@@ -242,6 +830,7 @@ const DonationHistory = ({ donations, onAddDonation, isCurrentUser = false }) =>
     volume: '450ml',
     notes: ''
   });
+  const { t } = useTranslation();
 
   const formattedHistory = formatDonationHistory(donations);
 
@@ -281,10 +870,10 @@ const DonationHistory = ({ donations, onAddDonation, isCurrentUser = false }) =>
   return (
     <div className="donation-history-section">
       <div className="history-header">
-        <h4>🩸 Donation History</h4>
+        <h4>🩸 {t('donationHistoryTab')}</h4>
         <div className="history-stats">
-          <span className="stat">Total: {getTotalDonations()}</span>
-          <span className="stat">Last: {getLastDonationDate()}</span>
+          <span className="stat">{t('totalDonations')}: {getTotalDonations()}</span>
+          <span className="stat">{t('lastDonationLabel')} {getLastDonationDate()}</span>
         </div>
       </div>
 
@@ -294,17 +883,17 @@ const DonationHistory = ({ donations, onAddDonation, isCurrentUser = false }) =>
             className="btn-primary btn-sm"
             onClick={() => setShowAddForm(!showAddForm)}
           >
-            {showAddForm ? 'Cancel' : '+ Add Donation Record'}
+            {showAddForm ? t('close') : '+ ' + t('recordDonation')}
           </button>
         </div>
       )}
 
       {showAddForm && isCurrentUser && (
         <div className="add-donation-form">
-          <h5>Record New Donation</h5>
+          <h5>{t('recordDonation')}</h5>
           <div className="form-grid">
             <div className="form-group">
-              <label>Donation Date</label>
+              <label>{t('dateOfBirth')}</label>
               <input
                 type="date"
                 value={newDonation.date}
@@ -313,16 +902,16 @@ const DonationHistory = ({ donations, onAddDonation, isCurrentUser = false }) =>
               />
             </div>
             <div className="form-group">
-              <label>Location</label>
+              <label>{t('locationAvailability')}</label>
               <input
                 type="text"
-                placeholder="Hospital or Blood Bank"
+                placeholder={t('enterCityOrArea')}
                 value={newDonation.location}
                 onChange={(e) => setNewDonation(prev => ({ ...prev, location: e.target.value }))}
               />
             </div>
             <div className="form-group">
-              <label>Donation Type</label>
+              <label>{t('bloodType')}</label>
               <select
                 value={newDonation.type}
                 onChange={(e) => setNewDonation(prev => ({ ...prev, type: e.target.value }))}
@@ -334,7 +923,7 @@ const DonationHistory = ({ donations, onAddDonation, isCurrentUser = false }) =>
               </select>
             </div>
             <div className="form-group">
-              <label>Volume</label>
+              <label>{t('weight')}</label>
               <select
                 value={newDonation.volume}
                 onChange={(e) => setNewDonation(prev => ({ ...prev, volume: e.target.value }))}
@@ -346,9 +935,9 @@ const DonationHistory = ({ donations, onAddDonation, isCurrentUser = false }) =>
               </select>
             </div>
             <div className="form-group full-width">
-              <label>Notes (Optional)</label>
+              <label>{t('medicalConditions')}</label>
               <textarea
-                placeholder="Any additional notes about the donation..."
+                placeholder={t('travelHistory')}
                 value={newDonation.notes}
                 onChange={(e) => setNewDonation(prev => ({ ...prev, notes: e.target.value }))}
                 rows="2"
@@ -356,7 +945,7 @@ const DonationHistory = ({ donations, onAddDonation, isCurrentUser = false }) =>
             </div>
           </div>
           <button className="btn-success" onClick={handleAddDonation}>
-            Save Donation Record
+            {t('completeRegistration')}
           </button>
         </div>
       )}
@@ -365,9 +954,9 @@ const DonationHistory = ({ donations, onAddDonation, isCurrentUser = false }) =>
         {formattedHistory.length === 0 ? (
           <div className="no-donations">
             <div className="no-donations-icon">🩸</div>
-            <p>No donation records yet</p>
+            <p>{t('noDonations')}</p>
             {isCurrentUser && (
-              <p className="encouragement">Start your donation journey today!</p>
+              <p className="encouragement">{t('encouragement')}</p>
             )}
           </div>
         ) : (
@@ -383,11 +972,11 @@ const DonationHistory = ({ donations, onAddDonation, isCurrentUser = false }) =>
               </div>
               {donation.notes && (
                 <div className="donation-notes">
-                  <strong>Notes:</strong> {donation.notes}
+                  <strong>{t('medicalConditions')}:</strong> {donation.notes}
                 </div>
               )}
               {index === 0 && (
-                <div className="latest-donation-badge">Most Recent</div>
+                <div className="latest-donation-badge">{t('latestDonation')}</div>
               )}
             </div>
           ))
@@ -399,6 +988,8 @@ const DonationHistory = ({ donations, onAddDonation, isCurrentUser = false }) =>
 
 // Main App Component
 function App() {
+  const { t, language } = useTranslation();
+  
   // State Management
   const [activePage, setActivePage] = useLocalStorage('activePage', 'home');
   const [isLoggedIn, setIsLoggedIn] = useLocalStorage('isLoggedIn', false);
@@ -685,7 +1276,7 @@ function App() {
 
   const handleSendCode = useCallback(() => {
     if (phoneNumber.length !== 11 || !phoneNumber.startsWith('01')) {
-      alert('Please enter a valid Bangladeshi phone number (11 digits starting with 01)');
+      alert(language === 'en' ? 'Please enter a valid Bangladeshi phone number (11 digits starting with 01)' : 'দয়া করে একটি বৈধ বাংলাদেশি ফোন নম্বর লিখুন (01 দিয়ে শুরু 11 সংখ্যা)');
       return;
     }
     setIsLoading(true);
@@ -694,24 +1285,25 @@ function App() {
       setGeneratedCode(code);
       setLoginStep('code');
       setIsLoading(false);
-      alert(`📱 Verification code sent to ${phoneNumber}\n\nCode: ${code}\n\n(In real app, sent via SMS)`);
+      alert(t('verificationCodeSent', { phone: phoneNumber }) + `\n\nCode: ${code}\n\n` + 
+            (language === 'en' ? '(In real app, sent via SMS)' : '(বাস্তব অ্যাপে, এসএমএসের মাধ্যমে পাঠানো হবে)'));
     }, 1500);
-  }, [phoneNumber, generateVerificationCode]);
+  }, [phoneNumber, generateVerificationCode, language, t]);
 
   const handleVerifyCode = useCallback(() => {
     if (verificationCode === generatedCode) {
       setIsLoggedIn(true);
       setCurrentUser({
-        id: 1000, // Special ID for current user
-        name: "You",
-        bloodType: registrationForm.bloodGroup || "Not specified",
-        city: registrationForm.city || "Not specified",
-        area: registrationForm.area || "Not specified",
+        id: 1000,
+        name: language === 'en' ? "You" : "আপনি",
+        bloodType: registrationForm.bloodGroup || (language === 'en' ? "Not specified" : "নির্দিষ্ট করা হয়নি"),
+        city: registrationForm.city || (language === 'en' ? "Not specified" : "নির্দিষ্ট করা হয়নি"),
+        area: registrationForm.area || (language === 'en' ? "Not specified" : "নির্দিষ্ট করা হয়নি"),
         availability: registrationForm.availability,
         donations: 0,
         image: "👤",
         rating: 5.0,
-        badge: "New Donor",
+        badge: language === 'en' ? "New Donor" : "নতুন দাতা",
         verified: true,
         emergencyAvailable: true,
         isCurrentUser: true,
@@ -724,17 +1316,16 @@ function App() {
       setPhoneNumber('');
       setVerificationCode('');
       setLoginStep('phone');
-      alert('✅ Login successful! Welcome to DR. BLOOD 24/7.');
+      alert(t('loginSuccessful'));
     } else {
-      alert('❌ Invalid verification code. Please try again.');
+      alert(t('invalidCode'));
     }
-  }, [verificationCode, generatedCode, setIsLoggedIn, setCurrentUser, registrationForm]);
+  }, [verificationCode, generatedCode, setIsLoggedIn, setCurrentUser, registrationForm, language, t]);
 
   const handleRegistrationChange = useCallback((field, value) => {
     setRegistrationForm(prev => {
       const next = { ...prev, [field]: value };
 
-      // Auto-calculate age if date of birth is provided
       if (field === 'dateOfBirth' && value) {
         const birthDate = new Date(value);
         const today = new Date();
@@ -755,18 +1346,17 @@ function App() {
     
     // Validation
     if (parseInt(registrationForm.age) < 18) {
-      alert('❌ You must be at least 18 years old to register as a blood donor.');
+      alert(language === 'en' ? '❌ You must be at least 18 years old to register as a blood donor.' : '❌ রক্তদাতা হিসেবে নিবন্ধন করতে আপনার বয়স কমপক্ষে ১৮ বছর হতে হবে।');
       return;
     }
     
     if (parseInt(registrationForm.weight) < 45) {
-      alert('❌ Minimum weight requirement is 45 kg for blood donation.');
+      alert(language === 'en' ? '❌ Minimum weight requirement is 45 kg for blood donation.' : '❌ রক্তদানের জন্য ন্যূনতম ওজন প্রয়োজন ৪৫ কেজি।');
       return;
     }
 
     setIsLoading(true);
     setTimeout(() => {
-      // Create user profile with donation tracking
       const userProfile = {
         id: Date.now(),
         name: registrationForm.fullName,
@@ -777,7 +1367,7 @@ function App() {
         donations: registrationForm.lastDonation ? 1 : 0,
         image: "👤",
         rating: 5.0,
-        badge: "New Donor",
+        badge: language === 'en' ? "New Donor" : "নতুন দাতা",
         verified: true,
         emergencyAvailable: registrationForm.availability === '24/7 Emergency',
         phone: registrationForm.phone,
@@ -786,19 +1376,19 @@ function App() {
         age: registrationForm.age,
         weight: `${registrationForm.weight} kg`,
         height: registrationForm.height,
-        occupation: 'Donor',
+        occupation: language === 'en' ? 'Donor' : 'দাতা',
         languages: ['Bengali', 'English'],
-        achievements: ['New Donor'],
-        medicalInfo: 'Recently registered donor',
+        achievements: [language === 'en' ? 'New Donor' : 'নতুন দাতা'],
+        medicalInfo: language === 'en' ? 'Recently registered donor' : 'সম্প্রতি নিবন্ধিত দাতা',
         isCurrentUser: true,
         lastDonation: registrationForm.lastDonation || 'Never',
         donationHistory: registrationForm.lastDonation ? [{
           id: Date.now(),
           date: registrationForm.lastDonation,
-          location: "Previous Donation",
+          location: language === 'en' ? "Previous Donation" : "পূর্ববর্তী দান",
           type: "Whole Blood",
           volume: "450ml",
-          notes: "Recorded during registration"
+          notes: language === 'en' ? "Recorded during registration" : "নিবন্ধনের সময় রেকর্ড করা হয়েছে"
         }] : [],
         donationStatus: getDonationStatus(registrationForm.lastDonation),
         isAvailable: getDonationStatus(registrationForm.lastDonation) === DONATION_STATUS.AVAILABLE
@@ -807,7 +1397,7 @@ function App() {
       setCurrentUser(userProfile);
       setIsLoggedIn(true);
       
-      alert(`🎉 Registration Successful!\n\nWelcome ${registrationForm.fullName}!\n\nYou are now registered as a blood donor. Your profile is now visible to those in need.`);
+      alert(t('registrationSuccessful') + `\n\n${t('welcomeMessage', { name: registrationForm.fullName })}\n\n${t('registeredSuccess')}`);
       
       setShowRegistration(false);
       setRegistrationForm({
@@ -818,12 +1408,11 @@ function App() {
       });
       setIsLoading(false);
     }, 2000);
-  }, [registrationForm, setCurrentUser, setIsLoggedIn]);
+  }, [registrationForm, setCurrentUser, setIsLoggedIn, language, t]);
 
   // Enhanced donation management functions
   const handleAddDonationRecord = useCallback((donorId, donationRecord) => {
     if (donorId === enhancedCurrentUser?.id) {
-      // Update current user's donation history
       const updatedUser = {
         ...enhancedCurrentUser,
         lastDonation: donationRecord.date,
@@ -837,9 +1426,9 @@ function App() {
       
       setCurrentUser(updatedUser);
       
-      alert(`🎉 Donation recorded successfully!\n\nYou'll be available again in 3 months.\nThank you for saving lives!`);
+      alert(t('donationRecorded') + `\n\n${t('availableAgain')}\n${t('thankYouForSaving')}`);
     }
-  }, [enhancedCurrentUser, setCurrentUser]);
+  }, [enhancedCurrentUser, setCurrentUser, t]);
 
   const handleRecordDonation = useCallback((donor) => {
     if (donor.isCurrentUser) {
@@ -847,16 +1436,16 @@ function App() {
       const donationRecord = {
         id: Date.now(),
         date: today,
-        location: "Self-Recorded Donation",
+        location: language === 'en' ? "Self-Recorded Donation" : "স্ব-রেকর্ডকৃত দান",
         type: "Whole Blood",
         volume: "450ml",
-        notes: "Recorded via DR. BLOOD 24/7 platform",
+        notes: language === 'en' ? "Recorded via DR. BLOOD 24/7 platform" : "ডি.আর. ব্লাড ২৪/৭ প্ল্যাটফর্মের মাধ্যমে রেকর্ড করা হয়েছে",
         timestamp: new Date().toISOString()
       };
       
       handleAddDonationRecord(donor.id, donationRecord);
     }
-  }, [handleAddDonationRecord]);
+  }, [handleAddDonationRecord, language]);
 
   const detectUserLocation = useCallback(() => {
     setIsLoading(true);
@@ -870,25 +1459,25 @@ function App() {
       setLocationSearch(randomLocation);
       setSelectedLocation(randomLocation);
       setIsLoading(false);
-      alert(`📍 Location detected: ${randomLocation}`);
+      alert(`📍 ${language === 'en' ? 'Location detected' : 'অবস্থান সনাক্ত হয়েছে'}: ${randomLocation}`);
     }, 1000);
-  }, []);
+  }, [language]);
 
   const handleContactDonor = useCallback((donor) => {
     if (donor.isCurrentUser) {
-      alert('📞 This is your profile! You cannot contact yourself.');
+      alert(language === 'en' ? '📞 This is your profile! You cannot contact yourself.' : '📞 এটি আপনার প্রোফাইল! আপনি নিজের সাথে যোগাযোগ করতে পারবেন না।');
       return;
     }
     
     const status = getDonationStatus(donor.lastDonation);
     if (status === DONATION_STATUS.UNAVAILABLE) {
       const daysUntilAvailable = getDaysUntilAvailable(donor.lastDonation);
-      alert(`❌ ${donor.name} is currently unavailable for donation.\n\nThey will be available again in ${daysUntilAvailable} days.`);
+      alert(`❌ ${donor.name} ${language === 'en' ? 'is currently unavailable for donation.' : 'বর্তমানে রক্তদানের জন্য অনুপলব্ধ।'}\n\n${language === 'en' ? 'They will be available again in' : 'তারা আবার উপলব্ধ হবে'} ${daysUntilAvailable} ${language === 'en' ? 'days.' : 'দিনে।'}`);
       return;
     }
     
-    alert(`📞 Contacting ${donor.name}\n\nPhone: ${donor.phone}\nEmail: ${donor.email}\nLocation: ${donor.area}, ${donor.city}`);
-  }, []);
+    alert(`${t('contactDonor', { name: donor.name })}\n\n${language === 'en' ? 'Phone' : 'ফোন'}: ${donor.phone}\n${language === 'en' ? 'Email' : 'ইমেইল'}: ${donor.email}\n${language === 'en' ? 'Location' : 'অবস্থান'}: ${donor.area}, ${donor.city}`);
+  }, [language, t]);
 
   const handleViewDonorProfile = useCallback((donor) => {
     setSelectedDonor(donor);
@@ -904,20 +1493,25 @@ function App() {
     setSelectedLocation('');
     setSelectedUrgency('all');
   }, []);
-  
 
   const getSearchSummary = useCallback(() => {
     let summary = '';
-    if (selectedBloodGroup) summary += `Blood Group: ${selectedBloodGroup} `;
-    if (selectedLocation) summary += `Location: ${selectedLocation}`;
-    return summary || 'All donors';
-  }, [selectedBloodGroup, selectedLocation]);
+    if (selectedBloodGroup) summary += `${language === 'en' ? 'Blood Group' : 'রক্তের গ্রুপ'}: ${selectedBloodGroup} `;
+    if (selectedLocation) summary += `${language === 'en' ? 'Location' : 'অবস্থান'}: ${selectedLocation}`;
+    return summary || (language === 'en' ? 'All donors' : 'সব রক্তদাতা');
+  }, [selectedBloodGroup, selectedLocation, language]);
 
   const handleLogout = useCallback(() => {
     setIsLoggedIn(false);
     setCurrentUser(null);
-    alert('Logged out successfully!');
-  }, [setIsLoggedIn, setCurrentUser]);
+    alert(language === 'en' ? 'Logged out successfully!' : 'সফলভাবে লগআউট হয়েছে!');
+  }, [setIsLoggedIn, setCurrentUser, language]);
+
+  // Update HTML lang and dir attributes
+  useEffect(() => {
+    document.documentElement.lang = language;
+    document.documentElement.dir = language === 'bn' ? 'rtl' : 'ltr';
+  }, [language]);
 
   // Auto-update donor statuses periodically
   useEffect(() => {
@@ -934,7 +1528,7 @@ function App() {
           setCurrentUser(updatedUser);
         }
       }
-    }, 60000); // Check every minute
+    }, 60000);
 
     return () => clearInterval(interval);
   }, [enhancedCurrentUser, setCurrentUser]);
@@ -945,13 +1539,16 @@ function App() {
   }, [activePage]);
 
   return (
-    <div className="app">
+    <div className="app" dir={language === 'bn' ? 'rtl' : 'ltr'}>
       {/* Background Elements */}
       <div className="background-elements">
         <div className="floating-blood-cell">🩸</div>
         <div className="floating-heart">❤️</div>
         <div className="floating-plus">➕</div>
       </div>
+
+      {/* Language Toggle */}
+      <LanguageToggle />
 
       {/* Emergency Hotline */}
       <EmergencyHotline />
@@ -965,36 +1562,36 @@ function App() {
           <div className="logo" onClick={() => setActivePage('home')}>
             <span className="logo-icon">🩸</span>
             <div>
-              <div className="logo-text">DR. BLOOD 24/7</div>
-              <div className="logo-subtitle">Bangladesh Blood Donation Network</div>
+              <div className="logo-text">{t('appName')}</div>
+              <div className="logo-subtitle">{t('appSubtitle')}</div>
             </div>
           </div>
           
           <div className="nav-links">
             <button className={`nav-link ${activePage === 'home' ? 'active' : ''}`} onClick={() => setActivePage('home')}>
-              🏠 Home
+              {t('home')}
             </button>
             <button className={`nav-link ${activePage === 'donors' ? 'active' : ''}`} onClick={() => setActivePage('donors')}>
-              🔍 Find Donors
+              {t('findDonors')}
             </button>
             
             {isLoggedIn && enhancedCurrentUser && (
               <button className={`nav-link ${activePage === 'profile' ? 'active' : ''}`} onClick={() => setActivePage('profile')}>
-                👤 My Profile
+                {t('myProfile')}
               </button>
             )}
             
             <Button variant="primary" onClick={() => setShowRegistration(true)} className="register-btn">
-              ❤️ Become Donor
+              {t('becomeDonor')}
             </Button>
             
             {isLoggedIn ? (
               <Button variant="secondary" onClick={handleLogout} className="logout-btn">
-                👋 Logout
+                {t('logout')}
               </Button>
             ) : (
               <Button variant="secondary" onClick={() => setShowLogin(true)} className="login-btn">
-                🔑 Login
+                {t('login')}
               </Button>
             )}
           </div>
@@ -1005,7 +1602,7 @@ function App() {
       {isLoading && (
         <div className="loading-overlay">
           <div className="loading-spinner"></div>
-          <p>Processing...</p>
+          <p>{t('loading')}</p>
         </div>
       )}
 
@@ -1016,21 +1613,18 @@ function App() {
           <div className="home-page">
             <section className="hero-section">
               <div className="hero-content">
-                <h1 className="hero-title">Saving Lives Through <span className="highlight">Blood Donation</span></h1>
-                <p className="hero-subtitle">
-                  Bangladesh's most trusted <b> Blood donation platform.</b> Connecting voluntary donors with 
-                  patients in need through a verified nationwide network.
-                </p>
+                <h1 className="hero-title" dangerouslySetInnerHTML={{ __html: t('heroTitle') }} />
+                <p className="hero-subtitle" dangerouslySetInnerHTML={{ __html: t('heroSubtitle') }} />
                 
                 <div className="hero-buttons">
                   <Button variant="primary" onClick={() => setActivePage('donors')}>
-                    <span className="btn-icon">🔍</span>Find Blood Donors
+                    <span className="btn-icon">🔍</span>{t('findBloodDonors')}
                   </Button>
                   <Button variant="secondary" onClick={() => setShowRegistration(true)}>
-                    <span className="btn-icon">❤️</span>Register as Donor
+                    <span className="btn-icon">❤️</span>{t('registerAsDonor')}
                   </Button>
                   <Button variant="tertiary" onClick={detectUserLocation}>
-                    <span className="btn-icon">📍</span>Detect My Location
+                    <span className="btn-icon">📍</span>{t('detectMyLocation')}
                   </Button>
                 </div>
 
@@ -1039,87 +1633,83 @@ function App() {
                     <div className="stat-icon">🩸</div>
                     <div className="stat-content">
                       <div className="stat-number">{donors.filter(d => getDonationStatus(d.lastDonation) === DONATION_STATUS.AVAILABLE).length}+</div>
-                      <div className="stat-label">Available Donors</div>
+                      <div className="stat-label">{t('availableDonors')}</div>
                     </div>
                   </div>
                   <div className="stat-item live">
                     <div className="stat-icon">🏥</div>
                     <div className="stat-content">
                       <div className="stat-number">999+</div>
-                      <div className="stat-label">Partner Locations</div>
+                      <div className="stat-label">{t('partnerLocations')}</div>
                     </div>
                   </div>
                   <div className="stat-item live">
                     <div className="stat-icon">🌍</div>
                     <div className="stat-content">
                       <div className="stat-number">64</div>
-                      <div className="stat-label">Cities Covered</div>
+                      <div className="stat-label">{t('citiesCovered')}</div>
                     </div>
                   </div>
                   <div className="stat-item live">
                     <div className="stat-icon">💝</div>
                     <div className="stat-content">
                       <div className="stat-number">10,000+</div>
-                      <div className="stat-label">Lives Saved</div>
+                      <div className="stat-label">{t('livesSaved')}</div>
                     </div>
                   </div>
                 </div>
               </div>
             </section>
 
-            <section className="quick-search-section">
-              {/* Quick search section remains the same */}
-            </section>
-
             <section className="features-section">
-              <h2 className="section-title">Why Trust DR. BLOOD 24/7?</h2>
+              <h2 className="section-title">{t('whyTrust')}</h2>
               <div className="features-grid">
                 <div className="feature-card">
                   <div className="feature-icon">🔒</div>
-                  <h3>Verified & Screened</h3>
-                  <p>Every donor undergoes medical screening and background verification. Health records are regularly updated.</p>
+                  <h3>{t('verifiedScreened')}</h3>
+                  <p>{t('verifiedDesc')}</p>
                 </div>
                 <div className="feature-card">
                   <div className="feature-icon">🛡️</div>
-                  <h3>Smart Availability</h3>
-                  <p>Automatic status updates ensure donors are only available when medically eligible to donate.</p>
+                  <h3>{t('smartAvailability')}</h3>
+                  <p>{t('smartDesc')}</p>
                 </div>
                 <div className="feature-card">
                   <div className="feature-icon">⏱️</div>
-                  <h3>Live Status Updates</h3>
-                  <p>Get real-time donor updates and estimated arrival times instantly.</p>
+                  <h3>{t('liveStatus')}</h3>
+                  <p>{t('liveDesc')}</p>
                 </div>
                 <div className="feature-card">
                   <div className="feature-icon">⚡</div>
-                  <h3>Rapid Response</h3>
-                  <p>Average response time of 15 minutes for emergency requests. 24/7 coordination center.</p>
+                  <h3>{t('rapidResponse')}</h3>
+                  <p>{t('rapidDesc')}</p>
                 </div>
                 <div className="feature-card">
                   <div className="feature-icon">🏥</div>
-                  <h3>Nationwide Network</h3>
-                  <p>Verified donors across all major cities in Bangladesh. Direct coordination for emergency cases.</p>
+                  <h3>{t('nationwideNetwork')}</h3>
+                  <p>{t('networkDesc')}</p>
                 </div>
                 <div className="feature-card">
                   <div className="feature-icon">📱</div>
-                  <h3>Real-time Tracking</h3>
-                  <p>Live donor location tracking and estimated arrival time. SMS/Email notifications.</p>
+                  <h3>{t('realtimeTracking')}</h3>
+                  <p>{t('trackingDesc')}</p>
                 </div>
               </div>
             </section>
 
             <section className="blood-types-section">
-              <h2 className="section-title">Blood Type Compatibility</h2>
+              <h2 className="section-title">{t('bloodTypeCompatibility')}</h2>
               <div className="blood-types-grid">
                 {BLOOD_TYPES.map(type => (
                   <div key={type} className={`blood-type-card ${type === 'O-' ? 'universal-donor' : ''} ${type === 'AB+' ? 'universal-receiver' : ''}`}>
                     <div className="blood-type">{type}</div>
-                    {type === 'O-' && <div className="universal-badge">Universal Donor</div>}
-                    {type === 'AB+' && <div className="receiver-badge">Universal Receiver</div>}
+                    {type === 'O-' && <div className="universal-badge">{language === 'en' ? 'Universal Donor' : 'সর্বজনীন দাতা'}</div>}
+                    {type === 'AB+' && <div className="receiver-badge">{language === 'en' ? 'Universal Receiver' : 'সর্বজনীন গ্রহীতা'}</div>}
                   </div>
                 ))}
               </div>
               <div className="compatibility-info">
-                <p>💡 <strong>O-</strong> can donate to all blood types |<br /> <strong>| AB+</strong> can receive from all blood types 💡</p>
+                <p dangerouslySetInnerHTML={{ __html: t('compatibilityInfo') }} />
               </div>
             </section>
 
@@ -1127,11 +1717,11 @@ function App() {
               <div className="emergency-content">
                 <div className="emergency-icon">🩺</div>
                 <div className="emergency-text">
-                  <h2>Need Immediate Assistance?</h2>
-                  <p>Our 24/7 coordination team is ready to help you find compatible donors quickly</p>
+                  <h2>{t('needImmediateAssistance')}</h2>
+                  <p>{t('emergencyDesc')}</p>
                 </div>
                 <button className="emergency-btn" onClick={() => setActivePage('donors')}>
-                  Find Donors Now
+                  {t('findDonorsNow')}
                 </button>
               </div>
             </section>
@@ -1240,6 +1830,7 @@ const DonorsPage = ({
   getSearchSummary,
   onRecordDonation
 }) => {
+  const { t, language } = useTranslation();
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
   const [availabilityFilter, setAvailabilityFilter] = useState('all');
 
@@ -1257,15 +1848,15 @@ const DonorsPage = ({
   return (
     <div className="donors-page">
       <div className="page-header">
-        <h1>🔍 Find Blood Donors</h1>
-        <p>Connect with verified donors across Bangladesh's major cities</p>
+        <h1>{t('findBloodDonorsTitle')}</h1>
+        <p>{t('findDonorsSubtitle')}</p>
       </div>
 
       {/* Location Detection */}
       <div className="location-detection">
         <button className="detect-location-btn" onClick={onDetectLocation}>
           <span className="btn-icon">📍</span>
-          {userLocation ? `Location: ${userLocation}` : 'Detect My Location'}
+          {userLocation ? `${language === 'en' ? 'Location' : 'অবস্থান'}: ${userLocation}` : t('detectLocation')}
         </button>
       </div>
 
@@ -1273,26 +1864,26 @@ const DonorsPage = ({
       <div className="availability-filter-section">
         <div className="filter-header">
           <span className="filter-icon">🩸</span>
-          <h3>Donor Availability</h3>
+          <h3>{t('donorAvailability')}</h3>
         </div>
         <div className="availability-filters">
           <button 
             className={`availability-filter-btn ${availabilityFilter === 'all' ? 'active' : ''}`}
             onClick={() => setAvailabilityFilter('all')}
           >
-            👥 All Donors
+            {t('allDonors')}
           </button>
           <button 
             className={`availability-filter-btn ${availabilityFilter === 'available' ? 'active' : ''}`}
             onClick={() => setAvailabilityFilter('available')}
           >
-            ✅ Available Now
+            {t('availableNow')}
           </button>
           <button 
             className={`availability-filter-btn ${availabilityFilter === 'unavailable' ? 'active' : ''}`}
             onClick={() => setAvailabilityFilter('unavailable')}
           >
-            ⏳ Recently Donated
+            {t('recentlyDonated')}
           </button>
         </div>
       </div>
@@ -1303,11 +1894,11 @@ const DonorsPage = ({
           <div className="summary-content">
             <span className="summary-icon">🔍</span>
             <div className="summary-text">
-              <strong>Search Results:</strong> {getSearchSummary()}
+              <strong>{t('searchResults')}</strong> {getSearchSummary()}
             </div>
             <button className="clear-search" onClick={onClearFilters}>
               <span className="btn-icon">🗑️</span>
-              Clear
+              {t('clear')}
             </button>
           </div>
         </div>
@@ -1317,14 +1908,14 @@ const DonorsPage = ({
       <div className="search-system-enhanced">
         <div className="search-header-card">
           <div className="search-header-content">
-            <h2>Find Compatible Donors</h2>
-            <p>Connect with verified donors using precise search criteria</p>
+            <h2>{t('findCompatibleDonors')}</h2>
+            <p>{t('searchDescription')}</p>
           </div>
           <button 
             className={`advanced-toggle ${showAdvancedFilters ? 'active' : ''}`}
             onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
           >
-            ⚙️ {showAdvancedFilters ? 'Hide' : 'Show'} Advanced Filters
+            ⚙️ {showAdvancedFilters ? t('hideAdvancedFilters') : t('showAdvancedFilters')}
           </button>
         </div>
 
@@ -1335,7 +1926,7 @@ const DonorsPage = ({
             <div className="filter-section-card">
               <div className="filter-header">
                 <span className="filter-icon">💉</span>
-                <h3>Blood Group Required</h3>
+                <h3>{t('bloodGroupRequired')}</h3>
               </div>
               <div className="blood-group-grid-enhanced">
                 {BLOOD_TYPES.map(group => (
@@ -1347,15 +1938,15 @@ const DonorsPage = ({
                     onClick={() => setSelectedBloodGroup(group === selectedBloodGroup ? '' : group)}
                   >
                     {group}
-                    {group === 'O-' && <span className="type-badge">Universal</span>}
-                    {group === 'AB+' && <span className="type-badge">Receiver</span>}
+                    {group === 'O-' && <span className="type-badge">{language === 'en' ? 'Universal' : 'সর্বজনীন'}</span>}
+                    {group === 'AB+' && <span className="type-badge">{language === 'en' ? 'Receiver' : 'গ্রহীতা'}</span>}
                   </button>
                 ))}
                 <button
                   className={`blood-type-btn clear-all ${!selectedBloodGroup ? 'active' : ''}`}
                   onClick={() => setSelectedBloodGroup('')}
                 >
-                  All Types
+                  {language === 'en' ? 'All Types' : 'সব ধরন'}
                 </button>
               </div>
             </div>
@@ -1364,16 +1955,17 @@ const DonorsPage = ({
             <div className="filter-section-card">
               <div className="filter-header">
                 <span className="filter-icon">📍</span>
-                <h3>Search Location</h3>
+                <h3>{t('searchLocation')}</h3>
               </div>
               <div className="location-search-enhanced">
                 <div className="search-input-wrapper">
                   <input
                     type="text"
-                    placeholder="Enter city or area (e.g., Dhaka, Gulshan, Cumilla)"
+                    placeholder={t('enterCityOrArea')}
                     value={locationSearch}
                     onChange={(e) => setLocationSearch(e.target.value)}
                     className="location-input-enhanced"
+                    dir={language === 'bn' ? 'rtl' : 'ltr'}
                   />
                   <span className="search-icon">🔍</span>
                 </div>
@@ -1396,7 +1988,7 @@ const DonorsPage = ({
 
               {/* Quick Location Pills */}
               <div className="quick-locations-section">
-                <label className="quick-locations-label">Popular Areas:</label>
+                <label className="quick-locations-label">{t('popularAreas')}</label>
                 <div className="location-pills">
                   {['Dhaka - Gulshan', 'Dhaka - Dhanmondi', 'Cumilla - Kandirpar', 'Chittagong - Agrabad', 'Sylhet - Zindabazar'].map(area => (
                     <button
@@ -1420,7 +2012,7 @@ const DonorsPage = ({
                 <div className="filter-section-card">
                   <div className="filter-header">
                     <span className="filter-icon">⚡</span>
-                    <h3>Availability Filter</h3>
+                    <h3>{t('availabilityFilter')}</h3>
                   </div>
                   <div className="filter-options-grid">
                     <label className="filter-option">
@@ -1432,7 +2024,7 @@ const DonorsPage = ({
                       />
                       <span className="option-content">
                         <span className="option-icon">👥</span>
-                        <span className="option-text">All Donors</span>
+                        <span className="option-text">{t('allDonorsFilter')}</span>
                       </span>
                     </label>
                     
@@ -1445,7 +2037,7 @@ const DonorsPage = ({
                       />
                       <span className="option-content">
                         <span className="option-icon">🚨</span>
-                        <span className="option-text">Emergency Ready</span>
+                        <span className="option-text">{t('emergencyReady')}</span>
                         <span className="emergency-badge">URGENT</span>
                       </span>
                     </label>
@@ -1459,7 +2051,7 @@ const DonorsPage = ({
                       />
                       <span className="option-content">
                         <span className="option-icon">✅</span>
-                        <span className="option-text">Verified Only</span>
+                        <span className="option-text">{t('verifiedOnly')}</span>
                       </span>
                     </label>
                   </div>
@@ -1469,23 +2061,23 @@ const DonorsPage = ({
                 <div className="filter-section-card">
                   <div className="filter-header">
                     <span className="filter-icon">🎯</span>
-                    <h3>Additional Filters</h3>
+                    <h3>{t('additionalFilters')}</h3>
                   </div>
                   <div className="additional-filters">
                     <label className="additional-filter">
                       <input type="checkbox" defaultChecked />
                       <span className="filter-checkmark"></span>
-                      <span className="filter-label">Recent Donors (Last 3 months)</span>
+                      <span className="filter-label">{t('recentDonors')}</span>
                     </label>
                     <label className="additional-filter">
                       <input type="checkbox" />
                       <span className="filter-checkmark"></span>
-                      <span className="filter-label">Near My Location</span>
+                      <span className="filter-label">{t('nearMyLocation')}</span>
                     </label>
                     <label className="additional-filter">
                       <input type="checkbox" defaultChecked />
                       <span className="filter-checkmark"></span>
-                      <span className="filter-label">Available Today</span>
+                      <span className="filter-label">{t('availableToday')}</span>
                     </label>
                   </div>
                 </div>
@@ -1497,16 +2089,16 @@ const DonorsPage = ({
           <div className="filter-actions-enhanced">
             <div className="results-count-badge">
               <span className="count-number">{availabilityFilteredDonors.length}</span>
-              <span className="count-label">donors found</span>
+              <span className="count-label">{t('donorsFound')}</span>
             </div>
             <div className="action-buttons">
               <button className="clear-filters-btn" onClick={onClearFilters}>
                 <span className="btn-icon">🗑️</span>
-                Clear All Filters
+                {t('clearAllFilters')}
               </button>
               <button className="register-cta-btn" onClick={onRegisterDonor}>
                 <span className="btn-icon">❤️</span>
-                Become a Donor
+                {t('becomeADonor')}
               </button>
             </div>
           </div>
@@ -1519,14 +2111,14 @@ const DonorsPage = ({
           <div className="no-results-enhanced">
             <div className="no-results-illustration">🔍</div>
             <div className="no-results-content">
-              <h3>No donors found matching your criteria</h3>
-              <p>Try adjusting your search filters or explore different locations</p>
+              <h3>{language === 'en' ? 'No donors found matching your criteria' : 'আপনার মানদণ্ডের সাথে মিলে এমন কোনো রক্তদাতা পাওয়া যায়নি'}</h3>
+              <p>{language === 'en' ? 'Try adjusting your search filters or explore different locations' : 'আপনার অনুসন্ধান ফিল্টার সামঞ্জস্য করুন বা বিভিন্ন অবস্থান অন্বেষণ করুন'}</p>
               <div className="no-results-actions">
                 <button className="btn-primary" onClick={onClearFilters}>
-                  Show All Donors
+                  {language === 'en' ? 'Show All Donors' : 'সব রক্তদাতা দেখান'}
                 </button>
                 <button className="btn-secondary" onClick={onRegisterDonor}>
-                  Register as Donor
+                  {t('registerAsDonor')}
                 </button>
               </div>
             </div>
@@ -1534,13 +2126,13 @@ const DonorsPage = ({
         ) : (
           <>
             <div className="donors-grid-header">
-              <h3>Available Donors</h3>
+              <h3>{t('availableDonorsTitle')}</h3>
               <div className="sort-options">
                 <select className="sort-select">
-                  <option>Sort by: Availability</option>
-                  <option>Sort by: Recently Active</option>
-                  <option>Sort by: Donation Count</option>
-                  <option>Sort by: Rating</option>
+                  <option>{t('sortBy')}</option>
+                  <option>{t('sortByRecent')}</option>
+                  <option>{t('sortByCount')}</option>
+                  <option>{t('sortByRating')}</option>
                 </select>
               </div>
             </div>
@@ -1548,7 +2140,7 @@ const DonorsPage = ({
             <div className="donors-grid-enhanced">
               {availabilityFilteredDonors.map(donor => (
                 <div key={donor.id} className={`donor-card-enhanced ${donor.isCurrentUser ? 'current-user' : ''}`}>
-                  {donor.isCurrentUser && <div className="current-user-ribbon">Your Profile</div>}
+                  {donor.isCurrentUser && <div className="current-user-ribbon">{t('yourProfile')}</div>}
                   
                   <div className="donor-card-header">
                     <div className="donor-avatar-section">
@@ -1559,7 +2151,7 @@ const DonorsPage = ({
                     <div className="donor-main-info">
                       <h3 className="donor-name">
                         {donor.name} 
-                        {donor.isCurrentUser && <span className="you-indicator">(You)</span>}
+                        {donor.isCurrentUser && <span className="you-indicator">{t('you')}</span>}
                       </h3>
                       <div className="donor-badges-enhanced">
                         <span className={`blood-badge-enhanced ${donor.bloodType === 'O-' ? 'universal' : ''}`}>
@@ -1601,7 +2193,7 @@ const DonorsPage = ({
                     </div>
                     <div className="detail-row">
                       <span className="detail-icon">👤</span>
-                      <span className="detail-text">{donor.gender}, {donor.age} years</span>
+                      <span className="detail-text">{donor.gender}, {donor.age} {language === 'en' ? 'years' : 'বছর'}</span>
                     </div>
                     {donor.occupation && (
                       <div className="detail-row">
@@ -1613,15 +2205,15 @@ const DonorsPage = ({
 
                   <div className="donation-info">
                     <div className="last-donation-enhanced">
-                      <span className="donation-label">Last Donation:</span>
+                      <span className="donation-label">{t('lastDonationLabel')}</span>
                       <span className="donation-date">
-                        {donor.lastDonation === 'Never' ? 'Never' : new Date(donor.lastDonation).toLocaleDateString()}
+                        {donor.lastDonation === 'Never' ? (language === 'en' ? 'Never' : 'কখনও না') : new Date(donor.lastDonation).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US')}
                       </span>
                     </div>
                     {donor.emergencyAvailable && (
                       <div className="emergency-tag-enhanced">
                         <span className="emergency-icon">🚨</span>
-                        Emergency Available
+                        {t('emergencyAvailable')}
                       </div>
                     )}
                   </div>
@@ -1633,15 +2225,15 @@ const DonorsPage = ({
                       disabled={donor.isCurrentUser || getDonationStatus(donor.lastDonation) === DONATION_STATUS.UNAVAILABLE}
                     >
                       <span className="btn-icon">📞</span>
-                      {donor.isCurrentUser ? 'Your Profile' : 
-                       getDonationStatus(donor.lastDonation) === DONATION_STATUS.UNAVAILABLE ? 'Currently Unavailable' : 'Contact Now'}
+                      {donor.isCurrentUser ? t('yourProfile') : 
+                       getDonationStatus(donor.lastDonation) === DONATION_STATUS.UNAVAILABLE ? t('currentlyUnavailable') : t('contactNow')}
                     </button>
                     <button 
                       className="profile-btn-secondary" 
                       onClick={() => onViewDonorProfile(donor)}
                     >
                       <span className="btn-icon">👁️</span>
-                      View Profile
+                      {t('viewProfile')}
                     </button>
                     {donor.isCurrentUser && getDonationStatus(donor.lastDonation) === DONATION_STATUS.AVAILABLE && (
                       <button 
@@ -1649,7 +2241,7 @@ const DonorsPage = ({
                         onClick={() => onRecordDonation(donor)}
                       >
                         <span className="btn-icon">➕</span>
-                        Record Donation
+                        {t('recordDonation')}
                       </button>
                     )}
                   </div>
@@ -1663,35 +2255,35 @@ const DonorsPage = ({
       {/* Search Tips */}
       <div className="search-tips-enhanced">
         <div className="tips-header">
-          <h4>💡 Search Tips & Information</h4>
+          <h4>{t('searchTips')}</h4>
         </div>
         <div className="tips-grid-enhanced">
           <div className="tip-card">
             <div className="tip-icon">🔍</div>
             <div className="tip-content">
-              <h5>Search by City or Area</h5>
-              <p>Type "Dhaka", "Cumilla", or specific areas like "Gulshan", "Dhanmondi" for precise location-based results</p>
+              <h5>{t('searchByCity')}</h5>
+              <p>{t('searchTip1')}</p>
             </div>
           </div>
           <div className="tip-card">
             <div className="tip-icon">🩸</div>
             <div className="tip-content">
-              <h5>Blood Type Compatibility</h5>
-              <p>O- is universal donor (can donate to all), AB+ is universal receiver (can receive from all)</p>
+              <h5>{t('bloodTypeCompatibilityTip')}</h5>
+              <p>{t('bloodTypeTip')}</p>
             </div>
           </div>
           <div className="tip-card">
             <div className="tip-icon">🚨</div>
             <div className="tip-content">
-              <h5>Emergency Ready Donors</h5>
-              <p>Filter for donors available 24/7 for emergency situations with immediate response capability</p>
+              <h5>{t('emergencyReadyTip')}</h5>
+              <p>{t('emergencyTip')}</p>
             </div>
           </div>
           <div className="tip-card">
             <div className="tip-icon">✅</div>
             <div className="tip-content">
-              <h5>Verified Profiles</h5>
-              <p>All donors undergo medical screening and background verification for your safety</p>
+              <h5>{t('verifiedProfilesTip')}</h5>
+              <p>{t('verifiedTip')}</p>
             </div>
           </div>
         </div>
@@ -1702,13 +2294,14 @@ const DonorsPage = ({
 
 // Enhanced Profile Page Component
 const ProfilePage = ({ user, onAddDonationRecord }) => {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('profile');
 
   return (
     <div className="profile-page">
       <div className="page-header">
-        <h1>👤 Your Donor Profile</h1>
-        <p>Manage your donor information and donation history</p>
+        <h1>{t('yourDonorProfile')}</h1>
+        <p>{t('profileSubtitle')}</p>
       </div>
 
       <div className="profile-tabs">
@@ -1716,19 +2309,19 @@ const ProfilePage = ({ user, onAddDonationRecord }) => {
           className={`tab-button ${activeTab === 'profile' ? 'active' : ''}`}
           onClick={() => setActiveTab('profile')}
         >
-          👤 Profile
+          {t('profileTab')}
         </button>
         <button 
           className={`tab-button ${activeTab === 'donations' ? 'active' : ''}`}
           onClick={() => setActiveTab('donations')}
         >
-          🩸 Donation History
+          {t('donationHistoryTab')}
         </button>
         <button 
           className={`tab-button ${activeTab === 'availability' ? 'active' : ''}`}
           onClick={() => setActiveTab('availability')}
         >
-          ⏰ Availability
+          {t('availabilityTab')}
         </button>
       </div>
 
@@ -1744,20 +2337,20 @@ const ProfilePage = ({ user, onAddDonationRecord }) => {
                     {user.bloodType}
                   </span>
                   <span className="donor-level-large">{user.badge}</span>
-                  <span className="verified-badge-large">✅ Verified Donor</span>
+                  <span className="verified-badge-large">✅ {t('verifiedOnly')}</span>
                 </div>
                 <div className="profile-stats">
                   <div className="stat">
                     <div className="stat-number">{user.donations}</div>
-                    <div className="stat-label">Total Donations</div>
+                    <div className="stat-label">{t('totalDonations')}</div>
                   </div>
                   <div className="stat">
                     <div className="stat-number">⭐ {user.rating}</div>
-                    <div className="stat-label">Donor Rating</div>
+                    <div className="stat-label">{t('donorRating')}</div>
                   </div>
                   <div className="stat">
-                    <div className="stat-number">{user.emergencyAvailable ? 'Yes' : 'No'}</div>
-                    <div className="stat-label">Emergency Ready</div>
+                    <div className="stat-number">{user.emergencyAvailable ? t('yes') : t('no')}</div>
+                    <div className="stat-label">{t('emergencyReadyProfile')}</div>
                   </div>
                 </div>
               </div>
@@ -1766,71 +2359,71 @@ const ProfilePage = ({ user, onAddDonationRecord }) => {
             {/* Enhanced profile details with donation status */}
             <div className="profile-details">
               <div className="detail-section">
-                <h3>Donation Status</h3>
+                <h3>{t('availability')}</h3>
                 <DonationStatusBadge lastDonation={user.lastDonation} isCurrentUser={true} />
               </div>
 
               <div className="detail-section">
-                <h3>Personal Information</h3>
+                <h3>{t('personalInformation')}</h3>
                 <div className="detail-grid">
                   <div className="detail-item">
-                    <span className="detail-label">Full Name:</span>
+                    <span className="detail-label">{t('fullName')}</span>
                     <span className="detail-value">{user.name}</span>
                   </div>
                   <div className="detail-item">
-                    <span className="detail-label">Blood Type:</span>
+                    <span className="detail-label">{t('bloodType')}</span>
                     <span className="detail-value">{user.bloodType}</span>
                   </div>
                   <div className="detail-item">
-                    <span className="detail-label">Gender:</span>
+                    <span className="detail-label">{t('gender')}</span>
                     <span className="detail-value">{user.gender}</span>
                   </div>
                   <div className="detail-item">
-                    <span className="detail-label">Age:</span>
-                    <span className="detail-value">{user.age} years</span>
+                    <span className="detail-label">{t('age')}</span>
+                    <span className="detail-value">{user.age} {t('years')}</span>
                   </div>
                   <div className="detail-item">
-                    <span className="detail-label">Weight:</span>
+                    <span className="detail-label">{t('weight')}</span>
                     <span className="detail-value">{user.weight}</span>
                   </div>
                   <div className="detail-item">
-                    <span className="detail-label">Height:</span>
+                    <span className="detail-label">{t('height')}</span>
                     <span className="detail-value">{user.height}</span>
                   </div>
                 </div>
               </div>
 
               <div className="detail-section">
-                <h3>Location & Availability</h3>
+                <h3>{t('locationAvailability')}</h3>
                 <div className="detail-grid">
                   <div className="detail-item">
-                    <span className="detail-label">City:</span>
+                    <span className="detail-label">{t('city')}</span>
                     <span className="detail-value">{user.city}</span>
                   </div>
                   <div className="detail-item">
-                    <span className="detail-label">Area:</span>
+                    <span className="detail-label">{t('area')}</span>
                     <span className="detail-value">{user.area}</span>
                   </div>
                   <div className="detail-item">
-                    <span className="detail-label">Availability:</span>
+                    <span className="detail-label">{t('availability')}</span>
                     <span className="detail-value highlight">{user.availability}</span>
                   </div>
                   <div className="detail-item">
-                    <span className="detail-label">Emergency Ready:</span>
-                    <span className="detail-value">{user.emergencyAvailable ? '✅ Yes' : '❌ No'}</span>
+                    <span className="detail-label">{t('emergencyReadyProfile')}</span>
+                    <span className="detail-value">{user.emergencyAvailable ? '✅ ' + t('yes') : '❌ ' + t('no')}</span>
                   </div>
                 </div>
               </div>
 
               <div className="detail-section">
-                <h3>Contact Information</h3>
+                <h3>{t('contactInformation')}</h3>
                 <div className="detail-grid">
                   <div className="detail-item">
-                    <span className="detail-label">Phone:</span>
+                    <span className="detail-label">{t('phone')}</span>
                     <span className="detail-value">{user.phone}</span>
                   </div>
                   <div className="detail-item">
-                    <span className="detail-label">Email:</span>
+                    <span className="detail-label">{t('email')}</span>
                     <span className="detail-value">{user.email}</span>
                   </div>
                 </div>
@@ -1838,7 +2431,7 @@ const ProfilePage = ({ user, onAddDonationRecord }) => {
             </div>
 
             <div className="profile-achievements">
-              <h3>Your Achievements</h3>
+              <h3>{t('yourAchievements')}</h3>
               <div className="achievements-list">
                 {user.achievements.map((achievement, index) => (
                   <span key={index} className="achievement-badge">{achievement}</span>
@@ -1847,10 +2440,10 @@ const ProfilePage = ({ user, onAddDonationRecord }) => {
             </div>
 
             <div className="profile-actions">
-              <button className="btn-primary large">Edit Profile</button>
-              <button className="btn-secondary">Update Availability</button>
+              <button className="btn-primary large">{t('editProfile')}</button>
+              <button className="btn-secondary">{t('updateAvailability')}</button>
               <button className="btn-tertiary" onClick={() => setActiveTab('donations')}>
-                Donation History
+                {t('donationHistoryTab')}
               </button>
             </div>
           </div>
@@ -1870,13 +2463,13 @@ const ProfilePage = ({ user, onAddDonationRecord }) => {
       {activeTab === 'availability' && (
         <div className="availability-tab">
           <div className="availability-card">
-            <h3>🩸 Your Donation Availability</h3>
+            <h3>🩸 {t('availability')}</h3>
             <div className="availability-info">
               <DonationStatusBadge lastDonation={user.lastDonation} isCurrentUser={true} />
               
               {user.nextAvailableDate && getDonationStatus(user.lastDonation) === DONATION_STATUS.UNAVAILABLE && (
                 <div className="availability-details">
-                  <h4>Next Available Date</h4>
+                  <h4>{t('availableAgain')}</h4>
                   <div className="available-date-display">
                     {user.nextAvailableDate.toLocaleDateString('en-US', {
                       weekday: 'long',
@@ -1886,7 +2479,7 @@ const ProfilePage = ({ user, onAddDonationRecord }) => {
                     })}
                   </div>
                   <p className="availability-note">
-                    You can donate blood again 3 months after your last donation date for the safety of both you and the recipients.
+                    {t('availabilityNote')}
                   </p>
                 </div>
               )}
@@ -1894,10 +2487,10 @@ const ProfilePage = ({ user, onAddDonationRecord }) => {
               {getDonationStatus(user.lastDonation) === DONATION_STATUS.AVAILABLE && (
                 <div className="availability-ready">
                   <div className="ready-icon">🎉</div>
-                  <h4>You're Ready to Donate!</h4>
-                  <p>Your last donation was more than 3 months ago. You can safely donate blood now.</p>
+                  <h4>{t('youCanDonateNow')}</h4>
+                  <p>{t('availableForDonationDesc')}</p>
                   <button className="btn-primary large">
-                    Find Donation Centers
+                    {t('findDonorsNow')}
                   </button>
                 </div>
               )}
@@ -1922,6 +2515,7 @@ const RegistrationModal = ({
   availabilityOptions,
   isLoading
 }) => {
+  const { t, language } = useTranslation();
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = 3;
 
@@ -1945,8 +2539,8 @@ const RegistrationModal = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose} className="registration-modal">
       <div className="modal-header">
-        <h2>❤️ Register as Blood Donor</h2>
-        <button className="close-btn" onClick={onClose}>×</button>
+        <h2>{t('registerAsBloodDonor')}</h2>
+        <button className="close-btn" onClick={onClose}>{t('close')}</button>
       </div>
 
       {/* Progress Bar */}
@@ -1958,9 +2552,9 @@ const RegistrationModal = ({
           ></div>
         </div>
         <div className="progress-steps">
-          <span className={`step ${currentStep >= 1 ? 'active' : ''}`}>1. Personal</span>
-          <span className={`step ${currentStep >= 2 ? 'active' : ''}`}>2. Medical</span>
-          <span className={`step ${currentStep >= 3 ? 'active' : ''}`}>3. Location</span>
+          <span className={`step ${currentStep >= 1 ? 'active' : ''}`}>1. {language === 'en' ? 'Personal' : 'ব্যক্তিগত'}</span>
+          <span className={`step ${currentStep >= 2 ? 'active' : ''}`}>2. {language === 'en' ? 'Medical' : 'চিকিৎসা'}</span>
+          <span className={`step ${currentStep >= 3 ? 'active' : ''}`}>3. {language === 'en' ? 'Location' : 'অবস্থান'}</span>
         </div>
       </div>
 
@@ -1968,32 +2562,33 @@ const RegistrationModal = ({
         {/* Step 1: Personal Information */}
         {currentStep === 1 && (
           <div className="form-step">
-            <h3>Personal Information</h3>
+            <h3>{t('personalInfo')}</h3>
             <div className="form-grid">
               <div className="form-group full-width">
-                <label>Full Name *</label>
+                <label>{t('fullNameRequired')}</label>
                 <input 
                   type="text" 
                   required 
                   value={registrationForm.fullName}
                   onChange={(e) => onRegistrationChange('fullName', e.target.value)}
-                  placeholder="Enter your full name as per NID"
+                  placeholder={language === 'en' ? "Enter your full name as per NID" : "এনআইডি অনুযায়ী আপনার পূর্ণ নাম লিখুন"}
+                  dir={language === 'bn' ? 'rtl' : 'ltr'}
                 />
               </div>
               
               <div className="form-group">
-                <label>Email Address *</label>
+                <label>{t('emailAddressRequired')}</label>
                 <input 
                   type="email" 
                   required 
                   value={registrationForm.email}
                   onChange={(e) => onRegistrationChange('email', e.target.value)}
-                  placeholder="your.email@example.com"
+                  placeholder={language === 'en' ? "your.email@example.com" : "your.email@example.com"}
                 />
               </div>
               
               <div className="form-group">
-                <label>Phone Number *</label>
+                <label>{t('phoneNumberRequired')}</label>
                 <input 
                   type="tel" 
                   required 
@@ -2005,12 +2600,13 @@ const RegistrationModal = ({
               </div>
 
               <div className="form-group">
-                <label>Emergency Contact</label>
+                <label>{t('emergencyContactLabel')}</label>
                 <input 
                   type="text" 
                   value={registrationForm.emergencyContact}
                   onChange={(e) => onRegistrationChange('emergencyContact', e.target.value)}
-                  placeholder="Alternative contact number"
+                  placeholder={language === 'en' ? "Alternative contact number" : "বিকল্প যোগাযোগ নম্বর"}
+                  dir={language === 'bn' ? 'rtl' : 'ltr'}
                 />
               </div>
             </div>
@@ -2020,34 +2616,34 @@ const RegistrationModal = ({
         {/* Step 2: Medical Information */}
         {currentStep === 2 && (
           <div className="form-step">
-            <h3>Medical Information & Eligibility</h3>
+            <h3>{t('medicalInfo')}</h3>
             <div className="form-grid">
               <div className="form-group">
-                <label>Blood Group *</label>
+                <label>{t('bloodGroupRequired')}</label>
                 <select 
                   required 
                   value={registrationForm.bloodGroup}
                   onChange={(e) => onRegistrationChange('bloodGroup', e.target.value)}
                 >
-                  <option value=""> <b>Select Blood Group </b> </option>
+                  <option value=""> {language === 'en' ? 'Select Blood Group' : 'রক্তের গ্রুপ নির্বাচন করুন'} </option>
                   {bloodTypes.map(type => <option key={type} value={type}>{type}</option>)}
                 </select>
               </div>
 
               <div className="form-group">
-                <label><b> Gender </b> *</label>
+                <label>{t('genderRequired')}</label>
                 <select 
                   required 
                   value={registrationForm.gender}
                   onChange={(e) => onRegistrationChange('gender', e.target.value)}
                 >
-                  <option value=""> Select Gender</option>
+                  <option value=""> {language === 'en' ? 'Select Gender' : 'লিঙ্গ নির্বাচন করুন'}</option>
                   {genders.map(gender => <option key={gender} value={gender}>{gender}</option>)}
                 </select>
               </div>
 
               <div className="form-group">
-                <label>Date of Birth *</label>
+                <label>{t('dateOfBirth')}</label>
                 <input 
                   type="date" 
                   required
@@ -2056,12 +2652,12 @@ const RegistrationModal = ({
                   max={new Date().toISOString().split('T')[0]}
                 />
                 {registrationForm.age && (
-                  <div className="age-display">Age: {registrationForm.age} years</div>
+                  <div className="age-display">{language === 'en' ? 'Age' : 'বয়স'}: {registrationForm.age} {language === 'en' ? 'years' : 'বছর'}</div>
                 )}
               </div>
 
               <div className="form-group">
-                <label>Weight (kg) *</label>
+                <label>{t('weightRequired')}</label>
                 <input 
                   type="number" 
                   required 
@@ -2069,84 +2665,87 @@ const RegistrationModal = ({
                   max="150"
                   value={registrationForm.weight}
                   onChange={(e) => onRegistrationChange('weight', e.target.value)}
-                  placeholder="Minimum 45kg"
+                  placeholder={language === 'en' ? "Minimum 45kg" : "ন্যূনতম ৪৫ কেজি"}
                 />
-                <div className="validation-note">Minimum 45 kg required</div>
+                <div className="validation-note">{language === 'en' ? 'Minimum 45 kg required' : 'ন্যূনতম ৪৫ কেজি প্রয়োজন'}</div>
               </div>
 
               <div className="form-group">
-                <label>Height </label>
+                <label>{t('heightLabel')}</label>
                 <input 
                   type="number" 
                   value={registrationForm.height}
                   onChange={(e) => onRegistrationChange('height', e.target.value)}
-                  placeholder="Height in inches"
+                  placeholder={language === 'en' ? "Height in inches" : "ইঞ্চিতে উচ্চতা"}
                 />
               </div>
 
               <div className="form-group full-width">
-                <label>Any Medical Conditions? <i>(optional)</i></label>
+                <label>{t('medicalConditions')} <i>({language === 'en' ? 'optional' : 'ঐচ্ছিক'})</i></label>
                 <select 
                   value={registrationForm.hasDisease}
                   onChange={(e) => onRegistrationChange('hasDisease', e.target.value)}
                 >
-                  <option value="">Select if applicable</option>
-                  <option value="none">No known medical conditions</option>
-                  <option value="hypertension">Hypertension</option>
-                  <option value="diabetes">Diabetes</option>
-                  <option value="heart-disease">Heart Disease</option>
-                  <option value="other">Other</option>
+                  <option value="">{language === 'en' ? 'Select if applicable' : 'প্রযোজ্য হলে নির্বাচন করুন'}</option>
+                  <option value="none">{language === 'en' ? 'No known medical conditions' : 'কোনো পরিচিত চিকিৎসা সমস্যা নেই'}</option>
+                  <option value="hypertension">{language === 'en' ? 'Hypertension' : 'উচ্চ রক্তচাপ'}</option>
+                  <option value="diabetes">{language === 'en' ? 'Diabetes' : 'ডায়াবেটিস'}</option>
+                  <option value="heart-disease">{language === 'en' ? 'Heart Disease' : 'হৃদরোগ'}</option>
+                  <option value="other">{language === 'en' ? 'Other' : 'অন্যান্য'}</option>
                 </select>
               </div>
 
               <div className="form-group full-width">
-                <label>Recent Surgery (within 6 months)</label>
+                <label>{t('recentSurgery')}</label>
                 <input 
                   type="text" 
                   value={registrationForm.recentSurgery}
                   onChange={(e) => onRegistrationChange('recentSurgery', e.target.value)}
-                  placeholder="Type of surgery and date"
+                  placeholder={language === 'en' ? "Type of surgery and date" : "সার্জারির ধরন এবং তারিখ"}
+                  dir={language === 'bn' ? 'rtl' : 'ltr'}
                 />
               </div>
 
               <div className="form-group full-width">
-                <label>Current Medications</label>
+                <label>{t('currentMedications')}</label>
                 <textarea 
                   value={registrationForm.medications}
                   onChange={(e) => onRegistrationChange('medications', e.target.value)}
-                  placeholder="List any medications you're currently taking"
+                  placeholder={language === 'en' ? "List any medications you're currently taking" : "আপনি বর্তমানে যে ওষুধগুলো খাচ্ছেন তার তালিকা করুন"}
                   rows="2"
+                  dir={language === 'bn' ? 'rtl' : 'ltr'}
                 />
               </div>
 
               <div className="form-group full-width">
-                <label>Travel History (last 3 months)</label>
+                <label>{t('travelHistory')}</label>
                 <input 
                   type="text" 
                   value={registrationForm.travelHistory}
                   onChange={(e) => onRegistrationChange('travelHistory', e.target.value)}
-                  placeholder="Countries or cities visited recently"
+                  placeholder={language === 'en' ? "Countries or cities visited recently" : "সম্প্রতি ভ্রমণ করা দেশ বা শহর"}
+                  dir={language === 'bn' ? 'rtl' : 'ltr'}
                 />
               </div>
             </div>
 
             <div className="eligibility-checklist">
-              <h4>Eligibility Checklist</h4>
+              <h4>{t('eligibilityChecklist')}</h4>
               <div className="checklist-item">
                 <input type="checkbox" required /> 
-                <span>I am at least 18 years old</span>
+                <span>{t('atLeast18')}</span>
               </div>
               <div className="checklist-item">
                 <input type="checkbox" required />
-                <span>I weigh at least 45 kg</span>
+                <span>{t('weighAtLeast45')}</span>
               </div>
               <div className="checklist-item">
                 <input type="checkbox" required />
-                <span>I am in good health condition</span>
+                <span>{t('goodHealth')}</span>
               </div>
               <div className="checklist-item">
                 <input type="checkbox" required />
-                <span>I have not donated blood in the last 3 months</span>
+                <span>{t('notDonatedRecently')}</span>
               </div>
             </div>
           </div>
@@ -2155,39 +2754,40 @@ const RegistrationModal = ({
         {/* Step 3: Location & Preferences */}
         {currentStep === 3 && (
           <div className="form-step">
-            <h3>Location & Donation Preferences</h3>
+            <h3>{t('locationPref')}</h3>
             <div className="form-grid">
               <div className="form-group">
-                <label>City *</label>
+                <label>{t('city')} *</label>
                 <select 
                   required 
                   value={registrationForm.city}
                   onChange={(e) => onRegistrationChange('city', e.target.value)}
                 >
-                  <option value="">Select City</option>
+                  <option value="">{language === 'en' ? 'Select City' : 'শহর নির্বাচন করুন'}</option>
                   {cities.map(city => <option key={city} value={city}>{city}</option>)}
                 </select>
               </div>
 
               <div className="form-group">
-                <label>Area/Location *</label>
+                <label>{t('area')} *</label>
                 <input 
                   type="text" 
                   required 
                   value={registrationForm.area}
                   onChange={(e) => onRegistrationChange('area', e.target.value)}
-                  placeholder="Your specific area or neighborhood"
+                  placeholder={language === 'en' ? "Your specific area or neighborhood" : "আপনার নির্দিষ্ট এলাকা বা আশেপাশের এলাকা"}
+                  dir={language === 'bn' ? 'rtl' : 'ltr'}
                 />
               </div>
 
               <div className="form-group full-width">
-                <label>Availability for Donation *</label>
+                <label>{t('availability')} *</label>
                 <select 
                   required
                   value={registrationForm.availability}
                   onChange={(e) => onRegistrationChange('availability', e.target.value)}
                 >
-                  <option value="">Select Availability</option>
+                  <option value="">{language === 'en' ? 'Select Availability' : 'উপলব্ধতা নির্বাচন করুন'}</option>
                   {availabilityOptions.map(option => (
                     <option key={option} value={option}>{option}</option>
                   ))}
@@ -2195,7 +2795,7 @@ const RegistrationModal = ({
               </div>
 
               <div className="form-group full-width">
-                <label>Last Blood Donation Date (if any)</label>
+                <label>{language === 'en' ? 'Last Blood Donation Date (if any)' : 'শেষ রক্তদানের তারিখ (যদি থাকে)'}</label>
                 <input 
                   type="date" 
                   value={registrationForm.lastDonation}
@@ -2204,18 +2804,16 @@ const RegistrationModal = ({
                 />
                 {registrationForm.lastDonation && (
                   <div className="validation-note">
-                    Your donation status will be automatically managed. You'll be unavailable for 3 months after donation.
+                    {language === 'en' ? 'Your donation status will be automatically managed. You\'ll be unavailable for 3 months after donation.' : 'আপনার রক্তদানের স্ট্যাটাস স্বয়ংক্রিয়ভাবে পরিচালিত হবে। দানের 3 মাস পর আপনি অনুপলব্ধ হবেন।'}
                   </div>
                 )}
               </div>
             </div>
 
             <div className="privacy-notice">
-              <h4>Privacy & Consent</h4>
+              <h4>{t('privacyConsent')}</h4>
               <p>
-                Your information will be kept confidential and only shared with verified healthcare 
-                facilities when there is a genuine need for blood donation. You can update your 
-                availability or remove your registration at any time.
+                {t('privacyText')}
               </p>
             </div>
           </div>
@@ -2224,7 +2822,7 @@ const RegistrationModal = ({
         <div className="form-actions">
           {currentStep > 1 && (
             <button type="button" className="btn-secondary" onClick={prevStep}>
-              ← Previous
+              {t('previousStep')}
             </button>
           )}
           
@@ -2237,7 +2835,7 @@ const RegistrationModal = ({
               onClick={nextStep}
               disabled={!isStepValid(currentStep)}
             >
-              Next Step →
+              {t('nextStep')}
             </button>
           ) : (
             <button 
@@ -2245,7 +2843,7 @@ const RegistrationModal = ({
               className="btn-submit"
               disabled={!isStepValid(currentStep) || isLoading}
             >
-              {isLoading ? 'Registering...' : '🎉 Complete Registration'}
+              {isLoading ? t('loading') : t('completeRegistration')}
             </button>
           )}
         </div>
@@ -2256,28 +2854,30 @@ const RegistrationModal = ({
 
 // Enhanced Donor Profile Modal
 const DonorProfileModal = ({ isOpen, onClose, donor, onContactDonor, isCurrentUser, onRecordDonation }) => {
+  const { t, language } = useTranslation();
+  
   if (!donor) return null;
   
   return (
     <Modal isOpen={isOpen} onClose={onClose} className="donor-profile-modal">
       <div className="modal-header">
-        <h2>Donor Profile</h2>
-        <button className="close-btn" onClick={onClose}>×</button>
+        <h2>{language === 'en' ? 'Donor Profile' : 'রক্তদাতা প্রোফাইল'}</h2>
+        <button className="close-btn" onClick={onClose}>{t('close')}</button>
       </div>
       <div className="donor-profile-content">
         <div className="profile-header">
           <div className="profile-avatar">{donor.image}</div>
           <div className="profile-info">
-            <h3>{donor.name} {isCurrentUser && <span className="you-badge">(You)</span>}</h3>
+            <h3>{donor.name} {isCurrentUser && <span className="you-badge">{t('you')}</span>}</h3>
             <div className="profile-badges">
               <span className={`blood-type-large ${donor.bloodType === 'O-' ? 'universal' : ''}`}>
                 {donor.bloodType}
               </span>
               <span className="donor-level">{donor.badge}</span>
-              {donor.verified && <span className="verified-badge">✅ Verified</span>}
-              {isCurrentUser && <span className="current-badge">👤 Your Profile</span>}
+              {donor.verified && <span className="verified-badge">✅ {t('verifiedOnly')}</span>}
+              {isCurrentUser && <span className="current-badge">👤 {t('yourProfile')}</span>}
             </div>
-            <div className="profile-rating">⭐ {donor.rating} ({donor.donations} donations)</div>
+            <div className="profile-rating">⭐ {donor.rating} ({donor.donations} {language === 'en' ? 'donations' : 'রক্তদান'})</div>
           </div>
         </div>
 
@@ -2288,75 +2888,75 @@ const DonorProfileModal = ({ isOpen, onClose, donor, onContactDonor, isCurrentUs
 
         <div className="profile-details-grid">
           <div className="detail-section">
-            <h4>👤 Personal Information</h4>
+            <h4>👤 {t('personalInformation')}</h4>
             <div className="detail-row">
-              <span className="detail-label">Gender:</span>
+              <span className="detail-label">{t('gender')}</span>
               <span className="detail-value">{donor.gender}</span>
             </div>
             <div className="detail-row">
-              <span className="detail-label">Age:</span>
-              <span className="detail-value">{donor.age} years</span>
+              <span className="detail-label">{t('age')}</span>
+              <span className="detail-value">{donor.age} {language === 'en' ? 'years' : 'বছর'}</span>
             </div>
             {donor.weight && (
               <div className="detail-row">
-                <span className="detail-label">Weight:</span>
+                <span className="detail-label">{t('weight')}</span>
                 <span className="detail-value">{donor.weight}</span>
               </div>
             )}
             {donor.height && (
               <div className="detail-row">
-                <span className="detail-label">Height:</span>
+                <span className="detail-label">{t('height')}</span>
                 <span className="detail-value">{donor.height}</span>
               </div>
             )}
             {donor.occupation && (
               <div className="detail-row">
-                <span className="detail-label">Occupation:</span>
+                <span className="detail-label">{language === 'en' ? 'Occupation' : 'পেশা'}</span>
                 <span className="detail-value">{donor.occupation}</span>
               </div>
             )}
           </div>
 
           <div className="detail-section">
-            <h4>📍 Location & Contact</h4>
+            <h4>📍 {t('locationAvailability')}</h4>
             <div className="detail-row">
-              <span className="detail-label">Location:</span>
+              <span className="detail-label">{language === 'en' ? 'Location' : 'অবস্থান'}</span>
               <span className="detail-value">{donor.area}, {donor.city}</span>
             </div>
             <div className="detail-row">
-              <span className="detail-label">Availability:</span>
+              <span className="detail-label">{t('availability')}</span>
               <span className="detail-value highlight">{donor.availability}</span>
             </div>
             {donor.languages && (
               <div className="detail-row">
-                <span className="detail-label">Languages:</span>
+                <span className="detail-label">{language === 'en' ? 'Languages' : 'ভাষা'}</span>
                 <span className="detail-value">{donor.languages.join(', ')}</span>
               </div>
             )}
           </div>
 
           <div className="detail-section">
-            <h4>🩸 Donation Information</h4>
+            <h4>🩸 {language === 'en' ? 'Donation Information' : 'রক্তদান তথ্য'}</h4>
             <div className="detail-row">
-              <span className="detail-label">Last Donation:</span>
+              <span className="detail-label">{t('lastDonationLabel')}</span>
               <span className="detail-value highlight">
-                {donor.lastDonation === 'Never' ? 'Never' : new Date(donor.lastDonation).toLocaleDateString()}
+                {donor.lastDonation === 'Never' ? (language === 'en' ? 'Never' : 'কখনও না') : new Date(donor.lastDonation).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US')}
               </span>
             </div>
             <div className="detail-row">
-              <span className="detail-label">Total Donations:</span>
+              <span className="detail-label">{t('totalDonations')}</span>
               <span className="detail-value">{donor.donations}</span>
             </div>
             <div className="detail-row">
-              <span className="detail-label">Emergency Ready:</span>
-              <span className="detail-value">{donor.emergencyAvailable ? '✅ Yes' : '❌ No'}</span>
+              <span className="detail-label">{t('emergencyAvailable')}</span>
+              <span className="detail-value">{donor.emergencyAvailable ? '✅ ' + t('yes') : '❌ ' + t('no')}</span>
             </div>
           </div>
 
           {/* Enhanced Donation History in Modal */}
           {donor.donationHistory && donor.donationHistory.length > 0 && (
             <div className="detail-section full-width">
-              <h4>📋 Recent Donation History</h4>
+              <h4>📋 {language === 'en' ? 'Recent Donation History' : 'সম্প্রতি রক্তদান ইতিহাস'}</h4>
               <div className="recent-donations">
                 {formatDonationHistory(donor.donationHistory).slice(0, 3).map((donation, index) => (
                   <div key={donation.id || index} className="recent-donation">
@@ -2367,7 +2967,7 @@ const DonorProfileModal = ({ isOpen, onClose, donor, onContactDonor, isCurrentUs
                 ))}
                 {donor.donationHistory.length > 3 && (
                   <div className="view-more-donations">
-                    + {donor.donationHistory.length - 3} more donations
+                    + {donor.donationHistory.length - 3} {language === 'en' ? 'more donations' : 'আরো রক্তদান'}
                   </div>
                 )}
               </div>
@@ -2376,14 +2976,14 @@ const DonorProfileModal = ({ isOpen, onClose, donor, onContactDonor, isCurrentUs
 
           {donor.medicalInfo && (
             <div className="detail-section full-width">
-              <h4>📋 Medical Information</h4>
+              <h4>📋 {language === 'en' ? 'Medical Information' : 'চিকিৎসা তথ্য'}</h4>
               <div className="medical-info">{donor.medicalInfo}</div>
             </div>
           )}
 
           {donor.achievements && donor.achievements.length > 0 && (
             <div className="detail-section full-width">
-              <h4>🏆 Achievements</h4>
+              <h4>🏆 {language === 'en' ? 'Achievements' : 'অর্জনসমূহ'}</h4>
               <div className="achievements-list">
                 {donor.achievements.map((achievement, index) => (
                   <span key={index} className="achievement-badge">{achievement}</span>
@@ -2400,11 +3000,11 @@ const DonorProfileModal = ({ isOpen, onClose, donor, onContactDonor, isCurrentUs
               onClick={() => onContactDonor(donor)}
               disabled={getDonationStatus(donor.lastDonation) === DONATION_STATUS.UNAVAILABLE}
             >
-              📞 Contact {donor.name}
+              📞 {language === 'en' ? 'Contact' : 'যোগাযোগ করুন'} {donor.name}
             </button>
             {getDonationStatus(donor.lastDonation) === DONATION_STATUS.UNAVAILABLE && (
               <div className="unavailable-notice">
-                This donor is currently unavailable for donation. They will be available again in {getDaysUntilAvailable(donor.lastDonation)} days.
+                {t('donorUnavailable', { name: donor.name })} {t('willBeAvailable', { days: getDaysUntilAvailable(donor.lastDonation) })}
               </div>
             )}
           </div>
@@ -2417,11 +3017,11 @@ const DonorProfileModal = ({ isOpen, onClose, donor, onContactDonor, isCurrentUs
               onClick={() => onRecordDonation(donor)}
               disabled={getDonationStatus(donor.lastDonation) === DONATION_STATUS.UNAVAILABLE}
             >
-              ➕ Record New Donation
+              ➕ {t('recordDonation')}
             </button>
             {getDonationStatus(donor.lastDonation) === DONATION_STATUS.UNAVAILABLE && (
               <div className="unavailable-notice">
-                You can record a new donation when you become available again in {getDaysUntilAvailable(donor.lastDonation)} days.
+                {language === 'en' ? 'You can record a new donation when you become available again in' : 'আপনি আবার উপলব্ধ হলে একটি নতুন রক্তদান রেকর্ড করতে পারবেন'} {getDaysUntilAvailable(donor.lastDonation)} {language === 'en' ? 'days.' : 'দিনে।'}
               </div>
             )}
           </div>
@@ -2431,126 +3031,152 @@ const DonorProfileModal = ({ isOpen, onClose, donor, onContactDonor, isCurrentUs
   );
 };
 
-// Other components remain the same
+// Login Modal Component
 const LoginModal = ({ 
   isOpen, onClose, loginStep, phoneNumber, setPhoneNumber, 
   verificationCode, setVerificationCode, onSendCode, onVerifyCode, 
   onBackToPhone, isLoading 
-}) => (
-  <Modal isOpen={isOpen} onClose={onClose} className="login-modal">
-    <div className="modal-header">
-      <h2>🔑 Login to DR. BLOOD 24/7</h2>
-      <button className="close-btn" onClick={onClose}>×</button>
-    </div>
-    <div className="login-content">
-      {loginStep === 'phone' ? (
-        <div className="phone-step">
-          <div className="step-icon">📱</div>
-          <h3>Enter Your Phone Number</h3>
-          <p>We'll send a verification code to your phone</p>
-          
-          <div className="phone-input-group">
-            <div className="country-code">+880</div>
+}) => {
+  const { t, language } = useTranslation();
+  
+  return (
+    <Modal isOpen={isOpen} onClose={onClose} className="login-modal">
+      <div className="modal-header">
+        <h2>{t('loginToApp')}</h2>
+        <button className="close-btn" onClick={onClose}>{t('close')}</button>
+      </div>
+      <div className="login-content">
+        {loginStep === 'phone' ? (
+          <div className="phone-step">
+            <div className="step-icon">📱</div>
+            <h3>{t('enterYourPhone')}</h3>
+            <p>{language === 'en' ? 'We\'ll send a verification code to your phone' : 'আমরা আপনার ফোনে একটি যাচাইকরণ কোড পাঠাব'}</p>
+            
+            <div className="phone-input-group">
+              <div className="country-code">+880</div>
+              <input 
+                type="tel" 
+                placeholder="1XXXXXXXXX" 
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value.replace(/\D/g, '').slice(0, 11))}
+                className="phone-input" 
+                maxLength="11" 
+              />
+            </div>
+            
+            <button className="send-code-btn" onClick={onSendCode} disabled={isLoading}>
+              {isLoading ? t('loading') : t('sendVerificationCode')}
+            </button>
+            
+            <div className="login-note">
+              {language === 'en' ? 'By continuing, you agree to our Terms of Service and Privacy Policy' : 'চালিয়ে যাওয়ার মাধ্যমে, আপনি আমাদের সেবার শর্তাদি এবং গোপনীয়তা নীতি মেনে নিচ্ছেন'}
+            </div>
+          </div>
+        ) : (
+          <div className="code-step">
+            <div className="step-icon">🔐</div>
+            <h3>{t('enterVerificationCode')}</h3>
+            <p>{t('verificationSent', { phone: phoneNumber })}</p>
+            
             <input 
-              type="tel" 
-              placeholder="1XXXXXXXXX" 
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value.replace(/\D/g, '').slice(0, 11))}
-              className="phone-input" 
-              maxLength="11" 
+              type="text" 
+              placeholder={language === 'en' ? "Enter 6-digit code" : "৬ অঙ্কের কোড লিখুন"} 
+              value={verificationCode}
+              onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+              className="code-input" 
+              maxLength="6" 
             />
-          </div>
-          
-          <button className="send-code-btn" onClick={onSendCode} disabled={isLoading}>
-            {isLoading ? 'Sending...' : 'Send Verification Code'}
-          </button>
-          
-          <div className="login-note">
-            By continuing, you agree to our Terms of Service and Privacy Policy
-          </div>
-        </div>
-      ) : (
-        <div className="code-step">
-          <div className="step-icon">🔐</div>
-          <h3>Enter Verification Code</h3>
-          <p>We sent a code to +880 {phoneNumber}</p>
-          
-          <input 
-            type="text" 
-            placeholder="Enter 6-digit code" 
-            value={verificationCode}
-            onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-            className="code-input" 
-            maxLength="6" 
-          />
-          
-          <div className="code-actions">
-            <button className="resend-code" onClick={onSendCode}>
-              Resend Code
-            </button>
-            <button className="verify-btn" onClick={onVerifyCode}>
-              Verify & Login
+            
+            <div className="code-actions">
+              <button className="resend-code" onClick={onSendCode}>
+                {t('resendCode')}
+              </button>
+              <button className="verify-btn" onClick={onVerifyCode}>
+                {t('verifyLogin')}
+              </button>
+            </div>
+            
+            <button className="back-to-phone" onClick={onBackToPhone}>
+              {t('changePhoneNumber')}
             </button>
           </div>
-          
-          <button className="back-to-phone" onClick={onBackToPhone}>
-            ← Change Phone Number
-          </button>
+        )}
+      </div>
+    </Modal>
+  );
+};
+
+const Footer = ({ onNavigate, onRegisterDonor }) => {
+  const { t, language } = useTranslation();
+  
+  return (
+    <footer className="footer">
+      <div className="footer-content">
+        <div className="footer-section">
+          <h3>{t('footerTitle')}</h3>
+          <p>{t('footerDesc')}</p>
+          <div className="footer-stats">
+            <div className="footer-stat">
+              <strong>2,500+</strong>
+              <span>{t('livesSaved')}</span>
+            </div>
+            <div className="footer-stat">
+              <strong>50+</strong>
+              <span>{t('partnerLocations')}</span>
+            </div>
+            <div className="footer-stat">
+              <strong>8</strong>
+              <span>{t('citiesCovered')}</span>
+            </div>
+          </div>
         </div>
-      )}
-    </div>
-  </Modal>
-);
-
-const Footer = ({ onNavigate, onRegisterDonor }) => (
-  <footer className="footer">
-    <div className="footer-content">
-      <div className="footer-section">
-        <h3>🩸 DR. BLOOD 24/7</h3>
-        <p>Bangladesh's most trusted blood donation network. Saving lives through community partnership and verified donor connections.</p>
-        <div className="footer-stats">
-          <div className="footer-stat">
-            <strong>2,500+</strong>
-            <span>Lives Saved</span>
-          </div>
-          <div className="footer-stat">
-            <strong>50+</strong>
-            <span>Partner Locations</span>
-          </div>
-          <div className="footer-stat">
-            <strong>8</strong>
-            <span>Cities</span>
-          </div>
+        <div className="footer-section">
+          <h4>{t('quickLinks')}</h4>
+          <button onClick={() => onNavigate('home')}>{t('home')}</button>
+          <button onClick={() => onNavigate('donors')}>{t('findDonors')}</button>
+          <button onClick={onRegisterDonor}>{t('becomeDonor')}</button>
+        </div>
+        <div className="footer-section">
+          <h4>{t('contactInfo')}</h4>
+          <p>📧 help@drblood247.bd</p>
+          <p>📞 +880 2-2222-HELP</p>
+          <p>📍 {t('citiesCovered')} {t('all')}</p>
+          <p>⏰ 24/7 {t('emergencyReady')}</p>
+        </div>
+        <div className="footer-section">
+          <h4>{t('emergencyContacts')}</h4>
+          <p>🚨 {language === 'en' ? 'National Emergency' : 'জাতীয় জরুরী'}: 999</p>
+          <p>🏥 {t('ambulanceService')}: 199</p>
+          <p>🩸 {t('bloodBankInfo')}: 16273</p>
+          <p>🏭 {t('dghsHelpline')}: 16263</p>
         </div>
       </div>
-      <div className="footer-section">
-        <h4>Quick Links</h4>
-        <button onClick={() => onNavigate('home')}>Home</button>
-        <button onClick={() => onNavigate('donors')}>Find Donors</button>
-        <button onClick={onRegisterDonor}>Become Donor</button>
+      <div className="footer-bottom">
+        <p>{t('copyright')}</p>
       </div>
-      <div className="footer-section">
-        <h4>Contact Info</h4>
-        <p>📧 help@drblood247.bd</p>
-        <p>📞 +880 2-2222-HELP</p>
-        <p>📍 Available across Bangladesh</p>
-        <p>⏰ 24/7 Coordination Center</p>
-      </div>
-      <div className="footer-section">
-        <h4>Emergency Contacts</h4>
-        <p>🚨 National Emergency: 999</p>
-        <p>🏥 Ambulance Service: 199</p>
-        <p>🩸 Blood Bank Info: 16273</p>
-        <p>🏭 DGHS Helpline: 16263</p>
-      </div>
-    </div>
-    <div className="footer-bottom">
-      <p>© 2024 DR. BLOOD 24/7 Bangladesh. Developed by SAKIB CHOWDHURY SOHAN</p>
-    </div>
-  </footer>
-);
+    </footer>
+  );
+};
 
-export default App;
+// // Wrap App with Language Provider
+// function AppWrapper() {
+//   return (
+//     <LanguageProvider>
+//       <App />
+//     </LanguageProvider>
+//   );
+// }
+
+// export default AppWrapper;
 
 
+
+// Export App wrapped with LanguageProvider so translations work when importing `App` elsewhere
+export default function AppWrapper() {
+  return (
+    <LanguageProvider>
+      <App />
+    </LanguageProvider>
+  );
+}
 
