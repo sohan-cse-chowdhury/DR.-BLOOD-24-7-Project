@@ -2029,19 +2029,19 @@ const RegistrationModal = ({
                   value={registrationForm.bloodGroup}
                   onChange={(e) => onRegistrationChange('bloodGroup', e.target.value)}
                 >
-                  <option value="">Select Blood Group</option>
+                  <option value=""> <b>Select Blood Group </b> </option>
                   {bloodTypes.map(type => <option key={type} value={type}>{type}</option>)}
                 </select>
               </div>
 
               <div className="form-group">
-                <label>Gender *</label>
+                <label><b> Gender </b> *</label>
                 <select 
                   required 
                   value={registrationForm.gender}
                   onChange={(e) => onRegistrationChange('gender', e.target.value)}
                 >
-                  <option value="">Select Gender</option>
+                  <option value=""> Select Gender</option>
                   {genders.map(gender => <option key={gender} value={gender}>{gender}</option>)}
                 </select>
               </div>
@@ -2075,17 +2075,17 @@ const RegistrationModal = ({
               </div>
 
               <div className="form-group">
-                <label>Height (cm)</label>
+                <label>Height </label>
                 <input 
                   type="number" 
                   value={registrationForm.height}
                   onChange={(e) => onRegistrationChange('height', e.target.value)}
-                  placeholder="Height in centimeters"
+                  placeholder="Height in inches"
                 />
               </div>
 
               <div className="form-group full-width">
-                <label>Any Medical Conditions?</label>
+                <label>Any Medical Conditions? <i>(optional)</i></label>
                 <select 
                   value={registrationForm.hasDisease}
                   onChange={(e) => onRegistrationChange('hasDisease', e.target.value)}
