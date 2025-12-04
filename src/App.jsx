@@ -693,161 +693,449 @@ const EmergencyHotline = () => {
   );
 };
 
-const HealthTipsAI = () => {
-  const [showTips, setShowTips] = useState(false);
-  const [currentTip, setCurrentTip] = useState(0);
-  const [placement, setPlacement] = useState('right'); // 'right' | 'left' | 'center'
-  const buttonRef = useRef(null);
-  const panelRef = useRef(null);
-  const { t } = useTranslation();
-
-  const healthTips = [
-    t('healthTip1'),
-    t('healthTip2'),
-    t('healthTip3'),
-    t('healthTip4'),
-    t('healthTip5'),
-    t('healthTip6'),
-    t('healthTip7'),
-    t('healthTip8')
+// ===== DOCTOR AI CHATBOT COMPONENT =====
+const DoctorAIChatbot = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [inputText, setInputText] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+  const [hasUnread, setHasUnread] = useState(false);
+  const { t, language } = useTranslation();
+  
+  // Sample medical knowledge base
+  const medicalKnowledge = {
+    // Blood Donation Questions
+    'blood donation eligibility': {
+      en: "To donate blood, you must be at least 18 years old, weigh at least 45 kg, be in good health, and not have donated in the last 3 months. Avoid alcohol 24 hours before donation and eat a healthy meal beforehand.",
+      bn: "রক্তদান করতে আপনার বয়স কমপক্ষে ১৮ বছর, ওজন কমপক্ষে ৪৫ কেজি, সুস্বাস্থ্যের অধিকারী হতে হবে এবং গত ৩ মাসে রক্ত দেয়া যাবে না। দানের ২৪ ঘন্টা আগে অ্যালকোহল এড়িয়ে চলুন এবং আগে স্বাস্থ্যকর খাবার খান।"
+    },
+    'blood types compatibility': {
+      en: "• O- is universal donor (can donate to all)\n• AB+ is universal receiver (can receive from all)\n• A+ can donate to A+ and AB+\n• A- can donate to A+, A-, AB+, AB-\n• B+ can donate to B+ and AB+\n• B- can donate to B+, B-, AB+, AB-\n• AB- can donate to AB+ and AB-",
+      bn: "• O- সর্বজনীন দাতা (সবাইকে দান করতে পারে)\n• AB+ সর্বজনীন গ্রহীতা (সবার কাছ থেকে নিতে পারে)\n• A+ A+ এবং AB+ কে দান করতে পারে\n• A- A+, A-, AB+, AB- কে দান করতে পারে\n• B+ B+ এবং AB+ কে দান করতে পারে\n• B- B+, B-, AB+, AB- কে দান করতে পারে\n• AB- AB+ এবং AB- কে দান করতে পারে"
+    },
+    'after donation care': {
+      en: "After donating blood:\n1. Rest for 10-15 minutes\n2. Drink plenty of fluids (avoid alcohol)\n3. Eat iron-rich foods\n4. Avoid heavy lifting for 5 hours\n5. Keep the bandage on for 4-6 hours\n6. If you feel dizzy, lie down with feet elevated",
+      bn: "রক্তদানের পর:\n১. ১০-১৫ মিনিট বিশ্রাম নিন\n২. প্রচুর তরল পান করুন (অ্যালকোহল এড়িয়ে চলুন)\n৩. আয়রন সমৃদ্ধ খাবার খান\n৪. ৫ ঘন্টা ভারী কাজ করা এড়িয়ে চলুন\n৫. ব্যান্ডেজ ৪-৬ ঘন্টা রাখুন\n৬. মাথা ঘুরলে পা উঁচু করে শুয়ে পড়ুন"
+    },
+    
+    // General Health Questions
+    'high blood pressure': {
+      en: "High blood pressure (hypertension) management:\n• Reduce salt intake\n• Exercise regularly (30 min/day)\n• Maintain healthy weight\n• Limit alcohol\n• Manage stress\n• Take prescribed medications\nNormal range: 120/80 mmHg\nConsult doctor if above 140/90",
+      bn: "উচ্চ রক্তচাপ ব্যবস্থাপনা:\n• লবণ কম খান\n• নিয়মিত ব্যায়াম করুন (৩০ মিনিট/দিন)\n• স্বাস্থ্যকর ওজন বজায় রাখুন\n• অ্যালকোহল সীমিত করুন\n• চাপ নিয়ন্ত্রণ করুন\n• নির্ধারিত ওষুধ গ্রহণ করুন\nসাধারণ মাত্রা: ১২০/৮০ mmHg\n১৪০/৯০ এর বেশি হলে ডাক্তারের সাথে পরামর্শ করুন"
+    },
+    'diabetes symptoms': {
+      en: "Diabetes warning signs:\n• Frequent urination\n• Increased thirst\n• Extreme hunger\n• Unexplained weight loss\n• Fatigue\n• Blurred vision\n• Slow healing wounds\nNormal blood sugar: 70-100 mg/dL (fasting)\nConsult doctor for screening",
+      bn: "ডায়াবেটিসের সতর্কতা লক্ষণ:\n• ঘন ঘন প্রস্রাব\n• বেশি তৃষ্ণা\n• অতিরিক্ত ক্ষুধা\n• অকারণে ওজন কমা\n• ক্লান্তি\n• ঝাপসা দৃষ্টি\n• ধীরে সেরে ওঠা ক্ষত\nসাধারণ রক্তে শর্করা: ৭০-১০০ mg/dL (উপোস)\nপরীক্ষার জন্য ডাক্তারের সাথে পরামর্শ করুন"
+    },
+    'heart attack signs': {
+      en: "🚨 HEART ATTACK EMERGENCY SIGNS:\n• Chest pain or discomfort\n• Pain spreading to arms, neck, jaw\n• Shortness of breath\n• Cold sweat\n• Nausea\n• Lightheadedness\n⚠️ CALL EMERGENCY (199/999) IMMEDIATELY\nDon't delay - every minute counts!",
+      bn: "🚨 হার্ট অ্যাটাক জরুরী লক্ষণ:\n• বুকে ব্যথা বা অস্বস্তি\n• বাহু, ঘাড়, চোয়ালে ছড়িয়ে পড়া ব্যথা\n• শ্বাসকষ্ট\n• ঠাণ্ডা ঘাম\n• বমি বমি ভাব\n• মাথা ঘোরা\n⚠️ অবিলম্বে জরুরী নম্বরে কল করুন (১৯৯/৯৯৯)\nদেরি করবেন না - প্রতিটি মিনিট গুরুত্বপূর্ণ!"
+    },
+    
+    // COVID-19 Information
+    'covid symptoms': {
+      en: "COVID-19 Symptoms:\n• Fever or chills\n• Cough\n• Shortness of breath\n• Fatigue\n• Muscle aches\n• Loss of taste/smell\n• Sore throat\n• Headache\nIsolation: Minimum 5 days from symptom onset\nVaccination highly recommended",
+      bn: "COVID-19 লক্ষণ:\n• জ্বর বা ঠাণ্ডা লাগা\n• কাশি\n• শ্বাসকষ্ট\n• ক্লান্তি\n• পেশী ব্যথা\n• স্বাদ/গন্ধ হারানো\n• গলা ব্যথা\n• মাথাব্যথা\nবিচ্ছিন্নতা: লক্ষণ শুরুর কমপক্ষে ৫ দিন\nটিকাদান অত্যন্ত সুপারিশকৃত"
+    },
+    'covid prevention': {
+      en: "COVID-19 Prevention:\n• Get vaccinated and boosted\n• Wear masks in crowded places\n• Wash hands frequently\n• Maintain social distance\n• Avoid poorly ventilated spaces\n• Stay home when sick\n• Get tested if symptomatic",
+      bn: "COVID-19 প্রতিরোধ:\n• টিকা নিন এবং বুস্টার নিন\n• ভিড়ের জায়গায় মাস্ক পরুন\n• ঘন ঘন হাত ধৌত করুন\n• সামাজিক দূরত্ব বজায় রাখুন\n• দুর্বল বায়ুচলাচলযুক্ত স্থান এড়িয়ে চলুন\n• অসুস্থ হলে বাড়িতে থাকুন\n• লক্ষণ থাকলে পরীক্ষা করুন"
+    },
+    
+    // Nutrition Advice
+    'healthy diet': {
+      en: "Healthy Diet Guidelines:\n• Eat variety of fruits & vegetables\n• Choose whole grains over refined\n• Include lean protein sources\n• Limit saturated and trans fats\n• Reduce sugar and salt intake\n• Stay hydrated (8 glasses water/day)\n• Practice portion control",
+      bn: "স্বাস্থ্যকর খাদ্য নির্দেশিকা:\n• বিভিন্ন ধরনের ফল ও শাকসবজি খান\n• পরিশোধিতের চেয়ে সম্পূর্ণ শস্য চয়ন করুন\n• চর্বিবিহীন প্রোটিন উৎস অন্তর্ভুক্ত করুন\n• স্যাচুরেটেড এবং ট্রান্স ফ্যাট সীমিত করুন\n• চিনি এবং লবণ গ্রহণ কমান\n• হাইড্রেটেড থাকুন (৮ গ্লাস পানি/দিন)\n• অংশ নিয়ন্ত্রণ অনুশীলন করুন"
+    },
+    'iron rich foods': {
+      en: "Iron-Rich Foods for Blood Health:\n• Red meat, poultry, fish\n• Lentils and beans\n• Spinach and leafy greens\n• Fortified cereals\n• Tofu\n• Pumpkin seeds\n• Dried fruits (apricots, raisins)\n• Pair with Vitamin C for better absorption",
+      bn: "রক্ত স্বাস্থ্যের জন্য আয়রন সমৃদ্ধ খাবার:\n• লাল মাংস, পোল্ট্রি, মাছ\n• ডাল এবং শিম\n• পালং শাক এবং পাতাযুক্ত সবুজ শাক\n• শক্তিশালী সিরিয়াল\n• টফু\n• কুমড়ার বীজ\n• শুকনো ফল (খুবানি, কিসমিস)\n• ভাল শোষণের জন্য ভিটামিন সি এর সাথে যুক্ত করুন"
+    },
+    
+    // Exercise & Fitness
+    'exercise routine': {
+      en: "Recommended Exercise Routine:\n• 150 minutes moderate aerobic activity/week\nOR 75 minutes vigorous activity/week\n• Strength training 2x/week\n• Include flexibility exercises\n• Stay active throughout day\n• Start slowly if new to exercise\n• Listen to your body",
+      bn: "প্রস্তাবিত ব্যায়াম রুটিন:\n• সপ্তাহে ১৫০ মিনিট মাঝারি এয়ারোবিক কার্যকলাপ\nঅথবা সপ্তাহে ৭৫ মিনিট জোরালো কার্যকলাপ\n• সপ্তাহে ২ বার শক্তি প্রশিক্ষণ\n• নমনীয়তা ব্যায়াম অন্তর্ভুক্ত করুন\n• সারাদিন সক্রিয় থাকুন\n• ব্যায়ামে নতুন হলে ধীরে শুরু করুন\n• আপনার শরীরের কথা শুনুন"
+    },
+    
+    // Mental Health
+    'stress management': {
+      en: "Stress Management Techniques:\n• Practice deep breathing\n• Regular exercise\n• Adequate sleep (7-9 hours)\n• Mindfulness meditation\n• Time management\n• Social connection\n• Professional help if needed\n• Limit news consumption",
+      bn: "চাপ ব্যবস্থাপনা কৌশল:\n• গভীর শ্বাস-প্রশ্বাসের অনুশীলন করুন\n• নিয়মিত ব্যায়াম\n• পর্যাপ্ত ঘুম (৭-৯ ঘন্টা)\n• মননশীলতা ধ্যান\n• সময় ব্যবস্থাপনা\n• সামাজিক সংযোগ\n• প্রয়োজনে পেশাদার সাহায্য\n• খবর গ্রহণ সীমিত করুন"
+    },
+    
+    // Emergency Procedures
+    'first aid bleeding': {
+      en: "🚨 FIRST AID FOR SEVERE BLEEDING:\n1. Call emergency (199/999) immediately\n2. Apply direct pressure with clean cloth\n3. Elevate injured area if possible\n4. Don't remove soaked dressings - add more\n5. Keep victim calm and lying down\n6. Monitor for shock (pale, cold, sweaty)\nDo NOT use tourniquet unless trained",
+      bn: "🚨 তীব্র রক্তপাতের জন্য প্রাথমিক চিকিৎসা:\n১. অবিলম্বে জরুরী নম্বরে কল করুন (১৯৯/৯৯৯)\n২. পরিষ্কার কাপড় দিয়ে সরাসরি চাপ দিন\n৩. সম্ভব হলে আহত স্থান উঁচু করুন\n৪. ভেজা ব্যান্ডেজ সরাবেন না - আরো যোগ করুন\n৫. আহতকে শান্ত রাখুন এবং শুয়ে রাখুন\n৬. শকের জন্য পর্যবেক্ষণ করুন (ফ্যাকাসে, ঠাণ্ডা, ঘামা)\nপ্রশিক্ষণ ছাড়া টর্নিকেট ব্যবহার করবেন না"
+    },
+    
+    // Default responses
+    'default': {
+      en: "I'm Dr. AI, your virtual medical assistant. I can help with:\n• Blood donation information\n• General health questions\n• Emergency guidance\n• COVID-19 information\n• Nutrition advice\n• Exercise recommendations\n\nPlease ask specific questions for detailed advice. Remember, I provide general information only - always consult a real doctor for medical concerns.",
+      bn: "আমি ডাঃ এআই, আপনার ভার্চুয়াল মেডিকেল সহকারী। আমি সাহায্য করতে পারি:\n• রক্তদান তথ্য\n• সাধারণ স্বাস্থ্য প্রশ্ন\n• জরুরী নির্দেশিকা\n• COVID-19 তথ্য\n• পুষ্টি পরামর্শ\n• ব্যায়াম সুপারিশ\n\nবিশদ পরামর্শের জন্য নির্দিষ্ট প্রশ্ন জিজ্ঞাসা করুন। মনে রাখবেন, আমি শুধুমাত্র সাধারণ তথ্য প্রদান করি - চিকিৎসাগত উদ্বেগের জন্য সর্বদা একজন প্রকৃত ডাক্তারের সাথে পরামর্শ করুন।"
+    },
+    'greeting': {
+      en: "Hello! 👋 I'm Dr. AI, your virtual medical assistant. How can I help you today? Feel free to ask about blood donation, general health, or any medical concerns. Remember, I provide educational information only - for emergencies, call 199 immediately.",
+      bn: "হ্যালো! 👋 আমি ডাঃ এআই, আপনার ভার্চুয়াল মেডিকেল সহকারী। আজকে আমি আপনাকে কিভাবে সাহায্য করতে পারি? রক্তদান, সাধারণ স্বাস্থ্য বা যেকোনো চিকিৎসাগত উদ্বেগ সম্পর্কে জিজ্ঞাসা করতে নির্দ্বিধায়। মনে রাখবেন, আমি শুধুমাত্র শিক্ষামূলক তথ্য প্রদান করি - জরুরী অবস্থার জন্য অবিলম্বে ১৯৯ নম্বরে কল করুন।"
+    }
+  };
+  
+  // Quick questions based on language
+  const quickQuestions = language === 'en' ? [
+    "Am I eligible to donate blood?",
+    "What should I eat before donating?",
+    "High blood pressure symptoms?",
+    "COVID-19 prevention tips",
+    "HEART ATTACK SIGNS - EMERGENCY",
+    "Healthy diet for donors",
+    "After donation care",
+    "Blood type compatibility"
+  ] : [
+    "আমি কি রক্তদানের জন্য যোগ্য?",
+    "রক্তদানের আগে কি খাওয়া উচিত?",
+    "উচ্চ রক্তচাপের লক্ষণ?",
+    "COVID-19 প্রতিরোধ টিপস",
+    "হার্ট অ্যাটাক লক্ষণ - জরুরী",
+    "দাতাদের জন্য স্বাস্থ্যকর খাদ্য",
+    "রক্তদানের পর যত্ন",
+    "রক্তের গ্রুপ সামঞ্জস্যতা"
   ];
+  
+  // Initialize with welcome message
+  useEffect(() => {
+    if (messages.length === 0 && isOpen) {
+      setTimeout(() => {
+        setMessages([{
+          id: 1,
+          text: medicalKnowledge.greeting[language],
+          sender: 'bot',
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        }]);
+      }, 500);
+    }
+  }, [isOpen, messages.length, language, medicalKnowledge.greeting]);
+  
+  // Handle quick question click
+  const handleQuickQuestion = (question) => {
+    setInputText(question);
+    handleSendMessage();
+  };
+  
+  // Find appropriate response
+  const findResponse = (userMessage) => {
+    const lowerMessage = userMessage.toLowerCase();
+    
+    // Check for emergency keywords
+    const emergencyKeywords = language === 'en' 
+      ? ['heart attack', 'chest pain', 'bleeding', 'emergency', 'unconscious', 'severe pain', 'can\'t breathe']
+      : ['হার্ট অ্যাটাক', 'বুকে ব্যথা', 'রক্তপাত', 'জরুরী', 'অচেতন', 'তীব্র ব্যথা', 'শ্বাস নিতে পারছি না'];
+    
+    const hasEmergency = emergencyKeywords.some(keyword => 
+      lowerMessage.includes(keyword.toLowerCase())
+    );
+    
+    if (hasEmergency) {
+      return {
+        text: medicalKnowledge['heart attack signs'][language],
+        isEmergency: true
+      };
+    }
+    
+    // Check for specific topics
+    const topics = Object.keys(medicalKnowledge);
+    for (const topic of topics) {
+      if (lowerMessage.includes(topic.toLowerCase())) {
+        return {
+          text: medicalKnowledge[topic][language],
+          isEmergency: false
+        };
+      }
+    }
+    
+    // Check for related keywords
+    const keywordMap = {
+      'donat': 'blood donation eligibility',
+      'blood type': 'blood types compatibility',
+      'after donation': 'after donation care',
+      'pressure': 'high blood pressure',
+      'diabet': 'diabetes symptoms',
+      'covid': 'covid symptoms',
+      'prevent': 'covid prevention',
+      'diet': 'healthy diet',
+      'food': 'iron rich foods',
+      'exercise': 'exercise routine',
+      'stress': 'stress management',
+      'bleed': 'first aid bleeding',
+      'hello': 'greeting',
+      'hi': 'greeting'
+    };
+    
+    for (const [keyword, topic] of Object.entries(keywordMap)) {
+      if (lowerMessage.includes(keyword)) {
+        return {
+          text: medicalKnowledge[topic][language],
+          isEmergency: false
+        };
+      }
+    }
+    
+    // Default response
+    return {
+      text: medicalKnowledge.default[language],
+      isEmergency: false
+    };
+  };
+  
+  // Handle sending message
+  const findAnswer = (message) => {
+    const lower = (message || '').toLowerCase().trim();
+    const tokens = lower.split(/\W+/).filter(Boolean);
 
-  // If health tips aren't in translation, use defaults
-  const tips = healthTips[0]?.includes('healthTip') ? [
-    "💧 Drink 8-10 glasses of water daily to stay hydrated",
-    "🥗 Eat balanced meals with fruits and vegetables",
-    "🏃 Exercise for 30 minutes daily for better circulation",
-    "😴 Get 7-8 hours of sleep for proper rest",
-    "🚭 Avoid smoking and limit alcohol consumption",
-    "🧘 Practice stress management techniques",
-    "📱 Take regular breaks from screens",
-    "🌞 Get 15 minutes of sunlight for Vitamin D"
-  ] : healthTips;
+    const qaMap = {
+      blood: {
+        en: "Blood is vital for carrying oxygen and nutrients. For donors: ensure you meet age, weight, and health criteria; avoid heavy exertion before donating; eat iron-rich food and stay hydrated. After donation, rest, apply pressure to the site, and avoid heavy lifting for 24–48 hours. Regular donation has benefits like stimulating blood production and helping others, but always follow local guidelines and consult a clinician if you feel unwell.",
+        bn: "রক্ত শরীরে অক্সিজেন ও পুষ্টি বহন করে। রক্তদান করতে চাইলে বয়স, ওজন ও স্বাস্থ্যগত মানদণ্ড পূরণ করতে হবে; দান করার আগে অতিরিক্ত পরিশ্রম করবেন না; লৌহের বড় খাদ্য গ্রহণ করুন এবং হাইড্রেটেড থাকুন। রক্তদানের পরে বিশ্রাম নিন, সাইটে চাপ প্রয়োগ করুন, এবং ২৪–৪৮ ঘণ্টার জন্য ভারি কাজ এড়িয়ে চলুন۔ নিয়মিত দান রক্ত উৎপাদনকে উদ্দীপিত করে এবং অন্যদের সাহায্য করে, তবে অসুস্থ বোধ করলে ডাক্তারের পরামর্শ নিন।"
+      },
+      donor: {
+        en: "A donor should be generally healthy, meet age and weight limits, and not have recent infections or certain medical conditions. Check local eligibility rules and bring ID. After donation, follow care instructions and report any unusual symptoms.",
+        bn: "রক্তদাতা সাধারণত সুস্থ থাকা উচিত, নির্দিষ্ট বয়স ও ওজনের শর্ত পূরণ করতে হবে, এবং সাম্প্রতিক সংক্রমণ বা নির্দিষ্ট মেডিকেল কন্ডিশন থাকা উচিত নয়। স্থানীয় যোগ্যতা নিয়ম দেখুন এবং পরিচয়পত্র আনুন। দানের পরে যত্ন নিন এবং অস্বাভাবিক লক্ষণ দেখলে জানাবেন।"
+      },
+      fever: {
+        en: "Fever usually indicates infection. Rest, hydrate, and monitor temperature. Seek medical care if fever is very high, prolonged, or accompanied by severe symptoms like difficulty breathing or persistent pain.",
+        bn: "জ্বর সাধারণত সংক্রমণের ইঙ্গিত দেয়। বিশ্রাম নিন, পর্যাপ্ত পানি খান এবং তাপমাত্রা নজর করুন। যদি জ্বর খুব বেশি, দীর্ঘস্থায়ী হয় বা শ্বাসকষ্ট/তীব্র ব্যথা থাকে তবে চিকিৎসকের কাছে যান।"
+      },
+      covid: {
+        en: "For suspected COVID-19: isolate, test, rest, hydrate, and seek medical advice if breathing problems or risk factors exist. Follow local public health guidance on isolation duration.",
+        bn: "যদি COVID-19 সন্দেহ হয়: আইসোলেট করুন, টেস্ট করান, বিশ্রাম নিন, পানি খান, এবং শ্বাসকষ্ট বা ঝুঁকিপূর্ণ অবস্থায় থাকলে চিকিৎসকের পরামর্শ নিন। স্থানীয় স্বাস্থ্যবিধি অনুসরণ করুন।"
+      },
+      platelets: {
+        en: "Platelet donation has specific eligibility and may require more frequent checks. Platelets help with clotting; discuss with your donation center about the procedure and recovery.",
+        bn: "প্লেটলেট দান নির্দিষ্ট যোগ্যতা লাগে এবং বেশি ফ্রিকোয়েন্সি চেক প্রয়োজন হতে পারে। প্লেটলেট ক্লটিং-এ সাহায্য করে; প্রক্রিয়া এবং সুস্থতা সম্পর্কে দান কেন্দ্রের সাথে আলোচনা করুন।"
+      },
+      plasma: {
+        en: "Plasma donation involves collecting the liquid portion of blood. It helps patients with clotting disorders and other conditions. Follow the center's guidance on preparation and aftercare.",
+        bn: "প্লাজমা দানে রক্তের তরল অংশ সংগ্রহ করা হয়। এটি ক্লটিং সমস্যা ও অন্যান্য রোগীদের সাহায্য করে। প্রস্তুতি ও কেয়ার সম্পর্কিত নির্দেশনা অনুসরণ করুন।"
+      },
+      anemia: {
+        en: "Anemia means low hemoglobin or red blood cells; common signs include fatigue and pale skin. Iron-rich diet, supplements if prescribed, and medical evaluation are typical steps.",
+        bn: "অ্যানিমিয়া মানে হিমোগ্লোবিন বা লাল রক্তকণিকার পরিমাণ কম; সাধারণ লক্ষণ ক্লান্তি ও ফ্যাকাশে ত্বক। লৌহ সমৃদ্ধ খাদ্য, প্রয়োজনে সাপ্লিমেন্ট ও চিকিৎসা পরীক্ষা প্রয়োজন।"
+      },
+      donation: {
+        en: "Donation saves lives. Check eligibility, bring ID, stay hydrated, and follow post-donation care. Ask staff about any concerns before leaving.",
+        bn: "দান জীবনের জন্য গুরুত্বপূর্ণ। যোগ্যতা পরীক্ষা করুন, পরিচয়পত্র আনুন, পানি পান করুন, এবং দানের পরে যত্ন নেবেন। কোনও প্রশ্ন থাকলে স্টাফকে জিজ্ঞাসা করুন।"
+      }
+    };
 
-  const nextTip = () => {
-    setCurrentTip((prev) => (prev + 1) % tips.length);
+    // Exact single-word trigger
+    if (tokens.length === 1 && qaMap[tokens[0]]) {
+      const entry = qaMap[tokens[0]];
+      return { text: entry[language] || entry.en, isEmergency: false };
+    }
+
+    // Try to find any keyword inside tokens
+    for (const tok of tokens) {
+      if (qaMap[tok]) {
+        const entry = qaMap[tok];
+        return { text: entry[language] || entry.en, isEmergency: false };
+      }
+    }
+
+    // Fallback to existing topic responder
+    return findResponse(message);
   };
 
-  useEffect(() => {
-    if (!showTips) return;
-
-    const calculate = () => {
-      const btn = buttonRef.current;
-      const panel = panelRef.current;
-      if (!btn || !panel) return;
-
-      const margin = 16; // keep some gap from edges
-      const vw = window.innerWidth;
-      const panelW = Math.min(400, Math.max(280, Math.floor(vw * 0.4)));
-
-      // If very small viewport, center the panel
-      if (vw <= 480) {
-        setPlacement('center');
-        return;
-      }
-
-      const btnRect = btn.getBoundingClientRect();
-
-      // Prefer the side with more space
-      const spaceRight = vw - (btnRect.right + margin);
-      const spaceLeft = btnRect.left - margin;
-
-      if (spaceRight >= panelW) {
-        setPlacement('right');
-      } else if (spaceLeft >= panelW) {
-        setPlacement('left');
-      } else {
-        // fallback: center
-        setPlacement('center');
-      }
+  const handleSendMessage = async () => {
+    if (!inputText.trim() || isTyping) return;
+    
+    const userMessage = inputText.trim();
+    const messageTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    
+    // Add user message
+    const userMsg = {
+      id: messages.length + 1,
+      text: userMessage,
+      sender: 'user',
+      time: messageTime
     };
-
-    // initial calculation and on resize
-    calculate();
-    window.addEventListener('resize', calculate);
-    return () => window.removeEventListener('resize', calculate);
-  }, [showTips]);
-
-  useEffect(() => {
-    // close on ESC
-    const onKey = (e) => {
-      if (e.key === 'Escape') setShowTips(false);
-    };
-    if (showTips) window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [showTips]);
-
-  // ensure panel receives focus when opened for accessibility
-  useEffect(() => {
-    if (showTips && panelRef.current) {
-      panelRef.current.focus();
+    
+    setMessages(prev => [...prev, userMsg]);
+    setInputText('');
+    setIsTyping(true);
+    
+    // Simulate AI thinking
+    setTimeout(() => {
+      const response = findAnswer(userMessage);
+      const botMsg = {
+        id: messages.length + 2,
+        text: response.text,
+        sender: 'bot',
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        isEmergency: response.isEmergency
+      };
+      
+      setMessages(prev => [...prev, botMsg]);
+      setIsTyping(false);
+      
+      // Scroll to bottom
+      const messagesContainer = document.querySelector('.chatbot-messages');
+      if (messagesContainer) {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
+      
+      // Set unread if not open
+      if (!isOpen) {
+        setHasUnread(true);
+      }
+    }, 1500);
+  };
+  
+  // Handle Enter key
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage();
     }
-  }, [showTips]);
-
-  // Focus trap: keep keyboard focus inside the panel
-  useEffect(() => {
-    if (!showTips || !panelRef.current) return;
-    const panel = panelRef.current;
-    const focusableSelector = 'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
-    const nodes = Array.from(panel.querySelectorAll(focusableSelector)).filter(n => n.offsetParent !== null);
-    const first = nodes[0];
-    const last = nodes[nodes.length - 1];
-    const previousActive = document.activeElement;
-    if (first) first.focus();
-
-    const onKeyDown = (e) => {
-      if (e.key === 'Tab') {
-        if (nodes.length === 0) {
-          e.preventDefault();
-          return;
-        }
-        if (e.shiftKey) {
-          if (document.activeElement === first) {
-            e.preventDefault();
-            last.focus();
-          }
-        } else {
-          if (document.activeElement === last) {
-            e.preventDefault();
-            first.focus();
-          }
-        }
-      }
-    };
-
-    panel.addEventListener('keydown', onKeyDown);
-    return () => {
-      panel.removeEventListener('keydown', onKeyDown);
-      try { if (previousActive && previousActive.focus) previousActive.focus(); } catch (e) {}
-    };
-  }, [showTips]);
-
+  };
+  
+  // Handle panel open
+  const handleToggle = () => {
+    setIsOpen(!isOpen);
+    if (hasUnread) {
+      setHasUnread(false);
+    }
+  };
+  
+  // Clear chat
+  const handleClearChat = () => {
+    setMessages([]);
+    // Reset with greeting after clear
+    setTimeout(() => {
+      setMessages([{
+        id: 1,
+        text: medicalKnowledge.greeting[language],
+        sender: 'bot',
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      }]);
+    }, 100);
+  };
+  
+  // Sample conversation starter
+  const handleSampleQuestion = () => {
+    const sampleQuestion = language === 'en' 
+      ? "What are the requirements for blood donation?"
+      : "রক্তদানের জন্য কি কি প্রয়োজনীয়তা আছে?";
+    setInputText(sampleQuestion);
+    handleSendMessage();
+  };
+  
   return (
-    <div className="health-tips-ai">
-      <button ref={buttonRef} className="health-tips-toggle" onClick={() => setShowTips((s) => !s)}>
-        {t('healthTips')}
+    <div className="doctor-ai-chatbot">
+      <button 
+        className={`chatbot-toggle ${hasUnread ? 'unread' : ''}`}
+        onClick={handleToggle}
+      >
+        <span className="chatbot-icon">👨‍⚕️</span>
+        {language === 'en' ? 'Dr. AI Assistant' : 'ডাঃ এআই সহকারী'}
       </button>
-
-      {showTips && (
-        <div
-          ref={panelRef}
-          className={`health-tips-panel placement-${placement} show`}
-          tabIndex={-1}
-          role="dialog"
-          aria-label={t('aiHealthAssistant')}
-        >
-          <div className="tips-header">
-            <h4>{t('aiHealthAssistant')}</h4>
-            <button className="close-tips" onClick={() => setShowTips(false)}>{t('close')}</button>
+      
+      {isOpen && (
+        <div className="chatbot-panel" role="dialog" aria-label={language === 'en' ? 'Doctor AI Chatbot' : 'ডাক্তার এআই চ্যাটবট'}>
+          <div className="chatbot-header">
+            <div className="doctor-info">
+              <div className="doctor-avatar">👨‍⚕️</div>
+              <div className="doctor-details">
+                <h4>Dr. AI Assistant</h4>
+                <p>{language === 'en' ? 'Virtual Medical Assistant' : 'ভার্চুয়াল মেডিকেল সহকারী'}</p>
+              </div>
+            </div>
+            <div className="chatbot-actions">
+              <button 
+                className="chatbot-action-btn"
+                onClick={handleSampleQuestion}
+                title={language === 'en' ? 'Sample Question' : 'নমুনা প্রশ্ন'}
+              >
+                💡
+              </button>
+              <button 
+                className="chatbot-action-btn"
+                onClick={handleClearChat}
+                title={language === 'en' ? 'Clear Chat' : 'চ্যাট পরিষ্কার করুন'}
+              >
+                🗑️
+              </button>
+              <button 
+                className="chatbot-action-btn chatbot-close"
+                onClick={handleToggle}
+                title={language === 'en' ? 'Close' : 'বন্ধ করুন'}
+              >
+                ✕
+              </button>
+            </div>
           </div>
-          <div className="current-tip">
-            {tips[currentTip]}
+          
+          <div className="chatbot-messages">
+            {messages.map(msg => (
+              <div 
+                key={msg.id} 
+                className={`message ${msg.sender} ${msg.isEmergency ? 'emergency' : ''}`}
+              >
+                <span className="message-icon">
+                  {msg.sender === 'user' ? '👤' : '👨‍⚕️'}
+                </span>
+                {msg.text.split('\n').map((line, i) => (
+                  <p key={i}>{line}</p>
+                ))}
+                <span className="message-time">{msg.time}</span>
+              </div>
+            ))}
+            
+            {isTyping && (
+              <div className="typing-indicator">
+                <div className="typing-dot"></div>
+                <div className="typing-dot"></div>
+                <div className="typing-dot"></div>
+                <span>{language === 'en' ? 'Dr. AI is typing...' : 'ডাঃ এআই টাইপ করছেন...'}</span>
+              </div>
+            )}
+            
+            {messages.length <= 2 && (
+              <div className="quick-questions">
+                {quickQuestions.map((question, index) => (
+                  <button
+                    key={index}
+                    className={`quick-question ${index === 4 ? 'emergency' : ''}`}
+                    onClick={() => handleQuickQuestion(question)}
+                  >
+                    {question}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
-          <button className="next-tip-btn" onClick={nextTip}>
-            {t('nextTip')}
-          </button>
-          <div className="tips-note">
-            {t('generalWellness')}
+          
+          <div className="chatbot-input">
+            <div className="input-wrapper">
+              <input
+                type="text"
+                className="chat-input"
+                placeholder={language === 'en' ? "Ask Dr. AI about health..." : "ডাঃ এআই কে স্বাস্থ্য সম্পর্কে জিজ্ঞাসা করুন..."}
+                value={inputText}
+                onChange={(e) => setInputText(e.target.value)}
+                onKeyPress={handleKeyPress}
+                dir={language === 'bn' ? 'rtl' : 'ltr'}
+              />
+              <button 
+                className="send-btn" 
+                onClick={handleSendMessage}
+                disabled={!inputText.trim() || isTyping}
+              >
+                ➤
+              </button>
+            </div>
+            <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)', marginTop: '8px', textAlign: 'center' }}>
+              {language === 'en' ? 'For emergencies, call 199 immediately' : 'জরুরী অবস্থার জন্য অবিলম্বে ১৯৯ নম্বরে কল করুন'}
+            </div>
           </div>
         </div>
       )}
@@ -1344,12 +1632,8 @@ function App() {
       ...khulnaAreas.map(a => `Khulna - ${a}`)
     ];
     
-    return allSuggestions.filter(location => 
-      location.toLowerCase().includes(searchTerm)
-    ).slice(0, 8);
+    return allSuggestions.filter(s => s.toLowerCase().includes(searchTerm)).slice(0, 8);
   }, [debouncedLocationSearch]);
-
-  const locationSuggestions = useMemo(() => getLocationSuggestions(), [getLocationSuggestions]);
 
   const filteredDonors = useMemo(() => {
     return donors.filter(donor => {
@@ -1658,7 +1942,7 @@ function App() {
       <EmergencyHotline />
 
       {/* Health Tips AI */}
-      <HealthTipsAI />
+     <DoctorAIChatbot />
 
       {/* Navigation */}
       <nav className="navbar">
