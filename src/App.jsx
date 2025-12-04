@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo, createContext, useContext } from 'react';
+import  { useState, useEffect, useCallback, useMemo, createContext, useContext } from 'react';
 import './index.css';
 
 // ===== LANGUAGE SUPPORT SYSTEM =====
@@ -242,7 +242,7 @@ englishTexts.healthTip8 = "🌞 Get 15 minutes of sunlight for Vitamin D";
 // Bangla translations
 const banglaTexts = {
   // Navigation
-  appName: "ডি.আর. ব্লাড ২৪/৭",
+  appName: "DR. BLOOD 24/7",
   appSubtitle: "বাংলাদেশ রক্তদান নেটওয়ার্ক",
   
   // Pages
@@ -267,7 +267,7 @@ const banglaTexts = {
   livesSaved: "জীবন বাঁচানো হয়েছে",
   
   // Features
-  whyTrust: "কেন ডি.আর. ব্লাড ২৪/৭ বিশ্বাস করবেন?",
+  whyTrust: "কেন DR. BLOOD 24/7 বিশ্বাস করবেন?",
   verifiedScreened: "যাচাইকৃত ও স্ক্রিনড",
   verifiedDesc: "প্রতিটি রক্তদাতা চিকিৎসা স্ক্রীনিং এবং ব্যাকগ্রাউন্ড যাচাইকরণের মধ্য দিয়ে যায়। স্বাস্থ্য রেকর্ড নিয়মিত আপডেট করা হয়।",
   smartAvailability: "স্মার্ট উপলব্ধতা",
@@ -382,7 +382,7 @@ const banglaTexts = {
   availableInDays: "{days} দিনের মধ্যে উপলব্ধ",
   
   // Footer
-  footerTitle: "🩸 ডি.আর. ব্লাড ২৪/৭",
+  footerTitle: "🩸 DR. BLOOD 24/7",
   footerDesc: "বাংলাদেশের সবচেয়ে বিশ্বস্ত রক্তদান নেটওয়ার্ক। সম্প্রদায়ের অংশীদারিত্ব এবং যাচাইকৃত রক্তদাতা সংযোগের মাধ্যমে জীবন বাঁচান।",
   quickLinks: "দ্রুত লিঙ্ক",
   contactInfo: "যোগাযোগের তথ্য",
@@ -390,11 +390,11 @@ const banglaTexts = {
   ambulanceService: "🚨 অ্যাম্বুলেন্স সার্ভিস",
   bloodBankInfo: "🩸 ব্লাড ব্যাঙ্ক তথ্য",
   dghsHelpline: "🏭 স্বাস্থ্য অধিদপ্তর হেল্পলাইন",
-  copyright: "© ২০২৪ ডি.আর. ব্লাড ২৪/৭ বাংলাদেশ। ডেভেলপার: সাকিব চৌধুরী সোহান",
+  copyright: "© ২০২৪ DR. BLOOD 24/7 বাংলাদেশ। ডেভেলপার: সাকিব চৌধুরী সোহান",
   
   // Modals
   registerAsBloodDonor: "❤️ রক্তদাতা হিসাবে নিবন্ধন করুন",
-  loginToApp: "🔑 ডি.আর. ব্লাড ২৪/৭-এ লগইন করুন",
+  loginToApp: "🔑 DR. BLOOD 24/7-এ লগইন করুন",
   enterYourPhone: "আপনার ফোন নম্বর লিখুন",
   sendVerificationCode: "যাচাইকরণ কোড পাঠান",
   verificationSent: "আমরা +880 {phone}-এ একটি কোড পাঠিয়েছি",
@@ -436,7 +436,7 @@ const banglaTexts = {
   welcomeMessage: "স্বাগতম {name}!",
   registeredSuccess: "আপনি এখন একজন রক্তদাতা হিসেবে নিবন্ধিত হয়েছেন। আপনার প্রোফাইল এখন প্রয়োজনী রোগীদের কাছে দৃশ্যমান।",
   verificationCodeSent: "📱 যাচাইকরণ কোড {phone}-এ পাঠানো হয়েছে",
-  loginSuccessful: "✅ লগইন সফল! ডি.আর. ব্লাড ২৪/৭-এ স্বাগতম।",
+  loginSuccessful: "✅ লগইন সফল! DR. BLOOD 24/7-এ স্বাগতম।",
   invalidCode: "❌ ভুল যাচাইকরণ কোড। আবার চেষ্টা করুন।",
   contactDonor: "📞 {name}-এর সাথে যোগাযোগ করছেন",
   donorUnavailable: "❌ {name} বর্তমানে রক্তদানের জন্য অনুপলব্ধ।",
@@ -475,7 +475,7 @@ banglaTexts.healthTip7 = "📱 নিয়মিত বিরতি নিন �
 banglaTexts.healthTip8 = "🌞 ভিটামিন-ডি পেতে ১৫ মিনিট সানলাইট নিন";
 
 // Language Provider Component
-const LanguageProvider = ({ children }) => {
+export const LanguageProvider = ({ children }) => {
   const [language, setLanguage] = useLocalStorage('language', 'en');
   
   const toggleLanguage = useCallback(() => {
@@ -660,6 +660,8 @@ const Button = ({ children, variant = 'primary', onClick, className = '', ...pro
 // Language Toggle Button Component
 const LanguageToggle = () => {
   const { language, toggleLanguage } = useTranslation();
+  console.log(language);
+  
   
   return (
     <div className="language-switcher">
@@ -1439,7 +1441,7 @@ function App() {
         location: language === 'en' ? "Self-Recorded Donation" : "স্ব-রেকর্ডকৃত দান",
         type: "Whole Blood",
         volume: "450ml",
-        notes: language === 'en' ? "Recorded via DR. BLOOD 24/7 platform" : "ডি.আর. ব্লাড ২৪/৭ প্ল্যাটফর্মের মাধ্যমে রেকর্ড করা হয়েছে",
+        notes: language === 'en' ? "Recorded via DR. BLOOD 24/7 platform" : "DR. BLOOD 24/7 প্ল্যাটফর্মের মাধ্যমে রেকর্ড করা হয়েছে",
         timestamp: new Date().toISOString()
       };
       
@@ -2433,7 +2435,7 @@ const ProfilePage = ({ user, onAddDonationRecord }) => {
             <div className="profile-achievements">
               <h3>{t('yourAchievements')}</h3>
               <div className="achievements-list">
-                {user.achievements.map((achievement, index) => (
+                {user?.achievements?.map((achievement, index) => (
                   <span key={index} className="achievement-badge">{achievement}</span>
                 ))}
               </div>
@@ -3158,6 +3160,7 @@ const Footer = ({ onNavigate, onRegisterDonor }) => {
   );
 };
 
+
 // // Wrap App with Language Provider
 // function AppWrapper() {
 //   return (
@@ -3179,4 +3182,5 @@ export default function AppWrapper() {
     </LanguageProvider>
   );
 }
+
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
+import App, { LanguageProvider } from './App.jsx'
 import './index.css'
 
 // Hide loading screen when app loads
@@ -13,17 +13,9 @@ if (loadingElement) {
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-)
-
-// Update the main App export at the bottom of app.jsx
-function AppWrapper() {
-  return (
     <LanguageProvider>
       <App />
     </LanguageProvider>
-  );
-}
 
-export default AppWrapper;
+  </React.StrictMode>,
+)
