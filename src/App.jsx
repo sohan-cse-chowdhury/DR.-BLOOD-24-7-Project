@@ -660,7 +660,6 @@ const Button = ({ children, variant = 'primary', onClick, className = '', ...pro
 // Language Toggle Button Component
 const LanguageToggle = () => {
   const { language, toggleLanguage } = useTranslation();
-  console.log(language);
   
   
   return (
@@ -3278,12 +3277,6 @@ const Footer = ({ onNavigate, onRegisterDonor }) => {
 
 
 // Export App wrapped with LanguageProvider so translations work when importing `App` elsewhere
-export default function AppWrapper() {
-  return (
-    <LanguageProvider>
-      <App />
-    </LanguageProvider>
-  );
-}
+export default App;
 
 
