@@ -11,6 +11,8 @@ if (loadingElement) {
   }, 1000);
 }
 
+
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <LanguageProvider>

@@ -1,4 +1,4 @@
-import  { useState, useEffect, useCallback, useMemo, createContext, useContext } from 'react';
+import  { useState, useEffect, useCallback, useMemo, createContext, useContext, useRef } from 'react';
 import './index.css';
 
 // ===== LANGUAGE SUPPORT SYSTEM =====
@@ -21,9 +21,9 @@ const englishTexts = {
   // Hero Section
   heroTitle: "Saving Lives Through <span class='highlight'>Blood Donation</span>",
   heroSubtitle: "Bangladesh's most trusted <b>Blood donation platform.</b> Connecting voluntary donors with patients in need through a verified nationwide network.",
-  findBloodDonors: "🔍 Find Blood Donors",
-  registerAsDonor: "❤️ Register as Donor",
-  detectMyLocation: "📍 Detect My Location",
+  findBloodDonors: " Find Blood Donors",
+  registerAsDonor: " Register as Donor",
+  detectMyLocation: " Detect My Location",
   
   // Stats
   availableDonors: "Available Donors",
@@ -697,6 +697,9 @@ const EmergencyHotline = () => {
 const HealthTipsAI = () => {
   const [showTips, setShowTips] = useState(false);
   const [currentTip, setCurrentTip] = useState(0);
+  const [placement, setPlacement] = useState('right'); // 'right' | 'left' | 'center'
+  const buttonRef = useRef(null);
+  const panelRef = useRef(null);
   const { t } = useTranslation();
 
   const healthTips = [
@@ -726,14 +729,114 @@ const HealthTipsAI = () => {
     setCurrentTip((prev) => (prev + 1) % tips.length);
   };
 
+  useEffect(() => {
+    if (!showTips) return;
+
+    const calculate = () => {
+      const btn = buttonRef.current;
+      const panel = panelRef.current;
+      if (!btn || !panel) return;
+
+      const margin = 16; // keep some gap from edges
+      const vw = window.innerWidth;
+      const panelW = Math.min(400, Math.max(280, Math.floor(vw * 0.4)));
+
+      // If very small viewport, center the panel
+      if (vw <= 480) {
+        setPlacement('center');
+        return;
+      }
+
+      const btnRect = btn.getBoundingClientRect();
+
+      // Prefer the side with more space
+      const spaceRight = vw - (btnRect.right + margin);
+      const spaceLeft = btnRect.left - margin;
+
+      if (spaceRight >= panelW) {
+        setPlacement('right');
+      } else if (spaceLeft >= panelW) {
+        setPlacement('left');
+      } else {
+        // fallback: center
+        setPlacement('center');
+      }
+    };
+
+    // initial calculation and on resize
+    calculate();
+    window.addEventListener('resize', calculate);
+    return () => window.removeEventListener('resize', calculate);
+  }, [showTips]);
+
+  useEffect(() => {
+    // close on ESC
+    const onKey = (e) => {
+      if (e.key === 'Escape') setShowTips(false);
+    };
+    if (showTips) window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [showTips]);
+
+  // ensure panel receives focus when opened for accessibility
+  useEffect(() => {
+    if (showTips && panelRef.current) {
+      panelRef.current.focus();
+    }
+  }, [showTips]);
+
+  // Focus trap: keep keyboard focus inside the panel
+  useEffect(() => {
+    if (!showTips || !panelRef.current) return;
+    const panel = panelRef.current;
+    const focusableSelector = 'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
+    const nodes = Array.from(panel.querySelectorAll(focusableSelector)).filter(n => n.offsetParent !== null);
+    const first = nodes[0];
+    const last = nodes[nodes.length - 1];
+    const previousActive = document.activeElement;
+    if (first) first.focus();
+
+    const onKeyDown = (e) => {
+      if (e.key === 'Tab') {
+        if (nodes.length === 0) {
+          e.preventDefault();
+          return;
+        }
+        if (e.shiftKey) {
+          if (document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else {
+          if (document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
+      }
+    };
+
+    panel.addEventListener('keydown', onKeyDown);
+    return () => {
+      panel.removeEventListener('keydown', onKeyDown);
+      try { if (previousActive && previousActive.focus) previousActive.focus(); } catch (e) {}
+    };
+  }, [showTips]);
+
   return (
     <div className="health-tips-ai">
-      <button className="health-tips-toggle" onClick={() => setShowTips(!showTips)}>
+      <button ref={buttonRef} className="health-tips-toggle" onClick={() => setShowTips((s) => !s)}>
         {t('healthTips')}
       </button>
-      
+
       {showTips && (
-        <div className="health-tips-panel">
+        <div
+          ref={panelRef}
+          className={`health-tips-panel placement-${placement} show`}
+          tabIndex={-1}
+          role="dialog"
+          aria-label={t('aiHealthAssistant')}
+        >
           <div className="tips-header">
             <h4>{t('aiHealthAssistant')}</h4>
             <button className="close-tips" onClick={() => setShowTips(false)}>{t('close')}</button>

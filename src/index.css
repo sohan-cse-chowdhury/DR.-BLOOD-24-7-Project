@@ -1701,7 +1701,11 @@ body {
   position: fixed;
   bottom: 2rem;
   left: 2rem;
-  z-index: 999;
+  z-index: 10005;
+  max-width: calc(100vw - 4rem);
+  right: auto;
+  pointer-events: auto;
+  touch-action: manipulation;
 }
 
 .health-tips-toggle {
@@ -1712,6 +1716,7 @@ body {
   border-radius: 20px;
   font-weight: 700;
   cursor: pointer;
+  pointer-events: auto;
   box-shadow: var(--shadow-3d), var(--glow-success);
   transition: all var(--transition-bounce);
   backdrop-filter: blur(20px);
@@ -1727,18 +1732,100 @@ body {
 }
 
 .health-tips-panel {
-  position: absolute;
-  bottom: 100%;
-  left: 0;
+  position: fixed;
+  bottom: 5rem;
+  left: 2rem;
   width: 350px;
+  max-width: calc(100vw - 4rem);
   background: rgba(30, 30, 30, 0.95);
   backdrop-filter: blur(40px);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 20px;
   padding: 1.5rem;
-  margin-bottom: 1rem;
   box-shadow: var(--shadow-deep);
+  z-index: 1000;
 }
+
+/* Placement variants (auto-placement) */
+.health-tips-panel.placement-right {
+  left: 2rem;
+  right: auto;
+  transform: none;
+}
+.health-tips-panel.placement-left {
+  right: 2rem;
+  left: auto;
+  transform: none;
+}
+.health-tips-panel.placement-center {
+  left: 50%;
+  right: auto;
+  transform: translate(-50%, -20%);
+  bottom: 50%;
+  top: auto;
+  max-width: 90vw;
+}
+
+/* Small screens: always center for best UX */
+@media (max-width: 480px) {
+  .health-tips-panel {
+    left: 50% !important;
+    right: auto !important;
+    transform: translate(-50%, -50%) !important;
+    top: 50% !important;
+    bottom: auto !important;
+    width: 90vw !important;
+    max-width: 400px !important;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+}
+
+/* Animations and pointer */
+.health-tips-panel {
+  opacity: 0;
+  transform-origin: center;
+  transition: opacity 220ms var(--transition-smooth), transform 220ms var(--transition-smooth);
+}
+.health-tips-panel.placement-right {
+  transform: translateX(8px) translateY(0);
+}
+.health-tips-panel.placement-right.show,
+.health-tips-panel.placement-left.show,
+.health-tips-panel.placement-center.show {
+  opacity: 1;
+  transform: translateX(0) translateY(0);
+}
+.health-tips-panel.placement-left {
+  transform: translateX(-8px) translateY(0);
+}
+.health-tips-panel.placement-center {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Arrow pointer for left/right placements */
+.health-tips-panel.placement-right::after,
+.health-tips-panel.placement-left::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+.health-tips-panel.placement-right::after {
+  left: -10px;
+  top: 16px;
+  border-width: 8px 10px 8px 0;
+  border-color: transparent rgba(30,30,30,0.95) transparent transparent;
+}
+.health-tips-panel.placement-left::after {
+  right: -10px;
+  top: 16px;
+  border-width: 8px 0 8px 10px;
+  border-color: transparent transparent transparent rgba(30,30,30,0.95);
+}
+
+/* When panel is inserted, add .show via JS by toggling class quickly for animation */
 
 .tips-header {
   display: flex;
@@ -2376,12 +2463,18 @@ body {
     bottom: 1rem;
     left: 50%;
     transform: translateX(-50%);
+    max-width: 95vw;
   }
   
   .health-tips-panel {
     left: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%, -50%);
+    top: 50%;
+    bottom: auto;
     width: 90vw;
+    max-width: 400px;
+    max-height: 80vh;
+    overflow-y: auto;
   }
   
   .emergency-content {
@@ -6607,10 +6700,12 @@ html {
 
 /* ===== LANGUAGE SWITCHER ===== */
 .language-switcher {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 1001;
+  position: fixed !important;
+  bottom: 100px !important;
+  right: 20px !important;
+  z-index: 10000 !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .language-toggle {
@@ -6635,6 +6730,7 @@ html {
   font-size: 14px;
   letter-spacing: 0.5px;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .language-toggle-btn:hover {
@@ -6712,8 +6808,8 @@ html {
 /* Responsive Language Switcher */
 @media (max-width: 768px) {
   .language-switcher {
-    top: 10px;
-    right: 10px;
+    bottom: 90px !important;
+    right: 10px !important;
   }
   
   .language-toggle-btn {
@@ -6728,8 +6824,8 @@ html {
 
 /* RTL Support */
 [dir="rtl"] .language-switcher {
-  right: auto;
-  left: 20px;
+  right: auto !important;
+  left: 20px !important;
 }
 
 [dir="rtl"] .language-dropdown {
@@ -6810,39 +6906,10 @@ html {
 }
 
 /* Navigation adjustments for RTL */
-[dir="rtl"] .nav-container {
-  flex-direction: row-reverse;
-}
-
-[dir="rtl"] .nav-links {
-  flex-direction: row-reverse;
-}
-
-/* Emergency hotline adjustments for RTL */
-[dir="rtl"] .emergency-hotline-fixed {
-  right: auto;
-  left: 2rem;
-}
-
-[dir="rtl"] .hotline-content {
-  flex-direction: row-reverse;
-}
-
-/* Health tips adjustments for RTL */
-[dir="rtl"] .health-tips-ai {
-  left: auto;
-  right: 2rem;
-}
-
-[dir="rtl"] .health-tips-panel {
-  left: auto;
-  right: 0;
-}
-
-/* Blood group grid adjustments */
-[dir="rtl"] .blood-group-grid-enhanced {
-  direction: ltr; /* Keep blood types LTR even in RTL */
-}
+/* Minimal RTL handling: avoid repositioning fixed UI elements to keep layout stable
+   when the app root `dir` toggles between 'ltr' and 'rtl'. Text direction will
+   follow the `dir` attribute automatically; use targeted text alignment for
+   content only if needed. */
 
 /* Sort select adjustments */
 [dir="rtl"] .sort-select {
@@ -6931,10 +6998,10 @@ html {
 
 /* ===== LANGUAGE SWITCHER STYLES ===== */
 .language-switcher {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 1001;
+  position: fixed !important;
+  bottom: 100px !important;
+  right: 20px !important;
+  z-index: 10000 !important;
 }
 
 .language-toggle {
@@ -6961,6 +7028,7 @@ html {
   text-transform: uppercase;
   min-width: 120px;
   justify-content: center;
+  white-space: nowrap;
 }
 
 .language-toggle-btn:hover {
@@ -7010,30 +7078,8 @@ html {
 
 /* RTL Support for Bangla */
 [lang="bn"] {
+  /* Only change fonts for Bangla; avoid moving UI layout to keep features stable */
   font-family: 'Kalpurush', 'SolaimanLipi', 'Inter', 'Segoe UI', sans-serif;
-  text-align: right;
-  direction: rtl;
-}
-
-/* Adjust layout for RTL */
-[lang="bn"] .language-switcher {
-  right: auto;
-  left: 20px;
-}
-
-[lang="bn"] .emergency-hotline-fixed {
-  right: auto;
-  left: 2rem;
-}
-
-[lang="bn"] .health-tips-ai {
-  left: auto;
-  right: 2rem;
-}
-
-[lang="bn"] .health-tips-panel {
-  left: auto;
-  right: 0;
 }
 
 /* Adjust text alignment for mixed content */
@@ -7173,5 +7219,910 @@ html {
   
   [lang="bn"] .hero-buttons {
     flex-direction: column-reverse;
+  }
+}
+
+/* ===== COMPREHENSIVE RESPONSIVE DESIGN ===== */
+
+/* ===== SIMPLIFIED UNIFIED RESPONSIVE SYSTEM ===== */
+
+/* All screens - Base */
+* {
+  box-sizing: border-box;
+}
+
+/* Extra Small: 320px - 480px */
+@media (max-width: 480px) {
+  html { font-size: 14px; }
+  
+  /* ===== MOBILE NAVIGATION ===== */
+  .nav-container { 
+    padding: 0.75rem 1rem; 
+    height: auto;
+    min-height: 60px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .logo { gap: 0.75rem; margin-bottom: 0.5rem; }
+  .logo-icon { font-size: 2rem; }
+  .logo-text { font-size: 1.2rem; }
+  .logo-subtitle { font-size: 0.65rem; }
+  
+  .nav-links { 
+    width: 100%; 
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    display: flex;
+  }
+  
+  .nav-link { 
+    padding: 0.6rem 0.75rem; 
+    font-size: 0.75rem;
+    flex: 1;
+    min-width: 70px;
+    text-align: center;
+    border-radius: 8px;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* ===== MOBILE HERO & BUTTONS ===== */
+  .hero-section { padding: 1.5rem 0 1rem; }
+  .hero-title { font-size: 1.8rem; margin-bottom: 1rem; line-height: 1.3; }
+  .hero-subtitle { font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.4; }
+  
+  .hero-buttons { 
+    flex-direction: column; 
+    gap: 0.75rem;
+    width: 100%;
+  }
+  
+  .btn { 
+    width: 100%;
+    padding: 0.8rem 1.5rem;
+    font-size: 0.9rem;
+    border-radius: 10px;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+  
+  /* ===== MOBILE STATS & GRIDS ===== */
+  .live-stats { 
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  .stat-item { padding: 1rem; border-radius: 10px; }
+  .stat-number { font-size: 1.5rem; }
+  
+  .features-grid { 
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  .feature-card { 
+    padding: 1.2rem;
+    border-radius: 12px;
+  }
+  
+  /* ===== MOBILE DONORS ===== */
+  .donors-grid-enhanced { 
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 0;
+  }
+  
+  .donor-card-enhanced {
+    padding: 1rem;
+    border-radius: 10px;
+    margin: 0;
+  }
+  
+  .donor-card-header { 
+    flex-direction: column; 
+    align-items: center; 
+    text-align: center;
+    gap: 0.75rem;
+  }
+  
+  .donor-name { font-size: 1.1rem; }
+  .blood-badge-enhanced { font-size: 0.9rem; padding: 6px 12px; }
+  
+  /* ===== MOBILE FILTERS ===== */
+  .filters-grid-main { 
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  .filter-section-card {
+    padding: 1rem;
+    border-radius: 10px;
+  }
+  
+  .blood-group-grid-enhanced { 
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 0.6rem;
+  }
+  
+  .blood-type-btn {
+    padding: 0.8rem 0.5rem;
+    font-size: 0.85rem;
+    border-radius: 8px;
+    min-height: 44px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* ===== MOBILE FORMS ===== */
+  .form-grid { 
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .form-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+  
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    font-size: 16px;
+    padding: 0.8rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.05);
+    color: #fff;
+    transition: all 0.3s ease;
+  }
+  
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    outline: none;
+    background: rgba(255,255,255,0.1);
+    border-color: var(--primary-red);
+    box-shadow: 0 0 15px rgba(255, 46, 77, 0.3);
+  }
+  
+  /* ===== MOBILE MODAL ===== */
+  .modal-content { 
+    width: 95vw;
+    max-width: none;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 1.5rem;
+    border-radius: 15px;
+  }
+  
+  .modal-header {
+    margin-bottom: 1.5rem;
+  }
+  
+  .modal-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  /* ===== MOBILE ACTIONS ===== */
+  .donor-actions-enhanced { 
+    grid-template-columns: 1fr; 
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+  
+  .search-system-enhanced {
+    padding: 1rem;
+    border-radius: 12px;
+  }
+  
+  .search-header-card {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .main-content { 
+    padding: 1rem;
+    width: 100%;
+  }
+}
+
+/* Small: 481px - 640px */
+@media (min-width: 481px) and (max-width: 640px) {
+  html { font-size: 15px; }
+  
+  /* ===== NAVIGATION ===== */
+  .nav-container { 
+    padding: 0.75rem 1.25rem;
+    min-height: 65px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  
+  .nav-link { 
+    padding: 0.7rem 0.9rem;
+    font-size: 0.8rem;
+    min-height: 44px;
+  }
+  
+  /* ===== HERO & BUTTONS ===== */
+  .hero-section { padding: 1.5rem 0; }
+  .hero-title { font-size: 1.9rem; }
+  .hero-subtitle { font-size: 0.95rem; }
+  
+  .hero-buttons { 
+    flex-direction: column; 
+    gap: 0.75rem;
+    width: 100%;
+  }
+  
+  .btn {
+    width: 100%;
+    min-height: 48px;
+    padding: 0.9rem 1.5rem;
+  }
+  
+  /* ===== STATS & GRIDS ===== */
+  .live-stats { 
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  .features-grid { 
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .feature-card { padding: 1.2rem; }
+  
+  /* ===== DONORS & FILTERS ===== */
+  .donors-grid-enhanced { 
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .donor-card-enhanced { padding: 1.1rem; }
+  
+  .filters-grid-main { 
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .blood-group-grid-enhanced { 
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 0.6rem;
+  }
+  
+  .blood-type-btn {
+    padding: 0.8rem 0.5rem;
+    min-height: 44px;
+    border-radius: 8px;
+  }
+  
+  /* ===== FORMS ===== */
+  .form-grid { grid-template-columns: 1fr; }
+  
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    font-size: 16px;
+    padding: 0.8rem;
+    border-radius: 8px;
+  }
+  
+  /* ===== MODALS & ACTIONS ===== */
+  .modal-content { 
+    width: 90vw; 
+    max-width: 500px;
+    padding: 1.5rem;
+  }
+  
+  .donor-actions-enhanced { 
+    grid-template-columns: 1fr 1fr; 
+    gap: 0.75rem;
+  }
+  
+  .main-content { padding: 1.25rem; }
+}
+
+/* Medium: 641px - 768px */
+@media (min-width: 641px) and (max-width: 768px) {
+  html { font-size: 15px; }
+  
+  /* ===== NAVIGATION ===== */
+  .nav-container { 
+    padding: 0.75rem 1.5rem;
+    min-height: 70px;
+    flex-wrap: wrap;
+  }
+  
+  .nav-link { 
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    min-height: 44px;
+  }
+  
+  /* ===== HERO & BUTTONS ===== */
+  .hero-section { padding: 2rem 1.5rem; }
+  .hero-title { font-size: 2.1rem; }
+  .hero-subtitle { font-size: 1rem; }
+  
+  .hero-buttons { 
+    flex-direction: column; 
+    gap: 1rem;
+    width: 100%;
+  }
+  
+  .btn {
+    width: 100%;
+    min-height: 48px;
+    padding: 0.95rem 1.5rem;
+  }
+  
+  /* ===== STATS & GRIDS ===== */
+  .live-stats { 
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.2rem;
+    padding: 1.5rem;
+  }
+  
+  .features-grid { 
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.2rem;
+    padding: 1.5rem;
+  }
+  
+  .feature-card { 
+    padding: 1.3rem;
+    border-radius: 12px;
+  }
+  
+  /* ===== DONORS & CARDS ===== */
+  .donors-grid-enhanced { 
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+  
+  .donor-card-enhanced { 
+    padding: 1.2rem;
+    border-radius: 12px;
+  }
+  
+  .donor-stats-enhanced {
+    flex-direction: row;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+  
+  /* ===== FILTERS ===== */
+  .filters-grid-main { 
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+    padding: 1.5rem;
+  }
+  
+  .filter-section-card {
+    padding: 1.2rem;
+    border-radius: 12px;
+  }
+  
+  .blood-group-grid-enhanced { 
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.7rem;
+  }
+  
+  .blood-type-btn {
+    padding: 0.9rem 0.6rem;
+    min-height: 45px;
+    border-radius: 9px;
+  }
+  
+  /* ===== FORMS ===== */
+  .form-grid { grid-template-columns: 1fr; }
+  
+  .form-group {
+    margin-bottom: 1.1rem;
+  }
+  
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    font-size: 16px;
+    padding: 0.9rem;
+    border-radius: 8px;
+    min-height: 44px;
+  }
+  
+  /* ===== MODALS ===== */
+  .modal-content { 
+    width: 90vw; 
+    max-width: 550px;
+    padding: 1.5rem;
+    border-radius: 15px;
+  }
+  
+  .modal-header h2 { font-size: 1.5rem; }
+  
+  /* ===== ACTIONS ===== */
+  .donor-actions-enhanced { 
+    grid-template-columns: 1fr 1fr; 
+    gap: 1rem;
+  }
+  
+  .search-system-enhanced {
+    padding: 1.5rem;
+    border-radius: 12px;
+  }
+  
+  .main-content { 
+    padding: 1.5rem;
+    width: 100%;
+  }
+}
+
+/* Large: 769px - 1024px */
+@media (min-width: 769px) and (max-width: 1024px) {
+  html { font-size: 15px; }
+  .nav-container { padding: 0.75rem 1.5rem; height: auto; }
+  .hero-buttons { flex-direction: row; gap: 1rem; flex-wrap: wrap; }
+  .live-stats { grid-template-columns: repeat(2, 1fr); }
+  .features-grid { grid-template-columns: repeat(2, 1fr); }
+  .donors-grid-enhanced { grid-template-columns: repeat(2, 1fr); }
+  .filters-grid-main { grid-template-columns: 1fr; }
+  .blood-group-grid-enhanced { grid-template-columns: repeat(4, 1fr); }
+  .main-content { padding: 2rem; }
+  .modal-content { width: 85vw; max-width: 650px; }
+  .form-grid { grid-template-columns: repeat(2, 1fr); }
+  .form-group.full-width { grid-column: 1 / -1; }
+  .donor-actions-enhanced { grid-template-columns: 1fr 1fr; gap: 1rem; }
+}
+
+/* Extra Large: 1025px+ */
+@media (min-width: 1025px) {
+  html { font-size: 16px; }
+  .nav-container { padding: 0 2rem; height: 85px; }
+  .hero-buttons { flex-direction: row; gap: 1.5rem; }
+  .live-stats { grid-template-columns: repeat(4, 1fr); }
+  .features-grid { grid-template-columns: repeat(3, 1fr); }
+  .donors-grid-enhanced { grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); }
+  .filters-grid-main { grid-template-columns: repeat(2, 1fr); }
+  .blood-group-grid-enhanced { grid-template-columns: repeat(8, 1fr); }
+  .main-content { padding: 3rem 2rem; max-width: 1400px; margin: 0 auto; }
+  .modal-content { width: 80vw; max-width: 750px; }
+  .form-grid { grid-template-columns: repeat(3, 1fr); }
+  .donor-actions-enhanced { grid-template-columns: auto auto; gap: 1rem; justify-content: flex-start; }
+}
+
+/* ===== UNIVERSAL MOBILE IMPROVEMENTS ===== */
+
+@media (max-width: 768px) {
+  /* ===== BETTER MOBILE NAVIGATION ===== */
+  .nav-links { 
+    width: 100%; 
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .register-btn, .login-btn, .logout-btn {
+    flex: 1;
+    min-width: 80px;
+    min-height: 44px;
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+  }
+  
+  /* ===== IMPROVED TOUCH TARGETS ===== */
+  .btn, button, .nav-link, .blood-type-btn {
+    min-height: 48px;
+    min-width: 48px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    tap-highlight-color: transparent;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  .btn:active, button:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+  }
+  
+  /* ===== BETTER CARD SPACING ===== */
+  .donor-card-enhanced { 
+    padding: 1.25rem;
+    margin: 0.75rem 0;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+  }
+  
+  .donor-card-enhanced:active {
+    transform: scale(0.99);
+  }
+  
+  .donor-card-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .donor-stats-enhanced {
+    flex-direction: row;
+    justify-content: space-around;
+    gap: 1rem;
+    width: 100%;
+    margin: 1rem 0;
+    padding: 1rem 0;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  
+  /* ===== BETTER SEARCH & FILTER LAYOUT ===== */
+  .search-system-enhanced {
+    padding: 1.25rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+  }
+  
+  .search-header-card {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  
+  .advanced-toggle {
+    width: 100%;
+    min-height: 44px;
+    padding: 0.8rem;
+  }
+  
+  .location-input-enhanced {
+    width: 100%;
+    font-size: 16px;
+    padding: 0.85rem 1rem;
+    border-radius: 8px;
+    min-height: 44px;
+  }
+  
+  .search-input-wrapper input {
+    width: 100%;
+    font-size: 16px;
+    padding: 0.85rem 1rem;
+    min-height: 44px;
+  }
+  
+  /* ===== BETTER FILTER SECTIONS ===== */
+  .filter-section-card {
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    border-radius: 12px;
+  }
+  
+  .filter-header {
+    margin-bottom: 1rem;
+  }
+  
+  .filter-header h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  /* ===== IMPROVED BLOOD GROUP SELECTION ===== */
+  .blood-group-grid-enhanced {
+    gap: 0.75rem;
+    margin: 1rem 0;
+  }
+  
+  .blood-type-btn {
+    padding: 1rem 0.5rem;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    transition: all 0.2s ease;
+  }
+  
+  .blood-type-btn:hover {
+    transform: translateY(-2px);
+  }
+  
+  /* ===== BETTER MODAL HANDLING ===== */
+  .modal-content {
+    max-height: 90vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 15px;
+    padding: 1.5rem;
+  }
+  
+  .modal-content::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .modal-content::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+  }
+  
+  .modal-content::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.2);
+    border-radius: 10px;
+  }
+  
+  .modal-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  
+  .modal-header h2 {
+    font-size: 1.5rem;
+    margin: 0;
+  }
+  
+  /* ===== BETTER FORM LAYOUT ===== */
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 1.1rem;
+  }
+  
+  .form-group {
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .form-group label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #fff;
+    margin: 0;
+  }
+  
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    font-size: 16px;
+    padding: 0.85rem;
+    border-radius: 8px;
+    border: 1.5px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.05);
+    color: #fff;
+    width: 100%;
+    min-height: 44px;
+    transition: all 0.3s ease;
+  }
+  
+  .form-group input::placeholder,
+  .form-group textarea::placeholder {
+    color: rgba(255,255,255,0.6);
+  }
+  
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    outline: none;
+    background: rgba(255,255,255,0.1);
+    border-color: var(--primary-red);
+    box-shadow: 0 0 15px rgba(255, 46, 77, 0.3);
+    transform: translateY(-2px);
+  }
+  
+  .form-group select {
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+  }
+  
+  /* ===== MOBILE ACTION BUTTONS ===== */
+  .donor-actions-enhanced {
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+  
+  .donor-actions-enhanced button {
+    flex: 1;
+    min-height: 44px;
+    padding: 0.8rem;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  /* ===== DONATION HISTORY MOBILE ===== */
+  .donation-history-list {
+    max-height: 300px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 0.75rem;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .donation-record {
+    padding: 1rem;
+    border-radius: 10px;
+    border-left: 4px solid var(--primary-red);
+  }
+  
+  .donation-details {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  /* ===== FOOTER MOBILE ===== */
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 1.5rem 1rem;
+  }
+  
+  .footer-section {
+    text-align: left;
+  }
+  
+  .footer-section h4 {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  /* ===== EMERGENCY & WIDGET POSITIONING ===== */
+  .emergency-hotline-fixed {
+    right: 1rem;
+    bottom: 80px;
+    top: auto;
+    width: auto;
+    min-height: 44px;
+  }
+  
+  .health-tips-ai {
+    left: 1rem;
+    bottom: 1rem;
+    right: auto;
+    width: auto;
+    min-height: 44px;
+  }
+  
+  .health-tips-panel {
+    width: 90vw;
+    max-width: 400px;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: auto;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  /* ===== PROFILE & PAGE LAYOUTS ===== */
+  .profile-tabs {
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .profile-tab {
+    width: 100%;
+    min-height: 44px;
+    padding: 0.8rem;
+  }
+  
+  .detail-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1rem 0;
+  }
+  
+  /* ===== BETTER SPACING ===== */
+  .page-header {
+    margin-bottom: 1.5rem;
+    padding: 1rem 0;
+  }
+  
+  .page-header h1 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+  }
+  
+  .page-header p {
+    font-size: 0.95rem;
+    opacity: 0.9;
+  }
+}
+
+/* Touch Devices - More aggressive optimizations */
+@media (hover: none) and (pointer: coarse) {
+  /* Larger touch targets */
+  .btn, button, .nav-link, .blood-type-btn {
+    min-height: 50px;
+    min-width: 50px;
+    padding: 14px 18px;
+    font-size: 1rem;
+  }
+  
+  /* Remove hover effects */
+  .btn:hover, button:hover, .nav-link:hover {
+    transform: none;
+    background: var(--primary-red);
+  }
+  
+  /* Better focus states */
+  .btn:focus, button:focus, .nav-link:focus {
+    outline: 2px solid var(--primary-red);
+    outline-offset: 2px;
+  }
+  
+  /* Input optimization */
+  input, select, textarea {
+    font-size: 16px;
+    padding: 14px;
+    border-radius: 8px;
+    min-height: 50px;
+  }
+  
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    font-size: 16px;
+    padding: 14px;
+    min-height: 50px;
+  }
+  
+  /* Remove accelerated scrolling */
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  /* Better scroll padding */
+  html {
+    scroll-padding-top: 100px;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0s !important; transition-duration: 0s !important; }
+}
+
+/* Print */
+@media print {
+  .navbar, .emergency-hotline-fixed, .health-tips-ai, .language-switcher { display: none; }
+}
+
+/* ===== HIGH DPI SCREEN OPTIMIZATION ===== */
+
+@media (min-resolution: 192dpi) {
+  .btn, button {
+    box-shadow: none;
+    border-width: 1px;
   }
 }
