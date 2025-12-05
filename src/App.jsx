@@ -152,7 +152,7 @@ const englishTexts = {
   quickLinks: "Quick Links",
   contactInfo: "Contact Info",
   emergencyContacts: "Emergency Contacts",
-  ambulanceService: "🚨 Ambulance Service",
+  ambulanceService: " Ambulance Service",
   bloodBankInfo: "🩸 Blood Bank Info",
   dghsHelpline: "🏭 DGHS Helpline",
   copyright: "© 2024 DR. BLOOD 24/7 Bangladesh. Developed by SAKIB CHOWDHURY SOHAN",
@@ -678,15 +678,23 @@ const LanguageToggle = () => {
   );
 };
 
-const EmergencyHotline = () => {
-  const { t } = useTranslation();
+const DoctorAIChatbot = () => {
+  const { t, language } = useTranslation();
+  // When user clicks the visible "Doctor AI" button, we want to open the ambulance UI.
+  // To swap behaviors without refactoring state, dispatch a custom event.
+  const handleClick = (e) => {
+    // dispatch event to request opening the Doctor AI chat
+    window.dispatchEvent(new CustomEvent('open-chat'));
+    // also optionally provide haptic feedback via CSS animation (left to styles)
+  };
+
   return (
     <div className="emergency-hotline-fixed">
-      <div className="hotline-content">
-        <div className="hotline-icon">🚨</div>
+      <div className="hotline-content" onClick={handleClick} role="button" tabIndex={0}>
+        <div className="hotline-icon">👨‍⚕️</div>
         <div className="hotline-info">
-          <div className="hotline-title">{t('ambulanceService')}</div>
-          <div className="hotline-number">199</div>
+          <div className="hotline-title"></div>
+          <div className="hotline-number">{language === 'en' ? 'DR. AI Assistant' : 'ডঃ এআই সহকারী '}</div>
         </div>
       </div>
     </div>
@@ -694,12 +702,13 @@ const EmergencyHotline = () => {
 };
 
 // ===== DOCTOR AI CHATBOT COMPONENT =====
-const DoctorAIChatbot = () => {
+const EmergencyHotline = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [hasUnread, setHasUnread] = useState(false);
+  const [hotlineModalVisible, setHotlineModalVisible] = useState(false);
   const { t, language } = useTranslation();
   
   // Sample medical knowledge base
@@ -1005,6 +1014,18 @@ const DoctorAIChatbot = () => {
       setHasUnread(false);
     }
   };
+
+  // Listen for events to open the chat when ambulance UI triggers it
+  useEffect(() => {
+    const openChat = () => setIsOpen(true);
+    const showHotline = () => setHotlineModalVisible(true);
+    window.addEventListener('open-chat', openChat);
+    window.addEventListener('show-hotline', showHotline);
+    return () => {
+      window.removeEventListener('open-chat', openChat);
+      window.removeEventListener('show-hotline', showHotline);
+    };
+  }, []);
   
   // Clear chat
   const handleClearChat = () => {
@@ -1033,10 +1054,14 @@ const DoctorAIChatbot = () => {
     <div className="doctor-ai-chatbot">
       <button 
         className={`chatbot-toggle ${hasUnread ? 'unread' : ''}`}
-        onClick={handleToggle}
+        onClick={() => {
+          // clicking the Doctor AI button should open the ambulance/hotline per user request
+          window.dispatchEvent(new CustomEvent('show-hotline'));
+        }}
+        aria-label={language === 'en' ? 'Open Emergency Ambulance' : 'এমার্জেন্সি অ্যাম্বুলেন্স খুলুন'}
       >
-        <span className="chatbot-icon">👨‍⚕️</span>
-        {language === 'en' ? 'Dr. AI Assistant' : 'ডাঃ এআই সহকারী'}
+        <span className="chatbot-icon" aria-hidden="true">🚨</span>
+        <span className="chatbot-label">{language === 'en' ? 'Emergency Ambulance' : 'এমার্জেন্সি অ্যাম্বুলেন্স'}</span>
       </button>
       
       {isOpen && (
@@ -1045,7 +1070,7 @@ const DoctorAIChatbot = () => {
             <div className="doctor-info">
               <div className="doctor-avatar">👨‍⚕️</div>
               <div className="doctor-details">
-                <h4>Dr. AI Assistant</h4>
+                <h4>Dr. A Assistant</h4>
                 <p>{language === 'en' ? 'Virtual Medical Assistant' : 'ভার্চুয়াল মেডিকেল সহকারী'}</p>
               </div>
             </div>
@@ -1135,6 +1160,23 @@ const DoctorAIChatbot = () => {
             </div>
             <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)', marginTop: '8px', textAlign: 'center' }}>
               {language === 'en' ? 'For emergencies, call 199 immediately' : 'জরুরী অবস্থার জন্য অবিলম্বে ১৯৯ নম্বরে কল করুন'}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {hotlineModalVisible && (
+        <div className="hotline-modal" role="dialog" aria-label={language === 'en' ? 'Ambulance' : 'অ্যাম্বুলেন্স'}>
+          <div className="hotline-modal-content">
+            <h3 style={{ margin: 0 }}>{language === 'en' ? 'Ambulance Service' : 'অ্যাম্বুলেন্স সার্ভিস'}</h3>
+            <p style={{ fontSize: '1.1rem', margin: '8px 0' }}>📞 199</p>
+            <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
+              <button className="btn-secondary" onClick={() => { navigator.clipboard && navigator.clipboard.writeText('199'); setHotlineModalVisible(false); }}>
+                {language === 'en' ? 'Copy Number' : 'নম্বর কপি করুন'}
+              </button>
+              <button className="btn-primary" onClick={() => setHotlineModalVisible(false)}>
+                {t('close')}
+              </button>
             </div>
           </div>
         </div>
@@ -1400,6 +1442,17 @@ function App() {
   const [generatedCode, setGeneratedCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  // Toast / popup for user messages (validation, success, errors)
+  const [toast, setToast] = useState({ visible: false, message: '', type: 'info' });
+  const toastTimerRef = useRef(null);
+  const showToast = useCallback((message, type = 'error', timeout = 4000) => {
+    if (toastTimerRef.current) {
+      clearTimeout(toastTimerRef.current);
+    }
+    setToast({ visible: true, message, type });
+    toastTimerRef.current = setTimeout(() => setToast({ visible: false, message: '', type: 'info' }), timeout);
+  }, []);
+
   // Enhanced Registration form state
   const [registrationForm, setRegistrationForm] = useState({
     fullName: '', 
@@ -1418,7 +1471,8 @@ function App() {
     recentSurgery: '',
     medications: '',
     travelHistory: '',
-    availability: 'Flexible Schedule'
+    availability: 'Flexible Schedule',
+    image: ''
   });
 
   // Enhanced donor data with donation history and status tracking
@@ -1734,12 +1788,12 @@ function App() {
     
     // Validation
     if (parseInt(registrationForm.age) < 18) {
-      alert(language === 'en' ? '❌ You must be at least 18 years old to register as a blood donor.' : '❌ রক্তদাতা হিসেবে নিবন্ধন করতে আপনার বয়স কমপক্ষে ১৮ বছর হতে হবে।');
+      showToast && showToast(language === 'en' ? '❌ You must be at least 18 years old to register as a blood donor.' : '❌ রক্তদাতা হিসেবে নিবন্ধন করতে আপনার বয়স কমপক্ষে ১৮ বছর হতে হবে।', 'error');
       return;
     }
     
     if (parseInt(registrationForm.weight) < 45) {
-      alert(language === 'en' ? '❌ Minimum weight requirement is 45 kg for blood donation.' : '❌ রক্তদানের জন্য ন্যূনতম ওজন প্রয়োজন ৪৫ কেজি।');
+      showToast && showToast(language === 'en' ? '❌ Minimum weight requirement is 45 kg for blood donation.' : '❌ রক্তদানের জন্য ন্যূনতম ওজন প্রয়োজন ৪৫ কেজি।', 'error');
       return;
     }
 
@@ -1753,7 +1807,7 @@ function App() {
         area: registrationForm.area,
         availability: registrationForm.availability,
         donations: registrationForm.lastDonation ? 1 : 0,
-        image: "👤",
+        image: registrationForm.image || "👤",
         rating: 5.0,
         badge: language === 'en' ? "New Donor" : "নতুন দাতা",
         verified: true,
@@ -1983,6 +2037,15 @@ function App() {
               </Button>
             )}
           </div>
+          {/* Profile icon (shows uploaded photo if available) */}
+          <div className="nav-profile" onClick={() => isLoggedIn ? setActivePage('profile') : setShowLogin(true)} title={isLoggedIn && enhancedCurrentUser ? enhancedCurrentUser.name : (language === 'en' ? 'Login' : 'লগইন')}>
+            {/* show uploaded photo in header when available, otherwise generic avatar */}
+            {isLoggedIn && enhancedCurrentUser && enhancedCurrentUser.image && typeof enhancedCurrentUser.image === 'string' && enhancedCurrentUser.image.startsWith('data:') ? (
+              <img src={enhancedCurrentUser.image} alt={enhancedCurrentUser.name || 'avatar'} />
+            ) : (
+              <span className="avatar-fallback">👤</span>
+            )}
+          </div>
         </div>
       </nav>
 
@@ -2134,7 +2197,7 @@ function App() {
             onContactDonor={handleContactDonor}
             onViewDonorProfile={handleViewDonorProfile}
             onRegisterDonor={() => setShowRegistration(true)}
-            locationSuggestions={locationSuggestions}
+            // locationSuggestions={locationSuggestions}
             onLocationSelect={handleLocationSelect}
             getSearchSummary={getSearchSummary}
             onRecordDonation={handleRecordDonation}
@@ -2171,6 +2234,7 @@ function App() {
         registrationForm={registrationForm}
         onRegistrationChange={handleRegistrationChange}
         onSubmit={handleRegistrationSubmit}
+        showToast={showToast}
         bloodTypes={BLOOD_TYPES}
         cities={CITIES}
         genders={GENDERS}
@@ -2186,6 +2250,14 @@ function App() {
         isCurrentUser={selectedDonor?.isCurrentUser}
         onRecordDonation={handleRecordDonation}
       />
+
+      {/* Toast / popup message */}
+      {toast.visible && (
+        <div className={`app-toast ${toast.type || 'info'}`} role="status" aria-live="polite">
+          <div className="app-toast-inner">{toast.message}</div>
+          <button className="app-toast-close" onClick={() => setToast({ visible: false, message: '', type: 'info' })}>{t('close')}</button>
+        </div>
+      )}
 
       {/* Footer */}
       <Footer 
@@ -2531,10 +2603,16 @@ const DonorsPage = ({
                   {donor.isCurrentUser && <div className="current-user-ribbon">{t('yourProfile')}</div>}
                   
                   <div className="donor-card-header">
-                    <div className="donor-avatar-section">
-                      <div className="donor-avatar-enhanced">{donor.image}</div>
-                      {donor.verified && <div className="verified-badge-enhanced">✅</div>}
-                    </div>
+                      <div className="donor-avatar-section">
+                        <div className="donor-avatar-enhanced">
+                          {donor.image && typeof donor.image === 'string' && donor.image.startsWith('data:') ? (
+                            <img src={donor.image} alt={donor.name} />
+                          ) : (
+                            <span className="avatar-fallback">{donor.image}</span>
+                          )}
+                        </div>
+                        {donor.verified && <div className="verified-badge-enhanced">✅</div>}
+                      </div>
                     
                     <div className="donor-main-info">
                       <h3 className="donor-name">
@@ -2717,7 +2795,13 @@ const ProfilePage = ({ user, onAddDonationRecord }) => {
         <div className="profile-container">
           <div className="profile-card">
             <div className="profile-header">
-              <div className="profile-avatar-large">{user.image}</div>
+              <div className="profile-avatar-large">
+                {user.image && typeof user.image === 'string' && user.image.startsWith('data:') ? (
+                  <img src={user.image} alt={user.name || 'avatar'} />
+                ) : (
+                  <span className="avatar-fallback">{user.image || '👤'}</span>
+                )}
+              </div>
               <div className="profile-info">
                 <h2>{user.name}</h2>
                 <div className="profile-badges">
@@ -2897,6 +2981,7 @@ const RegistrationModal = ({
   registrationForm,
   onRegistrationChange,
   onSubmit,
+  showToast,
   bloodTypes,
   cities,
   genders,
@@ -2913,7 +2998,7 @@ const RegistrationModal = ({
   const isStepValid = (step) => {
     switch (step) {
       case 1:
-        return registrationForm.fullName && registrationForm.phone && registrationForm.email;
+        return registrationForm.fullName && registrationForm.phone && registrationForm.email && registrationForm.image;
       case 2:
         return registrationForm.bloodGroup && registrationForm.gender && registrationForm.dateOfBirth && 
                registrationForm.weight && registrationForm.height;
@@ -2952,6 +3037,43 @@ const RegistrationModal = ({
           <div className="form-step">
             <h3>{t('personalInfo')}</h3>
             <div className="form-grid">
+              <div className="form-group photo-upload">
+                <label>{t('Upload Photo Optional *') || (language === 'en' ? 'Upload Photo (optional)' : 'ছবি আপলোড (ঐচ্ছিক)')}</label>
+                <div className="photo-input-row">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files && e.target.files[0];
+                        if (!file) return;
+                        if (!file.type.startsWith('image/')) {
+                          if (typeof showToast === 'function') showToast(language === 'en' ? 'Please upload an image file.' : 'অনুগ্রহ করে একটি ইমেজ ফাইল আপলোড করুন।');
+                          else alert(language === 'en' ? 'Please upload an image file.' : 'অনুগ্রহ করে একটি ইমেজ ফাইল আপলোড করুন।');
+                          return;
+                        }
+                        if (file.size > 3 * 1024 * 1024) {
+                          if (typeof showToast === 'function') showToast(language === 'en' ? 'Image too large (max 3MB).' : 'ছবি বড় (সর্বোচ্চ 3MB)।');
+                          else alert(language === 'en' ? 'Image too large (max 3MB).' : 'ছবি বড় (সর্বোচ্চ 3MB)।');
+                          return;
+                        }
+                        const reader = new FileReader();
+                        reader.onload = () => {
+                          onRegistrationChange('image', reader.result);
+                        };
+                        reader.readAsDataURL(file);
+                      }}
+                    />
+                  {registrationForm.image && (
+                    <div className="photo-preview">
+                      {typeof registrationForm.image === 'string' && registrationForm.image.startsWith('data:') ? (
+                        <img src={registrationForm.image} alt="preview" />
+                      ) : (
+                        <span className="avatar-fallback">{registrationForm.image}</span>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
               <div className="form-group full-width">
                 <label>{t('fullNameRequired')}</label>
                 <input 
@@ -3219,17 +3341,53 @@ const RegistrationModal = ({
           {currentStep < totalSteps ? (
             <button 
               type="button" 
-              className="btn-primary" 
-              onClick={nextStep}
-              disabled={!isStepValid(currentStep)}
+              className={`btn-primary ${!isStepValid(currentStep) ? 'btn-disabled' : ''}`} 
+              onClick={() => {
+                if (isStepValid(currentStep)) nextStep();
+                else {
+                  // Build missing fields message
+                  const missing = [];
+                  if (!registrationForm.fullName) missing.push(t('fullNameRequired') || (language === 'en' ? 'Full Name' : 'পূর্ণ নাম'));
+                  if (!registrationForm.phone) missing.push(t('phoneNumberRequired') || (language === 'en' ? 'Phone' : 'ফোন'));
+                  if (!registrationForm.email) missing.push(t('emailAddressRequired') || (language === 'en' ? 'Email' : 'ইমেইল'));
+                  if (!registrationForm.image) missing.push(language === 'en' ? 'Photo' : 'ছবি');
+                  const msg = (language === 'en' ? 'Please fill required fields: ' : 'অনুগ্রহ করে প্রয়োজনীয় তথ্য পূরণ করুন: ') + missing.join(', ');
+                  if (typeof showToast === 'function') showToast(msg, 'error');
+                  else alert(msg);
+                }
+              }}
             >
               {t('nextStep')}
             </button>
           ) : (
             <button 
-              type="submit" 
-              className="btn-submit"
-              disabled={!isStepValid(currentStep) || isLoading}
+              type="button" 
+              className={`btn-submit ${!isStepValid(currentStep) || isLoading ? 'btn-disabled' : ''}`} 
+              onClick={() => {
+                if (isStepValid(currentStep)) {
+                  // call parent submit handler - send a synthetic event to satisfy preventDefault
+                  try {
+                    onSubmit && onSubmit({ preventDefault: () => {} });
+                  } catch (err) {
+                    console.error('submit error', err);
+                  }
+                } else {
+                  const missing = [];
+                  if (!registrationForm.city) missing.push(t('city') || (language === 'en' ? 'City' : 'শহর'));
+                  if (!registrationForm.area) missing.push(t('area') || (language === 'en' ? 'Area' : 'এলাকা'));
+                  if (!registrationForm.bloodGroup) missing.push(t('bloodGroupRequired') || (language === 'en' ? 'Blood Group' : 'রক্তের গ্রুপ'));
+                  if (!registrationForm.gender) missing.push(t('genderRequired') || (language === 'en' ? 'Gender' : 'লিঙ্গ'));
+                  // include step1 missing too
+                  if (!registrationForm.fullName) missing.push(t('fullNameRequired') || (language === 'en' ? 'Full Name' : 'পূর্ণ নাম'));
+                  if (!registrationForm.phone) missing.push(t('phoneNumberRequired') || (language === 'en' ? 'Phone' : 'ফোন'));
+                  if (!registrationForm.email) missing.push(t('emailAddressRequired') || (language === 'en' ? 'Email' : 'ইমেইল'));
+                  if (!registrationForm.image) missing.push(language === 'en' ? 'Photo' : 'ছবি');
+                  const msg = (language === 'en' ? 'Please complete required fields before submitting: ' : 'অনুগ্রহ করে জমা দেওয়ার আগে সমস্ত প্রয়োজনীয় তথ্য সম্পূর্ণ করুন: ') + missing.join(', ');
+                  if (typeof showToast === 'function') showToast(msg, 'error');
+                  else alert(msg);
+                }
+              }}
+              disabled={isLoading}
             >
               {isLoading ? t('loading') : t('completeRegistration')}
             </button>
@@ -3253,8 +3411,14 @@ const DonorProfileModal = ({ isOpen, onClose, donor, onContactDonor, isCurrentUs
         <button className="close-btn" onClick={onClose}>{t('close')}</button>
       </div>
       <div className="donor-profile-content">
-        <div className="profile-header">
-          <div className="profile-avatar">{donor.image}</div>
+      <div className="profile-header">
+          <div className="profile-avatar">
+            {donor.image && typeof donor.image === 'string' && donor.image.startsWith('data:') ? (
+              <img src={donor.image} alt={donor.name} />
+            ) : (
+              <span className="avatar-fallback">{donor.image}</span>
+            )}
+          </div>
           <div className="profile-info">
             <h3>{donor.name} {isCurrentUser && <span className="you-badge">{t('you')}</span>}</h3>
             <div className="profile-badges">
