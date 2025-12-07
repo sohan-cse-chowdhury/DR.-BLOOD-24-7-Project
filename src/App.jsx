@@ -1,5 +1,7 @@
 import  { useState, useEffect, useCallback, useMemo, createContext, useContext, useRef } from 'react';
 import './index.css';
+import Footer from './components/Footer.jsx';
+
 
 // ===== LANGUAGE SUPPORT SYSTEM =====
 const LanguageContext = createContext();
@@ -14,7 +16,7 @@ const englishTexts = {
   home: "🏠 Home",
   findDonors: "🔍 Find Donors",
   myProfile: "👤 My Profile",
-  becomeDonor: "❤️ Become Donor",
+  becomeDonor: " Become Donor",
   login: "🔑 Login",
   logout: "👋 Logout",
   
@@ -58,19 +60,19 @@ const englishTexts = {
   // Donors Page
   findBloodDonorsTitle: "🔍 Find Blood Donors",
   findDonorsSubtitle: "Connect with verified donors across Bangladesh's major cities",
-  detectLocation: "📍 Detect My Location",
+  detectLocation: " Detect My Location",
   donorAvailability: "Donor Availability",
   allDonors: "👥 All Donors",
   availableNow: "✅ Available Now",
   recentlyDonated: "⏳ Recently Donated",
   searchResults: "Search Results:",
-  clear: "🗑️ Clear",
+  clear: " Clear",
   
   // Search System
   findCompatibleDonors: "Find Compatible Donors",
   searchDescription: "Connect with verified donors using precise search criteria",
-  showAdvancedFilters: "⚙️ Show Advanced Filters",
-  hideAdvancedFilters: "⚙️ Hide Advanced Filters",
+  showAdvancedFilters: " Show Advanced Filters",
+  hideAdvancedFilters: " Hide Advanced Filters",
   searchLocation: "Search Location",
   enterCityOrArea: "Enter city or area (e.g., Dhaka, Gulshan, Cumilla)",
   popularAreas: "Popular Areas:",
@@ -83,8 +85,8 @@ const englishTexts = {
   nearMyLocation: "Near My Location",
   availableToday: "Available Today",
   donorsFound: "donors found",
-  clearAllFilters: "🗑️ Clear All Filters",
-  becomeADonor: "❤️ Become a Donor",
+  clearAllFilters: " Clear All Filters",
+  becomeADonor: " Become a Donor",
   
   // Donor Cards
   availableDonorsTitle: "Available Donors",
@@ -96,21 +98,21 @@ const englishTexts = {
   yourProfile: "Your Profile",
   lastDonationLabel: "Last Donation:",
   emergencyAvailable: "Emergency Available",
-  contactNow: "📞 Contact Now",
+  contactNow: " Contact Now",
   currentlyUnavailable: "Currently Unavailable",
   viewProfile: "👁️ View Profile",
   recordDonation: "➕ Record Donation",
   
-  // Search Tips
-  searchTips: "💡 Search Tips & Information",
-  searchByCity: "Search by City or Area",
-  searchTip1: "Type \"Dhaka\", \"Cumilla\", or specific areas like \"Gulshan\", \"Dhanmondi\" for precise location-based results",
-  bloodTypeCompatibilityTip: "Blood Type Compatibility",
-  bloodTypeTip: "O- is universal donor (can donate to all), AB+ is universal receiver (can receive from all)",
-  emergencyReadyTip: "Emergency Ready Donors",
-  emergencyTip: "Filter for donors available 24/7 for emergency situations with immediate response capability",
-  verifiedProfilesTip: "Verified Profiles",
-  verifiedTip: "All donors undergo medical screening and background verification for your safety",
+  // // Search Tips
+  // searchTips: "💡 Search Tips & Information",
+  // searchByCity: "Search by City or Area",
+  // searchTip1: "Type \"Dhaka\", \"Cumilla\", or specific areas like \"Gulshan\", \"Dhanmondi\" for precise location-based results",
+  // bloodTypeCompatibilityTip: "Blood Type Compatibility",
+  // bloodTypeTip: "O- is universal donor (can donate to all), AB+ is universal receiver (can receive from all)",
+  // emergencyReadyTip: "Emergency Ready Donors",
+  // emergencyTip: "Filter for donors available 24/7 for emergency situations with immediate response capability",
+  // verifiedProfilesTip: "Verified Profiles",
+  // verifiedTip: "All donors undergo medical screening and background verification for your safety",
   
   // Profile Page
   yourDonorProfile: "👤 Your Donor Profile",
@@ -249,7 +251,7 @@ const banglaTexts = {
   home: "🏠 হোম",
   findDonors: "🔍 রক্তদাতা খুঁজুন",
   myProfile: "👤 আমার প্রোফাইল",
-  becomeDonor: "❤️ রক্তদাতা হোন",
+  becomeDonor: " রক্তদাতা হোন",
   login: "🔑 লগইন",
   logout: "👋 লগআউট",
   
@@ -258,7 +260,7 @@ const banglaTexts = {
   heroSubtitle: "বাংলাদেশের সবচেয়ে বিশ্বস্ত <b>রক্তদান প্ল্যাটফর্ম।</b> স্বেচ্ছাসেবী রক্তদাতাদের যাচাইকৃত জাতীয় নেটওয়ার্কের মাধ্যমে প্রয়োজনী রোগীদের সাথে সংযুক্ত করুন।",
   findBloodDonors: "🔍 রক্তদাতা খুঁজুন",
   registerAsDonor: "❤️ রক্তদাতা হিসাবে নিবন্ধন করুন",
-  detectMyLocation: "📍 আমার অবস্থান সনাক্ত করুন",
+  detectMyLocation: " আমার অবস্থান সনাক্ত করুন",
   
   // Stats
   availableDonors: "উপলব্ধ রক্তদাতা",
@@ -293,19 +295,19 @@ const banglaTexts = {
   // Donors Page
   findBloodDonorsTitle: "🔍 রক্তদাতা খুঁজুন",
   findDonorsSubtitle: "বাংলাদেশের প্রধান শহরগুলিতে যাচাইকৃত রক্তদাতাদের সাথে সংযুক্ত হন",
-  detectLocation: "📍 আমার অবস্থান সনাক্ত করুন",
+  detectLocation: " আমার অবস্থান সনাক্ত করুন",
   donorAvailability: "রক্তদাতার উপলব্ধতা",
   allDonors: "👥 সব রক্তদাতা",
   availableNow: "✅ এখনই উপলব্ধ",
   recentlyDonated: "⏳ সম্প্রতি রক্ত দিয়েছে",
   searchResults: "খোঁজার ফলাফল:",
-  clear: "🗑️ পরিষ্কার করুন",
+  clear: " পরিষ্কার করুন",
   
   // Search System
   findCompatibleDonors: "সামঞ্জস্যপূর্ণ রক্তদাতা খুঁজুন",
   searchDescription: "সুনির্দিষ্ট অনুসন্ধান মানদণ্ড ব্যবহার করে যাচাইকৃত রক্তদাতাদের সাথে সংযুক্ত হন",
-  showAdvancedFilters: "⚙️ উন্নত ফিল্টার দেখান",
-  hideAdvancedFilters: "⚙️ উন্নত ফিল্টার লুকান",
+  showAdvancedFilters: " উন্নত ফিল্টার দেখান",
+  hideAdvancedFilters: " উন্নত ফিল্টার লুকান",
   searchLocation: "অবস্থান অনুসন্ধান করুন",
   enterCityOrArea: "শহর বা এলাকা লিখুন (যেমন: ঢাকা, গুলশান, কুমিল্লা)",
   popularAreas: "জনপ্রিয় এলাকা:",
@@ -318,8 +320,8 @@ const banglaTexts = {
   nearMyLocation: "আমার অবস্থানের কাছাকাছি",
   availableToday: "আজ উপলব্ধ",
   donorsFound: "রক্তদাতা পাওয়া গেছে",
-  clearAllFilters: "🗑️ সব ফিল্টার পরিষ্কার করুন",
-  becomeADonor: "❤️ রক্তদাতা হোন",
+  clearAllFilters: " সব ফিল্টার পরিষ্কার করুন",
+  becomeADonor: " রক্তদাতা হোন",
   
   // Donor Cards
   availableDonorsTitle: "উপলব্ধ রক্তদাতা",
@@ -331,21 +333,21 @@ const banglaTexts = {
   yourProfile: "আপনার প্রোফাইল",
   lastDonationLabel: "শেষ রক্তদান:",
   emergencyAvailable: "জরুরীতে উপলব্ধ",
-  contactNow: "📞 এখনই যোগাযোগ করুন",
+  contactNow: " এখনই যোগাযোগ করুন",
   currentlyUnavailable: "বর্তমানে উপলব্ধ নয়",
-  viewProfile: "👁️ প্রোফাইল দেখুন",
-  recordDonation: "➕ রক্তদান রেকর্ড করুন",
+  viewProfile: " প্রোফাইল দেখুন",
+  recordDonation: " রক্তদান রেকর্ড করুন",
   
-  // Search Tips
-  searchTips: "💡 অনুসন্ধান টিপস ও তথ্য",
-  searchByCity: "শহর বা এলাকা অনুসন্ধান করুন",
-  searchTip1: "সুনির্দিষ্ট অবস্থান-ভিত্তিক ফলাফলের জন্য \"ঢাকা\", \"কুমিল্লা\" বা নির্দিষ্ট এলাকা যেমন \"গুলশান\", \"ধানমন্ডি\" টাইপ করুন",
-  bloodTypeCompatibilityTip: "রক্তের গ্রুপ সামঞ্জস্যতা",
-  bloodTypeTip: "O- সর্বজনীন দাতা (সব রক্তের গ্রুপে দান করতে পারে), AB+ সর্বজনীন গ্রহীতা (সব গ্রুপ থেকে গ্রহণ করতে পারে)",
-  emergencyReadyTip: "জরুরী প্রস্তুত রক্তদাতা",
-  emergencyTip: "জরুরী পরিস্থিতিতে 24/7 উপলব্ধ এবং তাৎক্ষণিক প্রতিক্রিয়া ক্ষমতা সম্পন্ন রক্তদাতাদের জন্য ফিল্টার করুন",
-  verifiedProfilesTip: "যাচাইকৃত প্রোফাইল",
-  verifiedTip: "আপনার নিরাপত্তার জন্য সমস্ত রক্তদাতা চিকিৎসা স্ক্রীনিং এবং ব্যাকগ্রাউন্ড যাচাইকরণের মধ্য দিয়ে যায়",
+  // // Search Tips
+  // searchTips: "💡 অনুসন্ধান টিপস ও তথ্য",
+  // searchByCity: "শহর বা এলাকা অনুসন্ধান করুন",
+  // searchTip1: "সুনির্দিষ্ট অবস্থান-ভিত্তিক ফলাফলের জন্য \"ঢাকা\", \"কুমিল্লা\" বা নির্দিষ্ট এলাকা যেমন \"গুলশান\", \"ধানমন্ডি\" টাইপ করুন",
+  // bloodTypeCompatibilityTip: "রক্তের গ্রুপ সামঞ্জস্যতা",
+  // bloodTypeTip: "O- সর্বজনীন দাতা (সব রক্তের গ্রুপে দান করতে পারে), AB+ সর্বজনীন গ্রহীতা (সব গ্রুপ থেকে গ্রহণ করতে পারে)",
+  // emergencyReadyTip: "জরুরী প্রস্তুত রক্তদাতা",
+  // emergencyTip: "জরুরী পরিস্থিতিতে 24/7 উপলব্ধ এবং তাৎক্ষণিক প্রতিক্রিয়া ক্ষমতা সম্পন্ন রক্তদাতাদের জন্য ফিল্টার করুন",
+  // verifiedProfilesTip: "যাচাইকৃত প্রোফাইল",
+  // verifiedTip: "আপনার নিরাপত্তার জন্য সমস্ত রক্তদাতা চিকিৎসা স্ক্রীনিং এবং ব্যাকগ্রাউন্ড যাচাইকরণের মধ্য দিয়ে যায়",
   
   // Profile Page
   yourDonorProfile: "👤 আপনার রক্তদাতা প্রোফাইল",
@@ -514,7 +516,7 @@ export const LanguageProvider = ({ children }) => {
 };
 
 // Custom hook for using translations
-const useTranslation = () => {
+export const useTranslation = () => {
   const context = useContext(LanguageContext);
   if (!context) {
     throw new Error('useTranslation must be used within LanguageProvider');
@@ -1052,7 +1054,7 @@ const EmergencyHotline = () => {
   
   return (
     <div className="doctor-ai-chatbot">
-      <button 
+      {/* <button 
         className={`chatbot-toggle ${hasUnread ? 'unread' : ''}`}
         onClick={() => {
           // clicking the Doctor AI button should open the ambulance/hotline per user request
@@ -1062,7 +1064,7 @@ const EmergencyHotline = () => {
       >
         <span className="chatbot-icon" aria-hidden="true">🚨</span>
         <span className="chatbot-label">{language === 'en' ? 'Emergency Ambulance' : 'এমার্জেন্সি অ্যাম্বুলেন্স'}</span>
-      </button>
+      </button> */}
       
       {isOpen && (
         <div className="chatbot-panel" role="dialog" aria-label={language === 'en' ? 'Doctor AI Chatbot' : 'ডাক্তার এআই চ্যাটবট'}>
@@ -1087,7 +1089,7 @@ const EmergencyHotline = () => {
                 onClick={handleClearChat}
                 title={language === 'en' ? 'Clear Chat' : 'চ্যাট পরিষ্কার করুন'}
               >
-                🗑️
+                
               </button>
               <button 
                 className="chatbot-action-btn chatbot-close"
@@ -1423,6 +1425,7 @@ const DonationHistory = ({ donations, onAddDonation, isCurrentUser = false }) =>
 // Main App Component
 function App() {
   const { t, language } = useTranslation();
+
   
   // State Management
   const [activePage, setActivePage] = useLocalStorage('activePage', 'home');
@@ -2719,7 +2722,7 @@ const DonorsPage = ({
       </div>
 
       {/* Search Tips */}
-      <div className="search-tips-enhanced">
+      {/* <div className="search-tips-enhanced">
         <div className="tips-header">
           <h4>{t('searchTips')}</h4>
         </div>
@@ -2753,7 +2756,7 @@ const DonorsPage = ({
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
@@ -2765,6 +2768,7 @@ const ProfilePage = ({ user, onAddDonationRecord }) => {
 
   return (
     <div className="profile-page">
+ 
       <div className="page-header">
         <h1>{t('yourDonorProfile')}</h1>
         <p>{t('profileSubtitle')}</p>
@@ -3658,58 +3662,8 @@ const LoginModal = ({
   );
 };
 
-const Footer = ({ onNavigate, onRegisterDonor }) => {
-  const { t, language } = useTranslation();
-  
-  return (
-    <footer className="footer">
-      <div className="footer-content">
-        <div className="footer-section">
-          <h3>{t('footerTitle')}</h3>
-          <p>{t('footerDesc')}</p>
-          <div className="footer-stats">
-            <div className="footer-stat">
-              <strong>2,500+</strong>
-              <span>{t('livesSaved')}</span>
-            </div>
-            <div className="footer-stat">
-              <strong>50+</strong>
-              <span>{t('partnerLocations')}</span>
-            </div>
-            <div className="footer-stat">
-              <strong>8</strong>
-              <span>{t('citiesCovered')}</span>
-            </div>
-          </div>
-        </div>
-        <div className="footer-section">
-          <h4>{t('quickLinks')}</h4>
-          <button onClick={() => onNavigate('home')}>{t('home')}</button>
-          <button onClick={() => onNavigate('donors')}>{t('findDonors')}</button>
-          <button onClick={onRegisterDonor}>{t('becomeDonor')}</button>
-        </div>
-        <div className="footer-section">
-          <h4>{t('contactInfo')}</h4>
-          <p>📧 help@drblood247.bd</p>
-          <p>📞 +880 2-2222-HELP</p>
-          <p>📍 {t('citiesCovered')} {t('all')}</p>
-          <p>⏰ 24/7 {t('emergencyReady')}</p>
-        </div>
-        <div className="footer-section">
-          <h4>{t('emergencyContacts')}</h4>
-          <p>🚨 {language === 'en' ? 'National Emergency' : 'জাতীয় জরুরী'}: 999</p>
-          <p>🏥 {t('ambulanceService')}: 199</p>
-          <p>🩸 {t('bloodBankInfo')}: 16273</p>
-          <p>🏭 {t('dghsHelpline')}: 16263</p>
-        </div>
-      </div>
-      <div className="footer-bottom">
-        <p>{t('copyright')}</p>
-      </div>
-    </footer>
-  );
-};
 
+<Footer/>
 
 // // Wrap App with Language Provider
 // function AppWrapper() {
