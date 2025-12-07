@@ -2197,7 +2197,7 @@ function App() {
             onContactDonor={handleContactDonor}
             onViewDonorProfile={handleViewDonorProfile}
             onRegisterDonor={() => setShowRegistration(true)}
-            // locationSuggestions={locationSuggestions}
+            locationSuggestions={getLocationSuggestions}
             onLocationSelect={handleLocationSelect}
             getSearchSummary={getSearchSummary}
             onRecordDonation={handleRecordDonation}
