@@ -110,7 +110,7 @@ noDonationHistory: "No donation history available",
   emergencyAvailable: "Emergency Available",
   contactNow: " Contact Now",
   currentlyUnavailable: "Currently Unavailable",
-  viewProfile: "👁️ View Profile",
+  viewProfile: " View Profile",
   recordDonation: "➕ Record Donation",
   
 
@@ -762,15 +762,6 @@ const EmergencyHotline = () => {
 
 
 
-
-
-
-
-
-
-
-
-
     'ear pain treatment': {
       en: "Ear Pain Care:\n• Apply warm compress\n• Avoid inserting objects into ear\n• Use ear drops only if prescribed\n• Keep ear dry\n• Seek medical help if fever or discharge occurs",
       bn: "কান ব্যথার চিকিৎসা:\n• গরম প্যাক ব্যবহার করুন\n• কানে কিছু ঢোকাবেন না\n• ডাক্তারের পরামর্শে ড্রপ ব্যবহার করুন\n• কান শুকনো রাখুন\n• জ্বর বা পুঁজ হলে ডাক্তার দেখান"
@@ -1013,7 +1004,7 @@ const EmergencyHotline = () => {
   
   // Find appropriate response
   const findResponse = (userMessage) => {
-    const lowerMessage = userMessage.toLowerCase();
+    const lowerMessage = userMessage.toLowerCase()
     
     // Check for emergency keywords
     const emergencyKeywords = language === 'en' 
@@ -2220,15 +2211,15 @@ function App() {
           </div>
           
           <div className="nav-links">
-            <button className={`nav-link ${activePage === 'home' ? 'active' : ''}`} onClick={() => setActivePage('home')}>
+            <button className={`nav-link home-nav ${activePage === 'home' ? 'active' : ''}`} onClick={() => setActivePage('home')}>
               {t('home')}
             </button>
-            <button className={`nav-link ${activePage === 'donors' ? 'active' : ''}`} onClick={() => setActivePage('donors')}>
+            <button className={`nav-link find-nav ${activePage === 'donors' ? 'active' : ''}`} onClick={() => setActivePage('donors')}>
               {t('findDonors')}
             </button>
             
             {isLoggedIn && enhancedCurrentUser && (
-              <button className={`nav-link ${activePage === 'profile' ? 'active' : ''}`} onClick={() => setActivePage('profile')}>
+              <button className={`nav-link profile-nav ${activePage === 'profile' ? 'active' : ''}`} onClick={() => setActivePage('profile')}>
                 {t('myProfile')}
               </button>
             )}
@@ -2539,11 +2530,17 @@ const DonorsPage = ({
 
       {/* Location Detection */}
       <div className="location-detection">
-        <button className="detect-location-btn" onClick={onDetectLocation}>
+        <button
+          className="detect-location-btn"
+          onClick={() => window.open('https://www.google.com/maps', '_blank')}
+        >
           <span className="btn-icon">📍</span>
-          {userLocation ? `${language === 'en' ? 'Location' : 'অবস্থান'}: ${userLocation}` : t('detectLocation')}
+          {userLocation
+            ? `${language === 'en' ? 'Location' : 'অবস্থান'}: ${userLocation}`
+            : t('detectLocation')}
         </button>
       </div>
+
 
       {/* Enhanced Availability Filter */}
       <div className="availability-filter-section">
@@ -2777,6 +2774,7 @@ const DonorsPage = ({
               <span className="count-label">{t('donorsFound')}</span>
             </div>
             <div className="action-buttons">
+              
               <button className="clear-filters-btn" onClick={onClearFilters}>
                 <span className="btn-icon">🗑️</span>
                 {t('clearAllFilters')}
