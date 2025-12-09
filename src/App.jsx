@@ -1641,6 +1641,8 @@ function App() {
   const [verificationCode, setVerificationCode] = useState('');
   const [generatedCode, setGeneratedCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+
   
 
   // Toast / popup for user messages (validation, success, errors)
@@ -2090,21 +2092,21 @@ function App() {
     }
   }, [handleAddDonationRecord, language]);
 
-  const detectUserLocation = useCallback(() => {
-    setIsLoading(true);
-    const locations = [
-      'Dhaka - Gulshan', 'Dhaka - Dhanmondi', 'Dhaka - Uttara', 
-      'Cumilla - Kandirpar', 'Chittagong - Agrabad', 'Sylhet - Zindabazar'
-    ];
-    setTimeout(() => {
-      const randomLocation = locations[Math.floor(Math.random() * locations.length)];
-      setUserLocation(randomLocation);
-      setLocationSearch(randomLocation);
-      setSelectedLocation(randomLocation);
-      setIsLoading(false);
-      alert(`📍 ${language === 'en' ? 'Location detected' : 'অবস্থান সনাক্ত হয়েছে'}: ${randomLocation}`);
-    }, 1000);
-  }, [language]);
+  // const detectUserLocation = useCallback(() => {
+  //   setIsLoading(true);
+  //   const locations = [
+  //     'Dhaka - Gulshan', 'Dhaka - Dhanmondi', 'Dhaka - Uttara', 
+  //     'Cumilla - Kandirpar', 'Chittagong - Agrabad', 'Sylhet - Zindabazar'
+  //   ];
+  //   setTimeout(() => {
+  //     const randomLocation = locations[Math.floor(Math.random() * locations.length)];
+  //     setUserLocation(randomLocation);
+  //     setLocationSearch(randomLocation);
+  //     setSelectedLocation(randomLocation);
+  //     setIsLoading(false);
+  //     alert(`📍 ${language === 'en' ? 'Location detected' : 'অবস্থান সনাক্ত হয়েছে'}: ${randomLocation}`);
+  //   }, 1000);
+  // }, [language]);
 
   const handleContactDonor = useCallback((donor) => {
     if (donor.isCurrentUser) {
@@ -2275,9 +2277,14 @@ function App() {
                   <Button variant="secondary" onClick={() => setShowRegistration(true)}>
                     <span className="btn-icon">❤️</span>{t('registerAsDonor')}
                   </Button>
-                  <Button variant="tertiary" onClick={detectUserLocation}>
-                    <span className="btn-icon">📍</span>{t('detectMyLocation')}
-                  </Button>
+                  <Button
+                  variant="tertiary"
+                  onClick={() => window.open('https://www.google.com/maps', '_blank')}
+                    >
+                  <span className="btn-icon">📍</span>
+                  {t('detectMyLocation')}
+                </Button>
+
                 </div>
 
                 <div className="live-stats">
@@ -2393,7 +2400,7 @@ function App() {
             setSelectedUrgency={setSelectedUrgency}
             filteredDonors={filteredDonors}
             userLocation={userLocation}
-            onDetectLocation={detectUserLocation}
+            // onDetectLocation={detectUserLocation}
             onClearFilters={clearAllFilters}
             onContactDonor={handleContactDonor}
             onViewDonorProfile={handleViewDonorProfile}
