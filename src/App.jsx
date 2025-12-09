@@ -13,7 +13,6 @@ const englishTexts = {
   appSubtitle: "Bangladesh Blood Donation Network",
   
   // i can add
-
   // In your englishTexts object:
 seeMore: "See More",
 seeLess: "See Less",
@@ -792,10 +791,7 @@ const EmergencyHotline = () => {
         bn: "বুকে ব্যথার নির্দেশনা:\n• সব কাজ বন্ধ করে শান্তভাবে বসুন বা শুয়ে পড়ুন\n• ধীরে ধীরে গভীর শ্বাস নিন\n• অ্যাসিডিটির কারণে হলে অ্যান্টাসিড উপকার দিতে পারে\n• ভারী খাবার ও ক্যাফেইন কিছু সময় এড়িয়ে চলুন\n• ব্যথা যদি হাত, চোয়াল বা পিঠে ছড়ায় — জরুরি মেডিকেল সাহায্য নিন\n• বুকে ব্যথা ৫ মিনিটের বেশি স্থায়ী হলে সাথে সাথে সাহায্য নিন\n• জরুরি সাহায্য প্রয়োজন যদি: শ্বাসকষ্ট, অতিরিক্ত ঘাম, বমি ভাব, মাথা ঘোরা বা অজ্ঞান হয়ে যাওয়ার অনুভূতি থাকে"
       },
 
-      'high blood pressure': {
-        en: "High Blood Pressure Care:\n• Sit and relax; take slow deep breaths\n• Avoid stress and stay calm\n• Reduce salt intake immediately\n• Drink water but avoid caffeinated drinks\n• Take prescribed BP medicine if available\n• Check BP every 20–30 minutes\n• Seek urgent medical help if BP stays above 160/100 or symptoms appear: headache, chest pain, dizziness, blurred vision, shortness of breath",
-        bn: "উচ্চ রক্তচাপ চিকিৎসা:\n• বসে শান্ত হোন; ধীরে ধীরে গভীর শ্বাস নিন\n• চাপ বা স্ট্রেস কমান\n• সাথে সাথে লবণ কমিয়ে দিন\n• পানি পান করুন কিন্তু ক্যাফেইনযুক্ত পানীয় এড়িয়ে চলুন\n• ডাক্তার নির্ধারিত BP ওষুধ থাকলে গ্রহণ করুন\n• প্রতি ২০–৩০ মিনিট পর BP মাপুন\n• জরুরি চিকিৎসা নিন যদি BP ১৬০/১০০ এর বেশি থাকে বা উপসর্গ থাকে: মাথাব্যথা, বুকে ব্যথা, মাথা ঘোরা, ঝাপসা দেখা, শ্বাসকষ্ট"
-      },
+
 
       'low blood pressure': {
         en: "Low Blood Pressure Care:\n• Sit or lie down immediately to prevent fainting\n• Drink water or oral rehydration solution (ORS)\n• Eat a salty snack if allowed\n• Raise legs slightly above heart level\n• Avoid sudden standing or fast movements\n• Eat small, frequent meals\n• Seek medical help if symptoms persist: dizziness, weakness, blurred vision, cold skin, or fainting",
