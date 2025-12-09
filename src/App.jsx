@@ -13,6 +13,7 @@ const englishTexts = {
   appSubtitle: "Bangladesh Blood Donation Network",
   
   // i can add
+
   // In your englishTexts object:
 seeMore: "See More",
 seeLess: "See Less",
@@ -1620,13 +1621,15 @@ const DonationHistory = ({ donations, onAddDonation, isCurrentUser = false }) =>
 function App() {
   const { t, language } = useTranslation();
 
-  
+  // i add 
+  const [locationSearch, setLocationSearch] = useState("");
+  const [locationSuggestions, setLocationSuggestions] = useState([]); // ✅ define it
   // State Management
   const [activePage, setActivePage] = useLocalStorage('activePage', 'home');
   const [isLoggedIn, setIsLoggedIn] = useLocalStorage('isLoggedIn', false);
   const [currentUser, setCurrentUser] = useLocalStorage('currentUser', null);
   const [selectedBloodGroup, setSelectedBloodGroup] = useState('');
-  const [locationSearch, setLocationSearch] = useState('');
+  // const [locationSearch, setLocationSearch] = useState('');
   const [selectedLocation, setSelectedLocation] = useState('');
   const [selectedUrgency, setSelectedUrgency] = useState('all');
   const [showRegistration, setShowRegistration] = useState(false);
@@ -1638,6 +1641,7 @@ function App() {
   const [verificationCode, setVerificationCode] = useState('');
   const [generatedCode, setGeneratedCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  
 
   // Toast / popup for user messages (validation, success, errors)
   const [toast, setToast] = useState({ visible: false, message: '', type: 'info' });
