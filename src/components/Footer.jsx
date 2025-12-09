@@ -43,8 +43,8 @@ const Footer = ({ onNavigate, onRegisterDonor }) => {
           <h4>{t('emergencyContacts')}</h4>
           <p>🚨 {language === 'en' ? 'National Emergency' : 'জাতীয় জরুরী'}: 999</p>
           <p>🏥 {t('ambulanceService')}: 199</p>
-          <p>🩸 {t('bloodBankInfo')}: 16273</p>
-          <p>🏭 {t('dghsHelpline')}: 16263</p>
+          <p> {t('bloodBankInfo')}: 16273</p>
+          <p> {t('dghsHelpline')}: 16263</p>
         </div>
       </div>
       <div className="footer-bottom">

@@ -781,10 +781,6 @@ const EmergencyHotline = () => {
       bn: "গ্যাস-অ্যাসিডিটির চিকিৎসা:\n• গরম পানি পান করুন\n• ঝাল ও তেলযুক্ত খাবার এড়িয়ে চলুন\n• অ্যান্টাসিড নিন\n• অল্প অল্প করে বারবার খান\n• খাওয়ার পর সাথে সাথে শুয়ে পড়বেন না\n• বুকে ব্যথা থাকলে ডাক্তার দেখান"
     },
 
-    'sohan': {
-      en: "sohan Treatment & Care:\n• Rest and stay hydrated\n• Use over-the-counter fever reducers (acetaminophen/ibuprofen)\n• Gargle with warm salt water for sore throat\n• Use humidifier for cough\n• Antiviral medications if prescribed (within 48 hours)\n• Stay home to avoid spreading\n• Seek medical help if: difficulty breathing, chest pain, severe weakness",
-      bn: "ফ্লু চিকিৎসা ও যত্ন:\n• বিশ্রাম নিন এবং হাইড্রেটেড থাকুন\n• ওভার-দ্য-কাউন্টার জ্বর কমানোর ওষুধ ব্যবহার করুন\n• গলা ব্যথার জন্য গরম লবণ পানি দিয়ে গার্গল করুন\n• কাশির জন্য হিউমিডিফায়ার ব্যবহার করুন\n• নির্ধারিত হলে অ্যান্টিভাইরাল ওষুধ (৪৮ ঘন্টার মধ্যে)\n• ছড়ানো এড়াতে বাড়িতে থাকুন\n• চিকিৎসা সাহায্য নিন যদি: শ্বাসকষ্ট হয়, বুকে ব্যথা হয়, তীব্র দুর্বলতা"
-    },
     'allergy treatment': {
       en: "Allergy Relief:\n• Take antihistamines\n• Avoid contact with allergens\n• Keep windows closed during high pollen times\n• Shower after outdoor exposure\n• Seek urgent help if breathing difficulty occurs",
       bn: "অ্যালার্জি থেকে মুক্তি:\n• অ্যান্টিহিস্টামিন ওষুধ নিন\n• অ্যালার্জি সৃষ্টিকারী জিনিস এড়িয়ে চলুন\n• পরাগ বেশি হলে জানালা বন্ধ রাখুন\n• বাইরে থেকে এসে গোসল করুন\n• শ্বাসকষ্ট হলে জরুরি চিকিৎসা নিন"
@@ -815,10 +811,11 @@ const EmergencyHotline = () => {
         bn: "লো ব্লাড প্রেসারের চিকিৎসা:\n• মাথা ঘোরা লাগলে সাথে সাথে বসুন বা শুয়ে পড়ুন\n• পানি বা ওআরএস পান করুন\n• অনুমতি থাকলে সামান্য লবণযুক্ত খাবার খান\n• পা হৃদয়ের চেয়ে একটু উঁচু করে রাখুন\n• হঠাৎ দাঁড়ানো বা দ্রুত নড়াচড়া এড়িয়ে চলুন\n• অল্প অল্প করে বারবার খান\n• উপসর্গ চলতে থাকলে ডাক্তার দেখান: মাথা ঘোরা, দুর্বল লাগা, ঝাপসা দেখা, ঠান্ডা ত্বক, অজ্ঞান হয়ে যাওয়া"
       },
 
-    'sohan': {
-      en: "sohan Treatment & Care:\n• Rest and stay hydrated\n• Use over-the-counter fever reducers (acetaminophen/ibuprofen)\n• Gargle with warm salt water for sore throat\n• Use humidifier for cough\n• Antiviral medications if prescribed (within 48 hours)\n• Stay home to avoid spreading\n• Seek medical help if: difficulty breathing, chest pain, severe weakness",
-      bn: "ফ্লু চিকিৎসা ও যত্ন:\n• বিশ্রাম নিন এবং হাইড্রেটেড থাকুন\n• ওভার-দ্য-কাউন্টার জ্বর কমানোর ওষুধ ব্যবহার করুন\n• গলা ব্যথার জন্য গরম লবণ পানি দিয়ে গার্গল করুন\n• কাশির জন্য হিউমিডিফায়ার ব্যবহার করুন\n• নির্ধারিত হলে অ্যান্টিভাইরাল ওষুধ (৪৮ ঘন্টার মধ্যে)\n• ছড়ানো এড়াতে বাড়িতে থাকুন\n• চিকিৎসা সাহায্য নিন যদি: শ্বাসকষ্ট হয়, বুকে ব্যথা হয়, তীব্র দুর্বলতা"
-    },
+      'sohan': {
+        en: "His full name is Sakib Chowdhury Sohan. He is a good boy and also the main developer of this website.",
+        bn: "তার পুরো নাম সাকিব চৌধুরী সোহান। তিনি একজন ভালো মানুষ এবং এই ওয়েবসাইটের প্রধান ডেভেলপার।"
+      },
+
       'kidney pain': {
         en: "Kidney Pain Care:\n• Drink plenty of water unless restricted by doctor\n• Use a warm compress on lower back\n• Avoid heavy lifting and intense exercise\n• Avoid salty and processed foods\n• Take OTC pain relievers (acetaminophen) if needed\n• Seek medical help if pain is severe, comes with fever, burning urination, blood in urine, or nausea—could be infection or kidney stones",
         bn: "কিডনি ব্যথার যত্ন:\n• ডাক্তারের নিষেধ না থাকলে প্রচুর পানি পান করুন\n• কোমরের নিচে গরম প্যাক ব্যবহার করুন\n• ভারী জিনিস তোলা ও কঠিন ব্যায়াম এড়িয়ে চলুন\n• লবণ ও প্রসেসড খাবার কম খান\n• প্রয়োজনে প্যারাসিটামল জাতীয় ব্যথানাশক নিন\n• তীব্র ব্যথা, জ্বর, প্রস্রাবে জ্বালা, রক্ত দেখা বা বমি ভাব থাকলে দ্রুত ডাক্তার দেখান—এগুলো সংক্রমণ বা কিডনিতে পাথরের লক্ষণ হতে পারে"
@@ -829,10 +826,7 @@ const EmergencyHotline = () => {
         bn: "লিভার ব্যথার চিকিৎসা:\n• সম্পূর্ণভাবে অ্যালকোহল এড়িয়ে চলুন\n• হালকা ও কম চর্বিযুক্ত খাবার খান\n• প্রচুর পানি পান করুন\n• প্যারাসিটামলসহ অনেক ব্যথানাশক বেশি নিলে লিভারের ক্ষতি হতে পারে—সতর্ক থাকুন\n• বিশ্রাম নিন এবং ভারী খাবার এড়িয়ে চলুন\n• ব্যথা তীব্র বা দীর্ঘস্থায়ী হলে, অথবা জন্ডিস, বমি ভাব, জ্বর, গাঢ় প্রস্রাব দেখা দিলে দ্রুত ডাক্তার দেখান—এগুলো হেপাটাইটিস বা লিভারের রোগের লক্ষণ হতে পারে"
       },
 
-    'sohan': {
-      en: "sohan Treatment & Care:\n• Rest and stay hydrated\n• Use over-the-counter fever reducers (acetaminophen/ibuprofen)\n• Gargle with warm salt water for sore throat\n• Use humidifier for cough\n• Antiviral medications if prescribed (within 48 hours)\n• Stay home to avoid spreading\n• Seek medical help if: difficulty breathing, chest pain, severe weakness",
-      bn: "ফ্লু চিকিৎসা ও যত্ন:\n• বিশ্রাম নিন এবং হাইড্রেটেড থাকুন\n• ওভার-দ্য-কাউন্টার জ্বর কমানোর ওষুধ ব্যবহার করুন\n• গলা ব্যথার জন্য গরম লবণ পানি দিয়ে গার্গল করুন\n• কাশির জন্য হিউমিডিফায়ার ব্যবহার করুন\n• নির্ধারিত হলে অ্যান্টিভাইরাল ওষুধ (৪৮ ঘন্টার মধ্যে)\n• ছড়ানো এড়াতে বাড়িতে থাকুন\n• চিকিৎসা সাহায্য নিন যদি: শ্বাসকষ্ট হয়, বুকে ব্যথা হয়, তীব্র দুর্বলতা"
-    },
+
 
       'blood info': {
         en: "Whole Blood:\n• Contains red blood cells, white blood cells, platelets, and plasma\n• Used for major blood loss, trauma, surgery, and severe anemia\n• Increases oxygen supply and blood volume\n• Donated every 56 days (standard blood donation)\n• Stored for about 35–42 days",
