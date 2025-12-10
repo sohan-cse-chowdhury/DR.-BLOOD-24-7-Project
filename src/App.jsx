@@ -3554,7 +3554,7 @@ const RegistrationModal = ({
             <h3>{t('personalInfo')}</h3>
             <div className="form-grid">
               <div className="form-group photo-upload">
-                <label>{t('Upload Photo Optional *') || (language === 'en' ? 'Upload Photo (optional)' : 'ছবি আপলোড (ঐচ্ছিক)')}</label>
+                <label>{t('Upload your picture *') || (language === 'en' ? 'Upload Photo (optional)' : 'ছবি আপলোড (ঐচ্ছিক)')}</label>
                 <div className="photo-input-row">
                     <input
                       type="file"
