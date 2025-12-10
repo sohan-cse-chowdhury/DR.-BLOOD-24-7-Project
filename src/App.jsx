@@ -26,7 +26,7 @@ noDonationHistory: "No donation history available",
   home: "🏠 Home",
   findDonors: "🔍 Find Donors",
   myProfile: "👤 My Profile",
-  becomeDonor: " Become Donor",
+  becomeDonor: "🚹 Become Donor",
   login: "🔑 Login",
   logout: "👋 Logout",
   
@@ -1881,7 +1881,7 @@ function App() {
     ]
   },
   {
-    id: 15, name: "Imran Sheikh", bloodType: "B+", city: "Dhaka", area: "Banani",
+    id: 15, name: "Imran Sheikh", bloodType: "B+", city: "Dhaka", area: "Gulshan",
     availability: "24/7 Emergency", donations: 41, image: "👨‍✈️", rating: 4.8,
     badge: "Platinum Donor", verified: true, emergencyAvailable: true,
     lastDonation: "2024-02-20", phone: "+880 1714-778899", email: "imran.s@airlines.com",
@@ -2944,7 +2944,7 @@ const DonorsPage = ({
               <div className="quick-locations-section">
                 <label className="quick-locations-label">{t('popularAreas')}</label>
                 <div className="location-pills">
-                  {['Dhaka - Gulshan', 'Dhaka - Dhanmondi', 'Cumilla - Kandirpar', 'Chittagong - Agrabad', 'Sylhet - Zindabazar'].map(area => (
+                  {['Dhaka - Gulshan', 'Dhaka - Dhanmondi', 'Cumilla - Kandirpar', 'Dhaka - Banani', 'Sylhet - Zindabazar'].map(area => (
                     <button
                       key={area}
                       className={`location-pill ${selectedLocation === area ? 'active' : ''}`}
