@@ -70,7 +70,7 @@ noDonationHistory: "No donation history available",
   // Donors Page
   findBloodDonorsTitle: "🔍 Find Blood Donors",
   findDonorsSubtitle: "Connect with verified donors across Bangladesh's major cities",
-  detectLocation: " Detect My Location",
+  detectLocation: "Donor from the Neighborhood",
   donorAvailability: "Donor Availability",
   allDonors: "👥 All Donors",
   availableNow: "✅ Available Now",
@@ -94,7 +94,7 @@ noDonationHistory: "No donation history available",
   recentDonors: "Recent Donors (Last 3 months)",
   nearMyLocation: "Near My Location",
   availableToday: "Available Today",
-  donorsFound: "donors found",
+  donorsFound: " Donor Found",
   clearAllFilters: " Clear All Filters",
   becomeADonor: " Become a Donor",
   
@@ -1681,7 +1681,7 @@ function App() {
   // Enhanced donor data with donation history and status tracking
   const baseDonors = useMemo(() => [
     {
-      id: 1, name: "Dr. Sarah Chen", bloodType: "O+", city: "Dhaka", area: "Gulshan",
+      id: 1, name: "Dr. Sarah Chen", bloodType: "A+", city: "Dhaka", area: "Gulshan",
       availability: "24/7 Emergency", donations: 47, image: "👩‍⚕️", rating: 4.9,
       badge: "Platinum Donor", verified: true, emergencyAvailable: true,
       lastDonation: "2024-01-15",
@@ -1697,7 +1697,7 @@ function App() {
       ]
     },
     {
-      id: 2, name: "Ahmed Rahman", bloodType: "A+", city: "Dhaka", area: "Gulshan",
+      id: 2, name: "Ahmed Rahman", bloodType: "A-", city: "Dhaka", area: "Gulshan",
       availability: "Weekdays 9AM-5PM", donations: 15, image: "👨‍💼", rating: 4.5,
       badge: "Silver Donor", verified: true, emergencyAvailable: false,
       lastDonation: "2024-02-10",
@@ -1710,8 +1710,9 @@ function App() {
         { id: 2, date: "2023-11-15", location: "United Hospital", type: "Whole Blood", volume: "450ml" }
       ]
     },
+
     {
-      id: 3, name: "Michael Rodriguez", bloodType: "A+", city: "Dhaka", area: "Dhanmondi",
+      id: 3, name: "Michael Rodriguez", bloodType: "B+", city: "Dhaka", area: "Gulshan",
       availability: "Weekends", donations: 32, image: "👨‍💼", rating: 4.8,
       badge: "Gold Donor", verified: true, emergencyAvailable: false,
       lastDonation: "2024-02-01",
@@ -1726,7 +1727,7 @@ function App() {
       ]
     },
     {
-      id: 4, name: "Nadia Islam", bloodType: "B+", city: "Dhaka", area: "Dhanmondi",
+      id: 4, name: "Nadia Islam", bloodType: "B-", city: "Dhaka", area: "Gulshan",
       availability: "Evenings after 6 PM", donations: 8, image: "👩‍🎓", rating: 4.3,
       badge: "Bronze Donor", verified: true, emergencyAvailable: true,
       lastDonation: "2024-01-25",
@@ -1739,7 +1740,7 @@ function App() {
       ]
     },
     {
-      id: 5, name: "Ayesha Siddiqa", bloodType: "B-", city: "Dhaka", area: "Uttara",
+      id: 5, name: "Ayesha Siddiqa", bloodType: "AB+", city: "Dhaka", area: "Gulshan",
       availability: "Evenings after 6 PM", donations: 19, image: "👩‍🎓", rating: 4.7,
       badge: "Silver Donor", verified: true, emergencyAvailable: true,
       lastDonation: "2024-01-28",
@@ -1754,7 +1755,7 @@ function App() {
       ]
     },
     {
-      id: 6, name: "Dr. Rajesh Kumar", bloodType: "AB+", city: "Cumilla", area: "Kandirpar",
+      id: 6, name: "Dr. Rajesh Kumar", bloodType: "AB-", city: "Dhaka", area: "Gulshan",
       availability: "24/7 Emergency", donations: 28, image: "👨‍⚕️", rating: 4.8,
       badge: "Gold Donor", verified: true, emergencyAvailable: true,
       lastDonation: "2024-02-12",
@@ -1769,7 +1770,7 @@ function App() {
       ]
     },
     {
-      id: 7, name: "Fatima Begum", bloodType: "O+", city: "Chittagong", area: "Agrabad",
+      id: 7, name: "Fatima Begum", bloodType: "O+", city: "Dhaka", area: "Gulshan",
       availability: "Weekdays", donations: 22, image: "👩‍💼", rating: 4.6,
       badge: "Silver Donor", verified: true, emergencyAvailable: false,
       lastDonation: "2024-02-08",
@@ -1784,7 +1785,7 @@ function App() {
       ]
     },
     {
-      id: 8, name: "Jamil Hossain", bloodType: "A-", city: "Sylhet", area: "Zindabazar",
+      id: 8, name: "Jamil Hossain", bloodType: "O-", city: "Dhaka", area: "Gulshan",
       availability: "Flexible Schedule", donations: 14, image: "👨‍🌾", rating: 4.4,
       badge: "Bronze Donor", verified: true, emergencyAvailable: true,
       lastDonation: "2024-02-05",
@@ -1798,7 +1799,7 @@ function App() {
       ]
     },
     {
-      id: 9, name: "Professor Anwar Hussain", bloodType: "B+", city: "Rajshahi", area: "University",
+      id: 9, name: "Professor Anwar Hussain", bloodType: "A+", city: "Dhaka", area: "Dhanmondi",
       availability: "Weekends", donations: 35, image: "👨‍🏫", rating: 4.7,
       badge: "Gold Donor", verified: true, emergencyAvailable: false,
       lastDonation: "2024-02-10",
@@ -1813,7 +1814,7 @@ function App() {
       ]
     },
     {
-      id: 10, name: "Tasnim Rahman", bloodType: "AB-", city: "Khulna", area: "Sonadanga",
+      id: 10, name: "Tasnim Rahman", bloodType: "B+", city: "Dhaka", area: "Dhanmondi",
       availability: "On Call", donations: 9, image: "👩‍💻", rating: 4.2,
       badge: "Bronze Donor", verified: true, emergencyAvailable: true,
       lastDonation: "2024-01-30",
@@ -1825,7 +1826,271 @@ function App() {
       donationHistory: [
         { id: 1, date: "2024-01-30", location: "Khulna Medical College", type: "Whole Blood", volume: "450ml" }
       ]
-    }
+    },
+
+  
+  // New donors for area coverage
+  {
+    id: 11, name: "Arif Mahmud", bloodType: "B+", city: "Dhaka", area: "Mirpur",
+    availability: "Evenings 7PM-10PM", donations: 21, image: "👨‍🔧", rating: 4.4,
+    badge: "Silver Donor", verified: true, emergencyAvailable: true,
+    lastDonation: "2024-02-15", phone: "+880 1712-334455", email: "arif.m@engineer.com",
+    gender: "Male", age: 31, weight: "70 kg", height: "172 cm", occupation: "Mechanical Engineer",
+    languages: ["Bengali", "English"], achievements: ["Factory Donor Program"],
+    medicalInfo: "Healthy, Iron levels normal", 
+    donationHistory: [
+      { id: 1, date: "2024-02-15", location: "Mirpur General Hospital", type: "Whole Blood", volume: "450ml" },
+      { id: 2, date: "2023-12-05", location: "Mirpur General Hospital", type: "Whole Blood", volume: "450ml" }
+    ]
+  },
+  {
+    id: 12, name: "Selina Akter", bloodType: "O-", city: "Dhaka", area: "Motijheel",
+    availability: "Business Hours", donations: 12, image: "👩‍💼", rating: 4.3,
+    badge: "Bronze Donor", verified: true, emergencyAvailable: false,
+    lastDonation: "2024-01-20", phone: "+880 1912-445566", email: "selina.a@bankbd.com",
+    gender: "Female", age: 28, weight: "54 kg", height: "159 cm", occupation: "Bank Officer",
+    languages: ["Bengali", "English", "Hindi"], achievements: ["Corporate Donor"],
+    medicalInfo: "Slight anemia managed with diet", 
+    donationHistory: [
+      { id: 1, date: "2024-01-20", location: "Bangabandhu Hospital", type: "Whole Blood", volume: "450ml" }
+    ]
+  },
+  {
+    id: 13, name: "Kamal Hossain", bloodType: "A+", city: "Dhaka", area: "Mohammadpur",
+    availability: "Weekends Morning", donations: 18, image: "👨‍🏫", rating: 4.5,
+    badge: "Silver Donor", verified: true, emergencyAvailable: true,
+    lastDonation: "2024-02-18", phone: "+880 1713-556677", email: "kamal.h@college.edu",
+    gender: "Male", age: 38, weight: "65 kg", height: "168 cm", occupation: "College Teacher",
+    languages: ["Bengali", "English"], achievements: ["Teacher's Association Donor"],
+    medicalInfo: "Healthy, BP slightly elevated", 
+    donationHistory: [
+      { id: 1, date: "2024-02-18", location: "Dhaka Medical College", type: "Whole Blood", volume: "450ml" },
+      { id: 2, date: "2023-10-30", location: "Dhaka Medical College", type: "Whole Blood", volume: "450ml" }
+    ]
+  },
+  {
+    id: 14, name: "Roksana Parvin", bloodType: "A-", city: "Dhaka", area: "Farmgate",
+    availability: "Flexible by Appointment", donations: 7, image: "👩‍⚖️", rating: 4.1,
+    badge: "Bronze Donor", verified: true, emergencyAvailable: false,
+    lastDonation: "2024-01-10", phone: "+880 1813-667788", email: "roksana.p@legal.com",
+    gender: "Female", age: 33, weight: "57 kg", height: "161 cm", occupation: "Lawyer",
+    languages: ["Bengali", "English"], achievements: ["Legal Aid Donor"],
+    medicalInfo: "Healthy, occasional migraines", 
+    donationHistory: [
+      { id: 1, date: "2024-01-10", location: "Bangladesh Blood Bank", type: "Whole Blood", volume: "450ml" }
+    ]
+  },
+  {
+    id: 15, name: "Imran Sheikh", bloodType: "B+", city: "Dhaka", area: "Banani",
+    availability: "24/7 Emergency", donations: 41, image: "👨‍✈️", rating: 4.8,
+    badge: "Platinum Donor", verified: true, emergencyAvailable: true,
+    lastDonation: "2024-02-20", phone: "+880 1714-778899", email: "imran.s@airlines.com",
+    gender: "Male", age: 45, weight: "76 kg", height: "180 cm", occupation: "Airline Pilot",
+    languages: ["Bengali", "English", "Arabic", "French"], achievements: ["Frequent Flyer Donor", "International Donor"],
+    medicalInfo: "Excellent health, regular aviation medicals", 
+    donationHistory: [
+      { id: 1, date: "2024-02-20", location: "Square Hospital", type: "Whole Blood", volume: "450ml" },
+      { id: 2, date: "2023-12-15", location: "Square Hospital", type: "Whole Blood", volume: "450ml" },
+      { id: 3, date: "2023-09-01", location: "Square Hospital", type: "Whole Blood", volume: "450ml" }
+    ]
+  },
+  {
+    id: 16, name: "Farhana Yeasmin", bloodType: "B-", city: "Dhaka", area: "Basundhara",
+    availability: "Weekdays Afternoon", donations: 14, image: "👩‍🔬", rating: 4.4,
+    badge: "Silver Donor", verified: true, emergencyAvailable: true,
+    lastDonation: "2024-02-05", phone: "+880 1914-889900", email: "farhana.y@research.com",
+    gender: "Female", age: 29, weight: "53 kg", height: "157 cm", occupation: "Research Scientist",
+    languages: ["Bengali", "English"], achievements: ["Research Institute Donor"],
+    medicalInfo: "Healthy, vegetarian with iron supplements", 
+    donationHistory: [
+      { id: 1, date: "2024-02-05", location: "BSMMU", type: "Whole Blood", volume: "450ml" },
+      { id: 2, date: "2023-11-20", location: "BSMMU", type: "Whole Blood", volume: "450ml" }
+    ]
+  },
+  {
+    id: 17, name: "Rafiqul Islam", bloodType: "AB+", city: "Dhaka", area: "Shyamoli",
+    availability: "Evenings", donations: 23, image: "👨‍💼", rating: 4.6,
+    badge: "Gold Donor", verified: true, emergencyAvailable: false,
+    lastDonation: "2024-02-12", phone: "+880 1715-990011", email: "rafiqul.i@business.com",
+    gender: "Male", age: 48, weight: "79 kg", height: "175 cm", occupation: "Business Owner",
+    languages: ["Bengali", "English", "Hindi"], achievements: ["Business Association Donor"],
+    medicalInfo: "Borderline cholesterol, controlled with diet", 
+    donationHistory: [
+      { id: 1, date: "2024-02-12", location: "Ibn Sina Hospital", type: "Whole Blood", volume: "450ml" },
+      { id: 2, date: "2023-10-25", location: "Ibn Sina Hospital", type: "Whole Blood", volume: "450ml" }
+    ]
+  },
+  {
+    id: 18, name: "Nusrat Jahan", bloodType: "AB-", city: "Dhaka", area: "Mohakhali",
+    availability: "By Appointment", donations: 9, image: "👩‍🎨", rating: 4.2,
+    badge: "Bronze Donor", verified: true, emergencyAvailable: true,
+    lastDonation: "2024-01-18", phone: "+880 1815-001122", email: "nusrat.j@design.com",
+    gender: "Female", age: 26, weight: "51 kg", height: "155 cm", occupation: "Graphic Designer",
+    languages: ["Bengali", "English"], achievements: ["Creative Community Donor"],
+    medicalInfo: "Healthy, slightly underweight", 
+    donationHistory: [
+      { id: 1, date: "2024-01-18", location: "United Hospital", type: "Whole Blood", volume: "450ml" }
+    ]
+  },
+  {
+    id: 19, name: "Sohel Rana", bloodType: "O+", city: "Dhaka", area: "Tejgaon",
+    availability: "Lunch Hours", donations: 16, image: "👨‍💻", rating: 4.3,
+    badge: "Silver Donor", verified: true, emergencyAvailable: false,
+    lastDonation: "2024-02-14", phone: "+880 1716-112233", email: "sohel.r@startup.com",
+    gender: "Male", age: 30, weight: "68 kg", height: "170 cm", occupation: "Startup Founder",
+    languages: ["Bengali", "English"], achievements: ["Tech Community Donor"],
+    medicalInfo: "Healthy, works long hours", 
+    donationHistory: [
+      { id: 1, date: "2024-02-14", location: "Popular Hospital", type: "Whole Blood", volume: "450ml" },
+      { id: 2, date: "2023-11-05", location: "Popular Hospital", type: "Whole Blood", volume: "450ml" }
+    ]
+  },
+  {
+    id: 20, name: "Laila Khondokar", bloodType: "A+", city: "Dhaka", area: "Bashundhara",
+    availability: "Weekends Only", donations: 31, image: "👩‍🏫", rating: 4.7,
+    badge: "Gold Donor", verified: true, emergencyAvailable: true,
+    lastDonation: "2024-02-16", phone: "+880 1916-223344", email: "laila.k@university.edu",
+    gender: "Female", age: 37, weight: "60 kg", height: "163 cm", occupation: "University Lecturer",
+    languages: ["Bengali", "English", "German"], achievements: ["Academic Donor", "Department Coordinator"],
+    medicalInfo: "Healthy, regular yoga practitioner", 
+    donationHistory: [
+      { id: 1, date: "2024-02-16", location: "Apollo Hospital", type: "Whole Blood", volume: "450ml" },
+      { id: 2, date: "2023-12-10", location: "Apollo Hospital", type: "Whole Blood", volume: "450ml" },
+      { id: 3, date: "2023-08-15", location: "Apollo Hospital", type: "Whole Blood", volume: "450ml" }
+    ]
+  },
+  // Additional cities coverage
+  {
+    id: 21, name: "Dr. Hasan Ali", bloodType: "O-", city: "Chittagong", area: "Panchlaish",
+    availability: "24/7 Emergency", donations: 38, image: "👨‍⚕️", rating: 4.9,
+    badge: "Platinum Donor", verified: true, emergencyAvailable: true,
+    lastDonation: "2024-02-22", phone: "+880 1817-334455", email: "hasan.ali@ctghospital.com",
+    gender: "Male", age: 44, weight: "75 kg", height: "178 cm", occupation: "Surgeon",
+    languages: ["Bengali", "English", "Chittagonian"], achievements: ["Medical Director", "Emergency Team Lead"],
+    medicalInfo: "Excellent health, surgeon fitness", 
+    donationHistory: [
+      { id: 1, date: "2024-02-22", location: "CSCR", type: "Whole Blood", volume: "450ml" },
+      { id: 2, date: "2023-12-28", location: "CSCR", type: "Whole Blood", volume: "450ml" },
+      { id: 3, date: "2023-09-15", location: "CSCR", type: "Whole Blood", volume: "450ml" }
+    ]
+  },
+  {
+    id: 22, name: "Moriom Begum", bloodType: "B+", city: "Chittagong", area: "Chandgaon",
+    availability: "Weekdays", donations: 11, image: "👩‍💼", rating: 4.3,
+    badge: "Bronze Donor", verified: true, emergencyAvailable: false,
+    lastDonation: "2024-02-01", phone: "+880 1917-445566", email: "moriom.b@port.com",
+    gender: "Female", age: 32, weight: "56 kg", height: "160 cm", occupation: "Port Authority Officer",
+    languages: ["Bengali", "English"], achievements: ["Port Authority Donor"],
+    medicalInfo: "Healthy, thalassemia minor trait", 
+    donationHistory: [
+      { id: 1, date: "2024-02-01", location: "Chittagong Medical College", type: "Whole Blood", volume: "450ml" }
+    ]
+  },
+  {
+    id: 23, name: "Shamim Ahmed", bloodType: "AB+", city: "Sylhet", area: "Surabazar",
+    availability: "Flexible", donations: 25, image: "👨‍🌾", rating: 4.6,
+    badge: "Gold Donor", verified: true, emergencyAvailable: true,
+    lastDonation: "2024-02-19", phone: "+880 1718-556677", email: "shamim.a@teagarden.com",
+    gender: "Male", age: 39, weight: "67 kg", height: "169 cm", occupation: "Tea Estate Supervisor",
+    languages: ["Bengali", "English", "Sylheti"], achievements: ["Estate Donor Program"],
+    medicalInfo: "Healthy, works outdoors", 
+    donationHistory: [
+      { id: 1, date: "2024-02-19", location: "Sylhet MAG Osmani", type: "Whole Blood", volume: "450ml" },
+      { id: 2, date: "2023-11-30", location: "Sylhet MAG Osmani", type: "Whole Blood", volume: "450ml" }
+    ]
+  },
+  {
+    id: 24, name: "Rina Das", bloodType: "A-", city: "Sylhet", area: "Mirabazar",
+    availability: "Weekends", donations: 6, image: "👩‍🏫", rating: 4.0,
+    badge: "Bronze Donor", verified: true, emergencyAvailable: false,
+    lastDonation: "2024-01-22", phone: "+880 1818-667788", email: "rina.d@school.edu",
+    gender: "Female", age: 27, weight: "52 kg", height: "156 cm", occupation: "School Teacher",
+    languages: ["Bengali", "English", "Sylheti"], achievements: ["School Donor Program"],
+    medicalInfo: "Healthy, mild allergies", 
+    donationHistory: [
+      { id: 1, date: "2024-01-22", location: "Sylhet Women's Hospital", type: "Whole Blood", volume: "450ml" }
+    ]
+  },
+  {
+    id: 25, name: "Dr. Khaleda Akter", bloodType: "O+", city: "Rajshahi", area: "Binodpur",
+    availability: "24/7 Emergency", donations: 42, image: "👩‍⚕️", rating: 4.8,
+    badge: "Platinum Donor", verified: true, emergencyAvailable: true,
+    lastDonation: "2024-02-24", phone: "+880 1719-778899", email: "khaleda.a@rmch.com",
+    gender: "Female", age: 47, weight: "63 kg", height: "165 cm", occupation: "Pediatrician",
+    languages: ["Bengali", "English", "Rajshahi dialect"], achievements: ["Hospital Administrator", "Child Health Advocate"],
+    medicalInfo: "Excellent health, regular donor", 
+    donationHistory: [
+      { id: 1, date: "2024-02-24", location: "Rajshahi Medical College", type: "Whole Blood", volume: "450ml" },
+      { id: 2, date: "2023-12-20", location: "Rajshahi Medical College", type: "Whole Blood", volume: "450ml" },
+      { id: 3, date: "2023-09-10", location: "Rajshahi Medical College", type: "Whole Blood", volume: "450ml" }
+    ]
+  },
+  {
+    id: 26, name: "Abdul Malek", bloodType: "B-", city: "Rajshahi", area: "Kazla",
+    availability: "Evenings", donations: 17, image: "👨‍🌾", rating: 4.4,
+    badge: "Silver Donor", verified: true, emergencyAvailable: true,
+    lastDonation: "2024-02-08", phone: "+880 1919-889900", email: "abdul.m@agriculture.com",
+    gender: "Male", age: 51, weight: "71 kg", height: "174 cm", occupation: "Agricultural Officer",
+    languages: ["Bengali", "English"], achievements: ["Farmers' Association Donor"],
+    medicalInfo: "Healthy, active in farming", 
+    donationHistory: [
+      { id: 1, date: "2024-02-08", location: "Rajshahi Hospital", type: "Whole Blood", volume: "450ml" },
+      { id: 2, date: "2023-10-15", location: "Rajshahi Hospital", type: "Whole Blood", volume: "450ml" }
+    ]
+  },
+  {
+    id: 27, name: "Tania Haque", bloodType: "AB-", city: "Khulna", area: "Khalishpur",
+    availability: "Weekdays", donations: 13, image: "👩‍💼", rating: 4.3,
+    badge: "Silver Donor", verified: true, emergencyAvailable: false,
+    lastDonation: "2024-02-03", phone: "+880 1720-990011", email: "tania.h@industry.com",
+    gender: "Female", age: 34, weight: "58 kg", height: "164 cm", occupation: "Industrial Manager",
+    languages: ["Bengali", "English"], achievements: ["Industrial Zone Donor"],
+    medicalInfo: "Healthy, works in factory environment", 
+    donationHistory: [
+      { id: 1, date: "2024-02-03", location: "Khulna Medical College", type: "Whole Blood", volume: "450ml" },
+      { id: 2, date: "2023-11-12", location: "Khulna Medical College", type: "Whole Blood", volume: "450ml" }
+    ]
+  },
+  {
+    id: 28, name: "Rafiq Mondol", bloodType: "A+", city: "Khulna", area: "Daulatpur",
+    availability: "On Call", donations: 29, image: "👨‍🔧", rating: 4.7,
+    badge: "Gold Donor", verified: true, emergencyAvailable: true,
+    lastDonation: "2024-02-17", phone: "+880 1820-001122", email: "rafiq.m@shipyard.com",
+    gender: "Male", age: 43, weight: "73 kg", height: "176 cm", occupation: "Shipyard Engineer",
+    languages: ["Bengali", "English"], achievements: ["Shipyard Donor Program Leader"],
+    medicalInfo: "Healthy, physically demanding job", 
+    donationHistory: [
+      { id: 1, date: "2024-02-17", location: "Khulna General Hospital", type: "Whole Blood", volume: "450ml" },
+      { id: 2, date: "2023-11-25", location: "Khulna General Hospital", type: "Whole Blood", volume: "450ml" },
+      { id: 3, date: "2023-08-30", location: "Khulna General Hospital", type: "Whole Blood", volume: "450ml" }
+    ]
+  },
+  {
+    id: 29, name: "Nasreen Sultana", bloodType: "O-", city: "Barishal", area: "Nattullabad",
+    availability: "Weekends", donations: 8, image: "👩‍🎓", rating: 4.2,
+    badge: "Bronze Donor", verified: true, emergencyAvailable: true,
+    lastDonation: "2024-01-28", phone: "+880 1721-112233", email: "nasreen.s@college.edu",
+    gender: "Female", age: 23, weight: "50 kg", height: "155 cm", occupation: "College Student",
+    languages: ["Bengali", "English"], achievements: ["Student Donor Club"],
+    medicalInfo: "Healthy, slightly underweight", 
+    donationHistory: [
+      { id: 1, date: "2024-01-28", location: "Barishal Medical College", type: "Whole Blood", volume: "450ml" }
+    ]
+  },
+  {
+    id: 30, name: "Sirajul Hoque", bloodType: "B+", city: "Barishal", area: "Rupatoli",
+    availability: "Flexible", donations: 19, image: "👨‍💼", rating: 4.5,
+    badge: "Silver Donor", verified: true, emergencyAvailable: false,
+    lastDonation: "2024-02-11", phone: "+880 1921-223344", email: "sirajul.h@govt.com",
+    gender: "Male", age: 36, weight: "69 kg", height: "171 cm", occupation: "Government Officer",
+    languages: ["Bengali", "English"], achievements: ["Government Employee Donor"],
+    medicalInfo: "Healthy, regular health checkups", 
+    donationHistory: [
+      { id: 1, date: "2024-02-11", location: "Barishal Hospital", type: "Whole Blood", volume: "450ml" },
+      { id: 2, date: "2023-10-20", location: "Barishal Hospital", type: "Whole Blood", volume: "450ml" }
+    ]
+  }
+
   ], []);
 
   // Enhanced current user with donation management
