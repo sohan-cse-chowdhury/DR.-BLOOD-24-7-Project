@@ -9332,3 +9332,91 @@ html {
 
 
 
+
+
+
+
+.blood-group-grid-enhanced {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  width: 100%;
+  max-width: 500px;
+}
+
+/* Big button-like options */
+.blood-group-grid-enhanced .blood-option {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1/1;
+  cursor: pointer;
+}
+
+.blood-group-grid-enhanced .blood-option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.blood-group-grid-enhanced .blood-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: #ffffff;
+  border: 3px solid #dc3545;
+  border-radius: 10px;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #dc3545;
+  transition: all 0.2s ease;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Hover effect */
+.blood-group-grid-enhanced .blood-option:hover .blood-label {
+  background: #dc3545;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 8px rgba(220, 53, 69, 0.3);
+}
+
+/* Selected state */
+.blood-group-grid-enhanced .blood-option input[type="radio"]:checked + .blood-label {
+  background: #dc3545;
+  color: white;
+  border-color: #c82333;
+  box-shadow: 0 5px 8px rgba(220, 53, 69, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .blood-group-grid-enhanced {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .blood-group-grid-enhanced .blood-label {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .blood-group-grid-enhanced {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+  }
+  
+  .blood-group-grid-enhanced .blood-label {
+    font-size: 1.5rem;
+    border-width: 2px;
+  }
+}
+
+
+
+
+
