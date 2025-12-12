@@ -743,7 +743,7 @@ const EmergencyHotline = () => {
     },
     
     // Flu and Cold - NEW
-    'flu symptoms': {
+    'flu': {
       en: "Influenza (Flu) Symptoms:\n• Sudden fever (38°C or higher)\n• Dry cough\n• Sore throat\n• Runny or stuffy nose\n• Muscle aches\n• Headache\n• Fatigue\n• Chills\nDuration: Usually 3-7 days\nContagious: 1 day before to 7 days after symptoms",
       bn: "ফ্লু লক্ষণ:\n• হঠাৎ জ্বর (৩৮°C বা তার বেশি)\n• শুকনো কাশি\n• গলা ব্যথা\n• সর্দি বা নাক বন্ধ\n• পেশী ব্যথা\n• মাথাব্যথা\n• ক্লান্তি\n• ঠাণ্ডা লাগা\nস্থায়িত্ব: সাধারণত ৩-৭ দিন\nসংক্রামক: লক্ষণ দেখা দেওয়ার ১ দিন আগে থেকে ৭ দিন পরে পর্যন্ত"
     },
@@ -837,13 +837,13 @@ const EmergencyHotline = () => {
       },
 
 
-      'cbc info': {
+      'cbc': {
         en: "CBC (Complete Blood Count):\n• A common blood test that checks overall health\n• Measures: RBC, WBC, Hemoglobin, Hematocrit, Platelets\n• Helps detect infection, anemia, inflammation, blood disorders\n• Often done during routine checkups\n• Quick and safe test with no major risks",
         bn: "সিবিসি (কমপ্লিট ব্লাড কাউন্ট):\n• একটি সাধারণ রক্ত পরীক্ষা যা শরীরের সামগ্রিক স্বাস্থ্য পরীক্ষা করে\n• যা মাপা হয়: আরবিসি, ডব্লিউবিসি, হিমোগ্লোবিন, হেমাটোক্রিট, প্লাটিলেট\n• সংক্রমণ, অ্যানিমিয়া, প্রদাহ, রক্তের রোগ শনাক্ত করতে সহায়ক\n• নিয়মিত স্বাস্থ্য পরীক্ষায় সাধারণত করা হয়\n• দ্রুত এবং নিরাপদ পরীক্ষা, বড় কোনো ঝুঁকি নেই"
       },
 
 
-      'hemoglobin info': {
+      'hemoglobin': {
         en: "Hemoglobin (Hb):\n• Protein in red blood cells that carries oxygen\n• Normal range: Men 13.8–17.2 g/dL, Women 12.1–15.1 g/dL\n• Low Hb causes anemia: fatigue, dizziness, pale skin\n• High Hb may indicate dehydration, lung disease, or polycythemia\n• Measured in CBC test",
         bn: "হিমোগ্লোবিন (Hb):\n• লোহিত রক্তকণিকায় থাকা প্রোটিন যা শরীরে অক্সিজেন পৌঁছে দেয়\n• স্বাভাবিক মাত্রা: পুরুষ ১৩.৮–১৭.২ গ্রাম/ডিএল, নারী ১২.১–১৫.১ গ্রাম/ডিএল\n• কম Hb হলে অ্যানিমিয়া হয়: ক্লান্তি, মাথা ঘোরা, ফ্যাকাশে ত্বক\n• বেশি Hb হলে ডিহাইড্রেশন, ফুসফুসের রোগ, বা পলিসাইথেমিয়া হতে পারে\n• CBC পরীক্ষায় মাপা হয়"
       },
@@ -868,11 +868,8 @@ const EmergencyHotline = () => {
     },
     
     // COVID-19 Information
+
     'covid': {
-      en: "COVID-19 Symptoms:\n• Fever or chills\n• Cough\n• Shortness of breath\n• Fatigue\n• Muscle aches\n• Loss of taste/smell\n• Sore throat\n• Headache\nIsolation: Minimum 5 days from symptom onset\nVaccination highly recommended",
-      bn: "COVID-19 লক্ষণ:\n• জ্বর বা ঠাণ্ডা লাগা\n• কাশি\n• শ্বাসকষ্ট\n• ক্লান্তি\n• পেশী ব্যথা\n• স্বাদ/গন্ধ হারানো\n• গলা ব্যথা\n• মাথাব্যথা\nবিচ্ছিন্নতা: লক্ষণ শুরুর কমপক্ষে ৫ দিন\nটিকাদান অত্যন্ত সুপারিশকৃত"
-    },
-    'covid prevention': {
       en: "COVID-19 Prevention:\n• Get vaccinated and boosted\n• Wear masks in crowded places\n• Wash hands frequently\n• Maintain social distance\n• Avoid poorly ventilated spaces\n• Stay home when sick\n• Get tested if symptomatic",
       bn: "COVID-19 প্রতিরোধ:\n• টিকা নিন এবং বুস্টার নিন\n• ভিড়ের জায়গায় মাস্ক পরুন\n• ঘন ঘন হাত ধৌত করুন\n• সামাজিক দূরত্ব বজায় রাখুন\n• দুর্বল বায়ুচলাচলযুক্ত স্থান এড়িয়ে চলুন\n• অসুস্থ হলে বাড়িতে থাকুন\n• লক্ষণ থাকলে পরীক্ষা করুন"
     },
@@ -888,7 +885,7 @@ const EmergencyHotline = () => {
     },
     
     // Exercise & Fitness
-    'exercise routine': {
+    'exercise': {
       en: "Recommended Exercise Routine:\n• 150 minutes moderate aerobic activity/week\nOR 75 minutes vigorous activity/week\n• Strength training 2x/week\n• Include flexibility exercises\n• Stay active throughout day\n• Start slowly if new to exercise\n• Listen to your body",
       bn: "প্রস্তাবিত ব্যায়াম রুটিন:\n• সপ্তাহে ১৫০ মিনিট মাঝারি এয়ারোবিক কার্যকলাপ\nঅথবা সপ্তাহে ৭৫ মিনিট জোরালো কার্যকলাপ\n• সপ্তাহে ২ বার শক্তি প্রশিক্ষণ\n• নমনীয়তা ব্যায়াম অন্তর্ভুক্ত করুন\n• সারাদিন সক্রিয় থাকুন\n• ব্যায়ামে নতুন হলে ধীরে শুরু করুন\n• আপনার শরীরের কথা শুনুন"
     },
@@ -2357,21 +2354,6 @@ function App() {
     }
   }, [handleAddDonationRecord, language]);
 
-  // const detectUserLocation = useCallback(() => {
-  //   setIsLoading(true);
-  //   const locations = [
-  //     'Dhaka - Gulshan', 'Dhaka - Dhanmondi', 'Dhaka - Uttara', 
-  //     'Cumilla - Kandirpar', 'Chittagong - Agrabad', 'Sylhet - Zindabazar'
-  //   ];
-  //   setTimeout(() => {
-  //     const randomLocation = locations[Math.floor(Math.random() * locations.length)];
-  //     setUserLocation(randomLocation);
-  //     setLocationSearch(randomLocation);
-  //     setSelectedLocation(randomLocation);
-  //     setIsLoading(false);
-  //     alert(`📍 ${language === 'en' ? 'Location detected' : 'অবস্থান সনাক্ত হয়েছে'}: ${randomLocation}`);
-  //   }, 1000);
-  // }, [language]);
 
   const handleContactDonor = useCallback((donor) => {
     if (donor.isCurrentUser) {
