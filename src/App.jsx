@@ -147,7 +147,7 @@ noDonationHistory: "No donation history available",
   unavailableForDonation: "Unavailable for Donation",
   pendingAvailability: "Pending Availability",
   youCanDonateNow: "You can donate blood now!",
-  availableInDays: "Available in {days} day{days !== 1 ? 's' : ''}",
+  availableInDays: "Available in {days} day{days == 1 ? '' : 's'}",
   
   // Footer
   footerTitle: "🩸 DR. BLOOD 24/7",
@@ -1421,6 +1421,22 @@ const DonationStatusBadge = ({ lastDonation, isCurrentUser = false }) => {
     }
   };
 
+
+  // Fix: Generate the countdown text properly
+  const getCountdownText = () => {
+    if (status === DONATION_STATUS.UNAVAILABLE && daysUntilAvailable > 0) {
+      // Handle singular/plural correctly
+      if (language === 'en') {
+        return `Available in ${daysUntilAvailable} day${daysUntilAvailable === 1 ? '' : 's'}`;
+      } else {
+        return `${daysUntilAvailable} দিনের মধ্যে উপলব্ধ`;
+      }
+    }
+    return '';
+  };
+
+
+
   return (
     <div className={`donation-status-badge ${getStatusColor()} ${isCurrentUser ? 'current-user-status' : ''}`}>
       <div className="status-header">
@@ -1430,11 +1446,15 @@ const DonationStatusBadge = ({ lastDonation, isCurrentUser = false }) => {
       {status === DONATION_STATUS.UNAVAILABLE && daysUntilAvailable > 0 && (
         <div className="availability-countdown">
           <span className="countdown-text">
-            {t('availableInDays', { days: daysUntilAvailable })}
+            {getCountdownText()}
           </span>
           {nextAvailableDate && (
             <span className="available-date">
-              ({nextAvailableDate.toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US')})
+              ({nextAvailableDate.toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+              })})
             </span>
           )}
         </div>
@@ -1447,6 +1467,7 @@ const DonationStatusBadge = ({ lastDonation, isCurrentUser = false }) => {
     </div>
   );
 };
+
 
 // Enhanced Donation History Component
 const DonationHistory = ({ donations, onAddDonation, isCurrentUser = false }) => {
